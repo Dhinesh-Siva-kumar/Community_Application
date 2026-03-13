@@ -1,0 +1,107 @@
+<div class="dashboard">
+  <div class="dashboard-content">
+    <!-- Main Feed -->
+    <div class="feed-section">
+      <!-- Create Post -->
+      <app-create-post-card (postCreated)="onPostCreated($event)"></app-create-post-card>
+
+      <!-- Feed Filters -->
+      <div class="feed-filters">
+        @for (filter of filters; track filter) {
+          <button
+            mat-button
+            [class.active]="selectedFilter() === filter"
+            (click)="onFilterChange(filter)"
+          >
+            {{ filter | titlecase }}
+          </button>
+        }
+      </div>
+
+      <!-- Posts -->
+      @if (loading()) {
+        <div class="loading-state">
+          <mat-spinner diameter="40"></mat-spinner>
+          <p>Loading your feed...</p>
+        </div>
+      } @else {
+        @for (post of posts(); track post.id) {
+          <app-post-card
+            [post]="post"
+            (liked)="onLike($event)"
+            (commented)="onComment($event)"
+          ></app-post-card>
+        } @empty {
+          <mat-card class="empty-state" appearance="outlined">
+            <mat-card-content>
+              <mat-icon>article</mat-icon>
+              <h3>No posts yet</h3>
+              <p>Join communities and follow people to see posts in your feed.</p>
+              <button mat-flat-button color="primary" routerLink="/communities">
+                Explore Communities
+              </button>
+            </mat-card-content>
+          </mat-card>
+        }
+      }
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="right-sidebar">
+      <!-- Trending Communities -->
+      <mat-card class="sidebar-card" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>trending_up</mat-icon>
+            Trending Communities
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @for (community of trendingCommunities(); track community.id) {
+            <a [routerLink]="['/community', community.id]" class="trending-item">
+              <div class="trending-icon">
+                <mat-icon>{{ community.icon }}</mat-icon>
+              </div>
+              <div class="trending-info">
+                <strong>{{ community.name }}</strong>
+                <span>{{ community.members | number }} members</span>
+              </div>
+              <button
+                mat-stroked-button
+                class="join-btn"
+                [class.joined]="community.isJoined"
+              >
+                {{ community.isJoined ? 'Joined' : 'Join' }}
+              </button>
+            </a>
+          }
+          <a routerLink="/communities" class="view-all">
+            View all communities →
+          </a>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Quick Links -->
+      <mat-card class="sidebar-card" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>local_fire_department</mat-icon>
+            Popular Topics
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-chip-set class="topic-chips">
+            <mat-chip>Angular</mat-chip>
+            <mat-chip>TypeScript</mat-chip>
+            <mat-chip>React</mat-chip>
+            <mat-chip>Node.js</mat-chip>
+            <mat-chip>Python</mat-chip>
+            <mat-chip>AI/ML</mat-chip>
+            <mat-chip>DevOps</mat-chip>
+            <mat-chip>CSS</mat-chip>
+          </mat-chip-set>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

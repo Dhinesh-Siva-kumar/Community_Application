@@ -1,0 +1,90 @@
+<div class="community-list-page">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>Explore Communities</h1>
+      <p>Discover and join communities that match your interests</p>
+    </div>
+    <div class="search-bar">
+      <mat-icon>search</mat-icon>
+      <input
+        type="text"
+        placeholder="Search communities..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()"
+      />
+    </div>
+  </div>
+
+  <!-- Category Filters -->
+  <div class="category-filters">
+    <button
+      mat-button
+      [class.active]="selectedCategory() === 'all'"
+      (click)="onCategoryFilter('all')"
+    >
+      All
+    </button>
+    @for (category of categories(); track category.id) {
+      <button
+        mat-button
+        [class.active]="selectedCategory() === category.name"
+        (click)="onCategoryFilter(category.name)"
+      >
+        <mat-icon>{{ category.icon }}</mat-icon>
+        {{ category.name }}
+        <span class="count">({{ category.count }})</span>
+      </button>
+    }
+  </div>
+
+  <!-- Community Grid -->
+  @if (loading()) {
+    <div class="loading-state">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading communities...</p>
+    </div>
+  } @else {
+    <div class="community-grid">
+      @for (community of filteredCommunities(); track community.id) {
+        <mat-card class="community-card" appearance="outlined">
+          <div class="card-banner">
+            <mat-icon class="card-icon">{{ community.icon }}</mat-icon>
+          </div>
+          <mat-card-content>
+            <h3>
+              <a [routerLink]="['/community', community.id]">{{ community.name }}</a>
+            </h3>
+            <p class="description">{{ community.description }}</p>
+            <div class="card-stats">
+              <span><mat-icon>people</mat-icon> {{ community.members | number }} members</span>
+              <span><mat-icon>article</mat-icon> {{ community.posts | number }} posts</span>
+            </div>
+            <div class="card-meta">
+              <mat-chip-set>
+                <mat-chip>{{ community.category }}</mat-chip>
+              </mat-chip-set>
+              <button
+                mat-flat-button
+                [class.joined]="community.isJoined"
+                (click)="toggleJoin(community); $event.stopPropagation()"
+              >
+                @if (community.isJoined) {
+                  <ng-container><mat-icon>check</mat-icon> Joined</ng-container>
+                } @else {
+                  <ng-container><mat-icon>add</mat-icon> Join</ng-container>
+                }
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      } @empty {
+        <div class="empty-state">
+          <mat-icon>search_off</mat-icon>
+          <h3>No communities found</h3>
+          <p>Try adjusting your search or filters</p>
+        </div>
+      }
+    </div>
+  }
+</div>

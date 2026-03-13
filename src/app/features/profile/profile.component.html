@@ -1,0 +1,102 @@
+@if (loading()) {
+  <div class="loading-state">
+    <p>Loading profile...</p>
+  </div>
+} @else if (user()) {
+  <div class="profile-page">
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <div class="profile-banner">
+        <div class="banner-gradient"></div>
+      </div>
+      <div class="profile-info-wrapper">
+        <div class="profile-avatar">
+          {{ getInitials(user()!.displayName) }}
+        </div>
+        <div class="profile-info">
+          <h1>{{ user()!.displayName }}</h1>
+          <p class="username">&#64;{{ user()!.username }}</p>
+          <p class="bio">{{ user()!.bio }}</p>
+          <div class="profile-meta">
+            <span><mat-icon>calendar_today</mat-icon> Joined {{ user()!.joinedDate | date: 'mediumDate' }}</span>
+            <span><mat-icon>email</mat-icon> {{ user()!.email }}</span>
+          </div>
+          <div class="profile-stats">
+            <div class="stat">
+              <strong>{{ user()!.followers }}</strong>
+              <span>Followers</span>
+            </div>
+            <div class="stat">
+              <strong>{{ user()!.following }}</strong>
+              <span>Following</span>
+            </div>
+            <div class="stat">
+              <strong>{{ userPosts().length }}</strong>
+              <span>Posts</span>
+            </div>
+            <div class="stat">
+              <strong>{{ user()!.communities.length }}</strong>
+              <span>Communities</span>
+            </div>
+          </div>
+        </div>
+        <div class="profile-actions">
+          <button mat-flat-button class="edit-btn">
+            <mat-icon>edit</mat-icon>
+            Edit Profile
+          </button>
+          <button mat-stroked-button>
+            <mat-icon>share</mat-icon>
+            Share
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="profile-content">
+      <mat-tab-group>
+        <mat-tab label="Posts">
+          <div class="tab-content">
+            @for (post of userPosts(); track post.id) {
+              <app-post-card
+                [post]="post"
+                (liked)="onLike($event)"
+              ></app-post-card>
+            } @empty {
+              <mat-card class="empty-state" appearance="outlined">
+                <mat-card-content>
+                  <mat-icon>edit_note</mat-icon>
+                  <h3>No posts yet</h3>
+                  <p>Your posts will appear here once you start sharing.</p>
+                </mat-card-content>
+              </mat-card>
+            }
+          </div>
+        </mat-tab>
+        <mat-tab label="Comments">
+          <div class="tab-content">
+            <mat-card class="empty-state" appearance="outlined">
+              <mat-card-content>
+                <mat-icon>chat_bubble_outline</mat-icon>
+                <h3>Comments you've made</h3>
+                <p>Your comment history will appear here.</p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-tab>
+        <mat-tab label="Saved">
+          <div class="tab-content">
+            <mat-card class="empty-state" appearance="outlined">
+              <mat-card-content>
+                <mat-icon>bookmark_border</mat-icon>
+                <h3>Saved posts</h3>
+                <p>Posts you save will appear here for easy access.</p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+}

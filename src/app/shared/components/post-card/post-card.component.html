@@ -1,0 +1,62 @@
+<mat-card class="post-card" appearance="outlined">
+  <!-- Post Header -->
+  <mat-card-header>
+    <div class="post-header-left">
+      <div class="avatar-wrapper" mat-card-avatar>
+        <div class="avatar-placeholder">{{ getInitials(post().author.displayName) }}</div>
+      </div>
+      <div class="post-meta">
+        <div class="post-meta-top">
+          <a [routerLink]="['/community', post().community.id]" class="community-link">
+            <mat-icon class="community-icon">{{ post().community.icon }}</mat-icon>
+            <span>{{ post().community.name }}</span>
+          </a>
+        </div>
+        <div class="post-meta-bottom">
+          <a [routerLink]="['/profile', post().author.id]" class="author-link">
+            {{ post().author.displayName }}
+          </a>
+          <span class="dot-separator">·</span>
+          <span class="post-time">{{ post().createdAt | timeAgo }}</span>
+        </div>
+      </div>
+    </div>
+    <button mat-icon-button [matMenuTriggerFor]="postMenu" class="more-btn">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #postMenu="matMenu">
+      <button mat-menu-item><mat-icon>bookmark_border</mat-icon>Save</button>
+      <button mat-menu-item><mat-icon>share</mat-icon>Share</button>
+      <button mat-menu-item><mat-icon>flag</mat-icon>Report</button>
+    </mat-menu>
+  </mat-card-header>
+
+  <!-- Post Content -->
+  <mat-card-content class="post-content">
+    <h3 class="post-title">
+      <a [routerLink]="['/post', post().id]">{{ post().title }}</a>
+    </h3>
+    <p class="post-body">{{ post().content | truncate: 250 }}</p>
+    @if (post().imageUrl) {
+      <div class="post-image">
+        <img [src]="post().imageUrl" [alt]="post().title" />
+      </div>
+    }
+  </mat-card-content>
+
+  <!-- Post Actions -->
+  <mat-card-actions class="post-actions">
+    <button mat-button (click)="onLike()" [class.liked]="post().isLiked">
+      <mat-icon>{{ post().isLiked ? 'favorite' : 'favorite_border' }}</mat-icon>
+      <span>{{ post().likes }}</span>
+    </button>
+    <button mat-button (click)="onComment()">
+      <mat-icon>chat_bubble_outline</mat-icon>
+      <span>{{ post().comments }}</span>
+    </button>
+    <button mat-button matTooltip="Share post">
+      <mat-icon>share</mat-icon>
+      <span>Share</span>
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,91 @@
+<div class="auth-page">
+  <div class="auth-container">
+    <!-- Left Side - Branding -->
+    <div class="auth-branding">
+      <div class="branding-content">
+        <mat-icon class="brand-logo">hub</mat-icon>
+        <h1>Community</h1>
+        <p>Connect with developers, designers, and tech enthusiasts from around the world.</p>
+        <div class="features-list">
+          <div class="feature">
+            <mat-icon>groups</mat-icon>
+            <span>Join communities that match your interests</span>
+          </div>
+          <div class="feature">
+            <mat-icon>forum</mat-icon>
+            <span>Share knowledge and engage in discussions</span>
+          </div>
+          <div class="feature">
+            <mat-icon>trending_up</mat-icon>
+            <span>Grow your network and stay updated</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side - Login Form -->
+    <div class="auth-form-wrapper">
+      <mat-card class="auth-card" appearance="outlined">
+        <mat-card-content>
+          <h2>Welcome back</h2>
+          <p class="subtitle">Sign in to your account to continue</p>
+
+          @if (error()) {
+            <div class="error-banner">
+              <mat-icon>error_outline</mat-icon>
+              {{ error() }}
+            </div>
+          }
+
+          <form (ngSubmit)="onSubmit()" class="auth-form">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email address</mat-label>
+              <input matInput type="email" [(ngModel)]="email" name="email" placeholder="you@example.com" required />
+              <mat-icon matPrefix>email</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Password</mat-label>
+              <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="password" name="password" required />
+              <mat-icon matPrefix>lock</mat-icon>
+              <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+                <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <div class="form-options">
+              <mat-checkbox [(ngModel)]="rememberMe" name="remember">Remember me</mat-checkbox>
+              <a href="#" class="forgot-link">Forgot password?</a>
+            </div>
+
+            <button mat-flat-button color="primary" type="submit" class="submit-btn" [disabled]="loading()">
+              @if (loading()) {
+                <mat-spinner diameter="20"></mat-spinner>
+              } @else {
+                Sign In
+              }
+            </button>
+          </form>
+
+          <mat-divider class="divider"></mat-divider>
+
+          <div class="social-login">
+            <button mat-stroked-button class="social-btn google">
+              <mat-icon>g_mobiledata</mat-icon>
+              Continue with Google
+            </button>
+            <button mat-stroked-button class="social-btn github">
+              <mat-icon>code</mat-icon>
+              Continue with GitHub
+            </button>
+          </div>
+
+          <p class="switch-auth">
+            Don't have an account?
+            <a routerLink="/auth/signup">Sign up</a>
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

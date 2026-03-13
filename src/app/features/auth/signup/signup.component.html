@@ -1,0 +1,94 @@
+<div class="auth-page">
+  <div class="auth-container">
+    <!-- Left Side - Branding -->
+    <div class="auth-branding">
+      <div class="branding-content">
+        <mat-icon class="brand-logo">hub</mat-icon>
+        <h1>Join the Community</h1>
+        <p>Create your account and start connecting with like-minded people today.</p>
+        <div class="stats">
+          <div class="stat">
+            <strong>50K+</strong>
+            <span>Members</span>
+          </div>
+          <div class="stat">
+            <strong>200+</strong>
+            <span>Communities</span>
+          </div>
+          <div class="stat">
+            <strong>10K+</strong>
+            <span>Daily Posts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side - Signup Form -->
+    <div class="auth-form-wrapper">
+      <mat-card class="auth-card" appearance="outlined">
+        <mat-card-content>
+          <h2>Create an account</h2>
+          <p class="subtitle">Fill in your details to get started</p>
+
+          @if (error()) {
+            <div class="error-banner">
+              <mat-icon>error_outline</mat-icon>
+              {{ error() }}
+            </div>
+          }
+
+          <form (ngSubmit)="onSubmit()" class="auth-form">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Display Name</mat-label>
+              <input matInput [(ngModel)]="displayName" name="displayName" placeholder="John Doe" required />
+              <mat-icon matPrefix>badge</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Username</mat-label>
+              <input matInput [(ngModel)]="username" name="username" placeholder="johndoe" required />
+              <mat-icon matPrefix>alternate_email</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email address</mat-label>
+              <input matInput type="email" [(ngModel)]="email" name="email" placeholder="you@example.com" required />
+              <mat-icon matPrefix>email</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Password</mat-label>
+              <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="password" name="password" required />
+              <mat-icon matPrefix>lock</mat-icon>
+              <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+                <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              <mat-hint>At least 6 characters</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Confirm Password</mat-label>
+              <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="confirmPassword" name="confirmPassword" required />
+              <mat-icon matPrefix>lock_outline</mat-icon>
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" type="submit" class="submit-btn" [disabled]="loading()">
+              @if (loading()) {
+                <mat-spinner diameter="20"></mat-spinner>
+              } @else {
+                Create Account
+              }
+            </button>
+          </form>
+
+          <mat-divider class="divider"></mat-divider>
+
+          <p class="switch-auth">
+            Already have an account?
+            <a routerLink="/auth/login">Sign in</a>
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

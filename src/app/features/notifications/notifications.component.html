@@ -1,0 +1,52 @@
+<div class="notifications-page">
+  <div class="page-header">
+    <h1>Notifications</h1>
+    <div class="header-actions">
+      @if (notificationService.unreadCount() > 0) {
+        <span class="unread-badge">{{ notificationService.unreadCount() }} unread</span>
+      }
+      <button mat-button color="primary" (click)="markAllAsRead()">
+        <mat-icon>done_all</mat-icon>
+        Mark all as read
+      </button>
+    </div>
+  </div>
+
+  <div class="notification-list">
+    @for (notification of notificationService.notifications(); track notification.id) {
+      <mat-card
+        class="notification-card"
+        appearance="outlined"
+        [class.unread]="!notification.isRead"
+        (click)="markAsRead(notification.id)"
+      >
+        <div class="notification-content">
+          <div class="notification-icon" [style.background]="getNotificationColor(notification.type) + '15'" [style.color]="getNotificationColor(notification.type)">
+            <mat-icon>{{ getNotificationIcon(notification.type) }}</mat-icon>
+          </div>
+          <div class="notification-body">
+            <div class="notification-text">
+              <div class="notification-avatar">{{ notification.fromUser.username[0] | uppercase }}</div>
+              <div>
+                <strong>{{ notification.fromUser.username }}</strong>
+                <span>{{ notification.message }}</span>
+              </div>
+            </div>
+            <span class="notification-time">{{ notification.createdAt | timeAgo }}</span>
+          </div>
+          @if (!notification.isRead) {
+            <div class="unread-dot"></div>
+          }
+        </div>
+      </mat-card>
+    } @empty {
+      <mat-card class="empty-state" appearance="outlined">
+        <mat-card-content>
+          <mat-icon>notifications_none</mat-icon>
+          <h3>All caught up!</h3>
+          <p>You don't have any notifications yet.</p>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+</div>

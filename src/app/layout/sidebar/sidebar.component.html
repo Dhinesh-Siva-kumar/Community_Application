@@ -1,0 +1,64 @@
+<div class="sidebar">
+  <!-- Main Navigation -->
+  <nav class="sidebar-nav">
+    <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+      <mat-icon>home</mat-icon>
+      <span>Home</span>
+    </a>
+    <a routerLink="/communities" routerLinkActive="active" class="nav-item">
+      <mat-icon>groups</mat-icon>
+      <span>Communities</span>
+    </a>
+    <a routerLink="/notifications" routerLinkActive="active" class="nav-item">
+      <mat-icon>notifications_none</mat-icon>
+      <span>Notifications</span>
+    </a>
+    <a routerLink="/profile" routerLinkActive="active" class="nav-item">
+      <mat-icon>person_outline</mat-icon>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+  <mat-divider></mat-divider>
+
+  <!-- Joined Communities -->
+  <div class="sidebar-section">
+    <h4 class="section-title">Your Communities</h4>
+    @for (community of joinedCommunities(); track community.id) {
+      <a [routerLink]="['/community', community.id]" routerLinkActive="active" class="community-item">
+        <mat-icon class="community-icon">{{ community.icon }}</mat-icon>
+        <span class="community-name">{{ community.name }}</span>
+        <span class="member-count">{{ community.members | number }}</span>
+      </a>
+    }
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <!-- Quick Links -->
+  <div class="sidebar-section">
+    <h4 class="section-title">Discover</h4>
+    <a routerLink="/communities" class="nav-item">
+      <mat-icon>explore</mat-icon>
+      <span>Explore Communities</span>
+    </a>
+    <a class="nav-item">
+      <mat-icon>trending_up</mat-icon>
+      <span>Trending</span>
+    </a>
+    <a class="nav-item">
+      <mat-icon>local_fire_department</mat-icon>
+      <span>Popular</span>
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <div class="sidebar-footer">
+    <p>© 2026 Community App</p>
+    <div class="footer-links">
+      <a href="#">About</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </div>
+</div>

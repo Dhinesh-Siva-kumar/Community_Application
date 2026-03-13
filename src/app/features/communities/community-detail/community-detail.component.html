@@ -1,0 +1,154 @@
+@if (loading()) {
+  <div class="loading-state">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading community...</p>
+  </div>
+} @else if (community()) {
+  <div class="community-detail">
+    <!-- Banner -->
+    <div class="community-banner">
+      <div class="banner-overlay">
+        <div class="banner-content">
+          <div class="community-icon-wrapper">
+            <mat-icon>{{ community()!.icon }}</mat-icon>
+          </div>
+          <div class="community-info">
+            <h1>{{ community()!.name }}</h1>
+            <p>{{ community()!.description }}</p>
+            <div class="community-stats">
+              <span><strong>{{ community()!.members | number }}</strong> members</span>
+              <span class="dot">·</span>
+              <span><strong>{{ community()!.posts | number }}</strong> posts</span>
+              <span class="dot">·</span>
+              <span>Created {{ community()!.createdAt | date: 'mediumDate' }}</span>
+            </div>
+          </div>
+          <button
+            mat-flat-button
+            class="join-btn"
+            [class.joined]="community()!.isJoined"
+            (click)="toggleJoin()"
+          >
+            @if (community()!.isJoined) {
+              <ng-container><mat-icon>check_circle</mat-icon> Joined</ng-container>
+            } @else {
+              <ng-container><mat-icon>add</mat-icon> Join Community</ng-container>
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="community-content">
+      <div class="content-main">
+        <mat-tab-group>
+          <mat-tab label="Posts">
+            <div class="tab-content">
+              @for (post of posts(); track post.id) {
+                <app-post-card
+                  [post]="post"
+                  (liked)="onLike($event)"
+                ></app-post-card>
+              } @empty {
+                <mat-card class="empty-state" appearance="outlined">
+                  <mat-card-content>
+                    <mat-icon>article</mat-icon>
+                    <h3>No posts yet</h3>
+                    <p>Be the first to share something in this community!</p>
+                  </mat-card-content>
+                </mat-card>
+              }
+            </div>
+          </mat-tab>
+          <mat-tab label="About">
+            <div class="tab-content about-tab">
+              <h3>About {{ community()!.name }}</h3>
+              <p>{{ community()!.description }}</p>
+
+              <h4>Community Rules</h4>
+              @for (rule of community()!.rules; track rule.id; let i = $index) {
+                <div class="rule-item">
+                  <span class="rule-number">{{ i + 1 }}</span>
+                  <div>
+                    <strong>{{ rule.title }}</strong>
+                    <p>{{ rule.description }}</p>
+                  </div>
+                </div>
+              }
+
+              <h4>Moderators</h4>
+              <div class="moderators-list">
+                @for (mod of community()!.moderators; track mod.id) {
+                  <div class="moderator-item">
+                    <div class="mod-avatar">{{ mod.username[0] | uppercase }}</div>
+                    <span>{{ mod.username }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Members">
+            <div class="tab-content members-tab">
+              <p class="members-count">{{ community()!.members | number }} members</p>
+              <!-- Members list placeholder -->
+              <div class="members-grid">
+                @for (mod of community()!.moderators; track mod.id) {
+                  <div class="member-item">
+                    <div class="member-avatar">{{ mod.username[0] | uppercase }}</div>
+                    <div class="member-info">
+                      <strong>{{ mod.username }}</strong>
+                      <span class="role">Moderator</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="content-sidebar">
+        <mat-card appearance="outlined" class="sidebar-card">
+          <mat-card-header>
+            <mat-card-title>About</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ community()!.description }}</p>
+            <mat-divider></mat-divider>
+            <div class="sidebar-stats">
+              <div class="stat">
+                <strong>{{ community()!.members | number }}</strong>
+                <span>Members</span>
+              </div>
+              <div class="stat">
+                <strong>{{ community()!.posts | number }}</strong>
+                <span>Posts</span>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+            <p class="created-date">
+              <mat-icon>calendar_today</mat-icon>
+              Created {{ community()!.createdAt | date: 'mediumDate' }}
+            </p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card appearance="outlined" class="sidebar-card">
+          <mat-card-header>
+            <mat-card-title>Rules</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @for (rule of community()!.rules; track rule.id; let i = $index) {
+              <div class="sidebar-rule">
+                <span class="rule-num">{{ i + 1 }}.</span>
+                <span>{{ rule.title }}</span>
+              </div>
+            }
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+}
