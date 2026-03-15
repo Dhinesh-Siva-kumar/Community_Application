@@ -1,15 +1,54 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.scss'
 })
-export class LandingPageComponent {
+export class LandingPageComponent implements OnInit, OnDestroy {
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {}
+
+  private observer!: IntersectionObserver;
+  private readonly sectionIds = ['home', 'features', 'communities', 'how-it-works', 'contact'];
+
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.setupIntersectionObserver();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
+  }
+
+  private setupIntersectionObserver(): void {
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter(e => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible.length > 0) {
+          this.activeSection = visible[0].target.id;
+        }
+      },
+      {
+        threshold: [0.2, 0.5],
+        rootMargin: '-80px 0px -30% 0px'
+      }
+    );
+
+    this.sectionIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) this.observer.observe(el);
+    });
+  }
+
+  applicationName = 'Community';
   features = [
     {
       icon: 'bi-people-fill',
@@ -39,22 +78,6 @@ export class LandingPageComponent {
 
   communities = [
     {
-      icon: 'bi-code-slash',
-      name: 'Developers',
-      description: 'A hub for software engineers, open-source enthusiasts, and tech innovators to collaborate and grow.',
-      members: '128K',
-      color: 'community-purple',
-      badge: 'Tech'
-    },
-    {
-      icon: 'bi-palette-fill',
-      name: 'Designers',
-      description: 'Where UI/UX designers, illustrators, and creatives share inspiration, feedback, and design resources.',
-      members: '64K',
-      color: 'community-pink',
-      badge: 'Creative'
-    },
-    {
       icon: 'bi-graph-up-arrow',
       name: 'Entrepreneurs',
       description: 'Connect with founders, investors, and business leaders to share insights and grow your ventures.',
@@ -63,30 +86,46 @@ export class LandingPageComponent {
       badge: 'Business'
     },
     {
-      icon: 'bi-controller',
-      name: 'Gamers',
-      description: 'Level up your gaming experience by connecting with players, streamers, and gaming communities worldwide.',
+      icon: 'bi-heart-pulse-fill',
+      name: 'Health & Fitness',
+      description: 'Connect with people who want to stay healthy, share workout routines, fitness tips, and motivate each other to live better.',
+      members: '128K',
+      color: 'community-purple',
+      badge: 'Wellness'
+    },
+    {
+      icon: 'bi-cup-hot',
+      name: 'Food & Cooking',
+      description: 'Share recipes, cooking tips, and culinary experiences with fellow food enthusiasts.',
+      members: '64K',
+      color: 'community-pink',
+      badge: 'Recipes'
+    },
+    {
+      icon: 'bi-geo-alt-fill',
+      name: 'Travel',
+      description: 'Explore new destinations, share travel experiences, and connect with fellow travelers around the world.',
       members: '210K',
       color: 'community-blue',
-      badge: 'Gaming'
+      badge: 'Adventures'
     }
   ];
 
   steps = [
     {
-      number: '01',
+      number: '1',
       icon: 'bi-person-plus-fill',
       title: 'Create an Account',
       description: "Sign up for free in seconds. No credit card required. Just your email and you're in!"
     },
     {
-      number: '02',
+      number: '2',
       icon: 'bi-compass-fill',
       title: 'Join Communities',
       description: 'Browse and join communities that match your interests, profession, or hobbies.'
     },
     {
-      number: '03',
+      number: '3',
       icon: 'bi-send-fill',
       title: 'Share & Interact',
       description: 'Post content, comment on discussions, and engage with members who share your passion.'
@@ -94,6 +133,19 @@ export class LandingPageComponent {
   ];
 
   mobileMenuOpen = false;
+  activeSection = 'home';
+
+  contact = { firstName: '', lastName: '', email: '', subject: '', message: '' };
+  contactSubmitted = false;
+
+  submitContact(): void {
+    this.contactSubmitted = true;
+  }
+
+  resetContactForm(): void {
+    this.contact = { firstName: '', lastName: '', email: '', subject: '', message: '' };
+    this.contactSubmitted = false;
+  }
 
   toggleMobileMenu(): void {
     this.mobileMenuOpen = !this.mobileMenuOpen;
@@ -102,4 +154,9 @@ export class LandingPageComponent {
   closeMobileMenu(): void {
     this.mobileMenuOpen = false;
   }
+
+  setActiveSection(section: string): void {
+    this.activeSection = section;
+  }
+  
 }

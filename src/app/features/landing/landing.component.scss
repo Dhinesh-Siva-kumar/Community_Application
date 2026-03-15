@@ -29,6 +29,7 @@ $section-alt: #f8f9ff;
 // ============================================================
 .lp-navbar {
   background: rgba(255, 255, 255, 0.92);
+//   background: linear-gradient(160deg, #fafbff 0%, #f0f2ff 25%, #fdf0ff 50%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(88, 101, 242, 0.1);
@@ -49,16 +50,11 @@ $section-alt: #f8f9ff;
     font-size: 1.25rem;
     color: $dark;
 
-    .brand-icon {
-      width: 36px;
-      height: 36px;
-      background: linear-gradient(135deg, $primary, $accent-pink);
+    .brand-logo {
+      width: 40px;
+      height: 40px;
       border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 1rem;
+      flex-shrink: 0;
     }
 
     .brand-text {
@@ -484,7 +480,7 @@ $section-alt: #f8f9ff;
   display: inline-block;
   background: rgba(88, 101, 242, 0.08);
   color: $primary;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 700;
   padding: 0.4rem 1rem;
   border-radius: 50px;
@@ -629,6 +625,12 @@ $section-alt: #f8f9ff;
     color: #6b7280;
     line-height: 1.6;
     margin: 0;
+    min-height: 72px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .lp-community-footer { border-top: 1px solid rgba(0,0,0,0.06); }
@@ -653,14 +655,19 @@ $section-alt: #f8f9ff;
   }
 
   .lp-btn-browse {
-    border-radius: 12px;
-    font-weight: 600;
-    padding: 0.7rem 2rem;
-    border-color: $primary;
+    border: 2px solid rgba(88, 101, 242, 0.35);
     color: $primary;
-    transition: all 0.25s ease;
+    background: rgba(88, 101, 242, 0.05);
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 0.7rem 2rem;
+    transition: all 0.3s ease;
 
-    &:hover { background: $primary; color: white; transform: translateY(-2px); }
+    &:hover {
+      background: rgba(88, 101, 242, 0.1);
+      border-color: $primary;
+      transform: translateY(-2px);
+    }
   }
 }
 
@@ -682,15 +689,15 @@ $section-alt: #f8f9ff;
 
     .lp-step-number {
       position: absolute;
-      top: -18px;
-      left: 50%;
+      top: 0px;
+      left: 4.5%;
       transform: translateX(-50%);
       font-size: 0.8rem;
       font-weight: 800;
       color: white;
       background: linear-gradient(135deg, $primary, $accent-pink);
       padding: 0.3rem 0.9rem;
-      border-radius: 20px;
+      border-radius: 20px 0 15px 0;
       letter-spacing: 0.1em;
     }
 
@@ -807,6 +814,160 @@ $section-alt: #f8f9ff;
   }
 }
 
+// ============================================================
+// CONTACT SECTION
+// ============================================================
+.lp-contact {
+  background: white;
+
+  .lp-contact-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: $section-alt;
+    border-radius: 18px;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid rgba(88, 101, 242, 0.08);
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(88, 101, 242, 0.1);
+    }
+
+    .lp-contact-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+
+      &.contact-purple { background: rgba(88, 101, 242, 0.12); color: $primary; }
+      &.contact-pink   { background: rgba(235, 69, 158, 0.12); color: $accent-pink; }
+      &.contact-green  { background: rgba(87, 242, 135, 0.18); color: #16a34a; }
+    }
+
+    .lp-contact-card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: $dark;
+      margin-bottom: 0.2rem;
+    }
+
+    .lp-contact-card-text {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: $primary;
+      margin-bottom: 0.15rem;
+    }
+
+    .lp-contact-card-sub {
+      font-size: 0.78rem;
+      color: $text-muted-custom;
+      margin: 0;
+    }
+  }
+
+  .lp-contact-form-card {
+    background: $section-alt;
+    border-radius: 24px;
+    padding: 2.5rem;
+    border: 1px solid rgba(88, 101, 242, 0.08);
+    box-shadow: 0 4px 32px rgba(88, 101, 242, 0.06);
+
+    @media (max-width: 576px) {
+      padding: 1.5rem;
+    }
+  }
+
+  .lp-form-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $dark;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .lp-form-control {
+    background: white;
+    border: 1.5px solid rgba(88, 101, 242, 0.15);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    color: $dark;
+    transition: all 0.2s ease;
+
+    &::placeholder { color: #b0b3c6; }
+
+    &:focus {
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.12);
+      background: white;
+    }
+
+    &.is-invalid {
+      border-color: #ef4444;
+      &:focus { box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12); }
+    }
+  }
+
+  .lp-form-error {
+    font-size: 0.78rem;
+    color: #ef4444;
+    margin-top: 0.35rem;
+    font-weight: 500;
+  }
+
+  .lp-btn-submit {
+    background: linear-gradient(135deg, $primary, $primary-dark);
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    padding: 0.85rem;
+    box-shadow: 0 8px 24px rgba(88, 101, 242, 0.35);
+    transition: all 0.3s ease;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(88, 101, 242, 0.45);
+    }
+
+    &:disabled { opacity: 0.55; cursor: not-allowed; }
+  }
+
+  .lp-contact-success {
+    .lp-success-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, rgba(87,242,135,0.15), rgba(88,101,242,0.1));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      font-size: 2.5rem;
+      color: #16a34a;
+    }
+  }
+
+  .lp-btn-send-another {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    border-color: $primary;
+    color: $primary;
+    transition: all 0.2s ease;
+
+    &:hover { background: $primary; color: white; }
+  }
+}
+
+// ============================================================
+// FOOTER
+// ============================================================
 .lp-footer {
   background: #07071a;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -814,12 +975,10 @@ $section-alt: #f8f9ff;
   .lp-footer-brand {
     text-decoration: none;
 
-    .brand-icon {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, $primary, $accent-pink);
+    .brand-logo {
+      width: 40px; height: 40px;
       border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-size: 1rem; flex-shrink: 0;
+      flex-shrink: 0;
     }
 
     .brand-text {
