@@ -14,7 +14,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   constructor(@Inject(PLATFORM_ID) private platformId: object) {}
 
   private observer!: IntersectionObserver;
-  private readonly sectionIds = ['home', 'features', 'communities', 'how-it-works', 'contact'];
+  private readonly sectionIds = ['home', 'features', 'communities', 'about-us', 'how-it-works', 'contact'];
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -108,6 +108,34 @@ export class LandingPageComponent implements OnInit, OnDestroy {
       members: '210K',
       color: 'community-blue',
       badge: 'Adventures'
+    }
+  ];
+
+  teamStats = [
+    { icon: 'bi-calendar2-heart-fill', value: '2021', label: 'Founded' },
+    { icon: 'bi-people-fill',          value: '10K+',  label: 'Active Members' },
+    { icon: 'bi-globe2',               value: '150+',  label: 'Countries' },
+    { icon: 'bi-collection-fill',      value: '15K+',  label: 'Communities' }
+  ];
+
+  coreValues = [
+    {
+      icon: 'bi-shield-heart-fill',
+      title: 'Inclusivity',
+      description: 'We build spaces where everyone feels welcome, respected, and heard — regardless of background or belief.',
+      color: 'value-purple'
+    },
+    {
+      icon: 'bi-lightbulb-fill',
+      title: 'Innovation',
+      description: 'We constantly evolve our platform with new features that help communities grow, engage, and thrive.',
+      color: 'value-yellow'
+    },
+    {
+      icon: 'bi-lock-fill',
+      title: 'Privacy & Trust',
+      description: "Your data is yours. We never sell it, never misuse it, and always put our members' safety first.",
+      color: 'value-green'
     }
   ];
 
