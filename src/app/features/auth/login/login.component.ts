@@ -2,14 +2,8 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -19,14 +13,8 @@ import { AuthService } from '../../../core/services/auth.service';
     CommonModule,
     FormsModule,
     RouterModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule,
-    MatCheckboxModule,
-    MatDividerModule
+    MatProgressSpinnerModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -58,7 +46,7 @@ export class LoginComponent {
         this.loading.set(false);
         this.router.navigate(['/dashboard']);
       },
-      error: (err: unknown) => {
+      error: () => {
         this.loading.set(false);
         this.error.set('Invalid email or password');
       }

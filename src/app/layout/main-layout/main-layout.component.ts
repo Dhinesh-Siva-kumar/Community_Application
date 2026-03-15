@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
@@ -15,9 +15,12 @@ import { NotificationService } from '../../core/services/notification.service';
     SidebarComponent
   ],
   template: `
-    <app-navbar></app-navbar>
+    <app-navbar (menuToggle)="toggleSidebar()"></app-navbar>
     <div class="layout-wrapper">
-      <app-sidebar></app-sidebar>
+      @if (sidebarOpen()) {
+        <div class="sidebar-backdrop" (click)="closeSidebar()"></div>
+      }
+      <app-sidebar [isOpen]="sidebarOpen()" (closeRequest)="closeSidebar()"></app-sidebar>
       <main class="main-content">
         <router-outlet></router-outlet>
       </main>
@@ -26,9 +29,19 @@ import { NotificationService } from '../../core/services/notification.service';
   styleUrl: './main-layout.component.scss'
 })
 export class MainLayoutComponent implements OnInit {
+  sidebarOpen = signal(false);
+
   constructor(private notificationService: NotificationService) {}
 
   ngOnInit(): void {
     this.notificationService.fetchNotifications();
+  }
+
+  toggleSidebar(): void {
+    this.sidebarOpen.update(v => !v);
+  }
+
+  closeSidebar(): void {
+    this.sidebarOpen.set(false);
   }
 }

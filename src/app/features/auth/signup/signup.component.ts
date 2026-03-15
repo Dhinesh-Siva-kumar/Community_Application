@@ -2,13 +2,8 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -18,13 +13,8 @@ import { AuthService } from '../../../core/services/auth.service';
     CommonModule,
     FormsModule,
     RouterModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule,
-    MatDividerModule
+    MatProgressSpinnerModule
   ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'
@@ -39,10 +29,43 @@ export class SignupComponent {
   loading = signal(false);
   error = signal('');
 
+  // Password strength
+  strengthClass = '';
+  strengthLabel = '';
+  strengthWidth = '0%';
+
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
+
+  updateStrength(): void {
+    const pw = this.password;
+    let score = 0;
+    if (pw.length >= 6) score++;
+    if (pw.length >= 10) score++;
+    if (/[A-Z]/.test(pw)) score++;
+    if (/[0-9]/.test(pw)) score++;
+    if (/[^A-Za-z0-9]/.test(pw)) score++;
+
+    if (score <= 1) {
+      this.strengthClass = 'strength-weak';
+      this.strengthLabel = 'Weak';
+      this.strengthWidth = '25%';
+    } else if (score <= 2) {
+      this.strengthClass = 'strength-fair';
+      this.strengthLabel = 'Fair';
+      this.strengthWidth = '50%';
+    } else if (score <= 3) {
+      this.strengthClass = 'strength-good';
+      this.strengthLabel = 'Good';
+      this.strengthWidth = '75%';
+    } else {
+      this.strengthClass = 'strength-strong';
+      this.strengthLabel = 'Strong';
+      this.strengthWidth = '100%';
+    }
+  }
 
   onSubmit(): void {
     if (!this.displayName || !this.username || !this.email || !this.password) {
@@ -73,7 +96,7 @@ export class SignupComponent {
         this.loading.set(false);
         this.router.navigate(['/dashboard']);
       },
-      error: (err: unknown) => {
+      error: () => {
         this.loading.set(false);
         this.error.set('Signup failed. Please try again.');
       }

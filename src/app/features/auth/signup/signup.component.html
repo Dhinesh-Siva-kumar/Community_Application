@@ -1,95 +1,177 @@
 <div class="auth-page">
   <div class="auth-container">
-    <!-- Left Side - Branding -->
+
+    <!-- ===== LEFT PANEL — Branding ===== -->
     <div class="auth-branding">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+
       <div class="branding-content">
-        <!-- <mat-icon class="brand-logo">hub</mat-icon> -->
-        <img src="logo.svg" alt="Community logo" class="brand-logo" />
-        <h1>Join the Community</h1>
-        <p>Create your account and start connecting with like-minded people today.</p>
-        <div class="stats">
-          <div class="stat">
-            <strong>50K+</strong>
-            <span>Members</span>
+        <div class="brand-logo-row">
+          <img src="logo.svg" alt="Community logo" class="brand-logo" />
+          <span class="brand-name">Community</span>
+        </div>
+
+        <h1 class="brand-headline">
+          Start your journey<br />
+          <span class="brand-headline-sub">today. It's free.</span>
+        </h1>
+        <p class="brand-desc">
+          Create your account in seconds and join thousands of passionate people building meaningful connections.
+        </p>
+
+        <!-- Stats grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <strong>10K+</strong>
+            <span>Active Members</span>
           </div>
-          <div class="stat">
-            <strong>200+</strong>
+          <div class="stat-card">
+            <strong>15K+</strong>
             <span>Communities</span>
           </div>
-          <div class="stat">
-            <strong>10K+</strong>
-            <span>Daily Posts</span>
+          <div class="stat-card">
+            <strong>150+</strong>
+            <span>Countries</span>
+          </div>
+          <div class="stat-card">
+            <strong>Free</strong>
+            <span>Forever</span>
+          </div>
+        </div>
+
+        <!-- Testimonial -->
+        <div class="testimonial-card">
+          <p class="testimonial-text">"Community changed how I collaborate with peers. Found my tribe within minutes of signing up!"</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">S</div>
+            <div>
+              <strong>Sarah K.</strong>
+              <span>UX Designer</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Right Side - Signup Form -->
+    <!-- ===== RIGHT PANEL — Form ===== -->
     <div class="auth-form-wrapper">
-      <mat-card class="auth-card" appearance="outlined">
-        <mat-card-content>
-          <h2>Create an account</h2>
-          <p class="subtitle">Fill in your details to get started</p>
 
-          @if (error()) {
-            <div class="error-banner">
-              <mat-icon>error_outline</mat-icon>
-              {{ error() }}
+      <!-- Mobile-only top logo -->
+      <div class="mobile-logo">
+        <img src="logo.svg" alt="logo" />
+        <span>Community</span>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-card-header">
+          <h2>Create your account</h2>
+          <p class="subtitle">Fill in your details to get started for free</p>
+        </div>
+
+        @if (error()) {
+          <div class="error-banner">
+            <mat-icon>error_outline</mat-icon>
+            <span>{{ error() }}</span>
+          </div>
+        }
+
+        <form (ngSubmit)="onSubmit()" class="auth-form" autocomplete="on">
+
+          <!-- Name row -->
+          <div class="field-row">
+            <div class="field-group">
+              <label class="field-label" for="su-displayname">Display Name</label>
+              <div class="field-input-wrap">
+                <mat-icon class="field-icon">badge</mat-icon>
+                <input id="su-displayname" type="text" [(ngModel)]="displayName" name="displayName"
+                       placeholder="John Doe" required autocomplete="name" class="field-input" />
+              </div>
             </div>
-          }
 
-          <form (ngSubmit)="onSubmit()" class="auth-form">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Display Name</mat-label>
-              <input matInput [(ngModel)]="displayName" name="displayName" placeholder="John Doe" required />
-              <mat-icon matPrefix>badge</mat-icon>
-            </mat-form-field>
+            <div class="field-group">
+              <label class="field-label" for="su-username">Username</label>
+              <div class="field-input-wrap">
+                <mat-icon class="field-icon">alternate_email</mat-icon>
+                <input id="su-username" type="text" [(ngModel)]="username" name="username"
+                       placeholder="johndoe" required autocomplete="username" class="field-input" />
+              </div>
+            </div>
+          </div>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Username</mat-label>
-              <input matInput [(ngModel)]="username" name="username" placeholder="johndoe" required />
-              <mat-icon matPrefix>alternate_email</mat-icon>
-            </mat-form-field>
+          <div class="field-group">
+            <label class="field-label" for="su-email">Email address</label>
+            <div class="field-input-wrap">
+              <mat-icon class="field-icon">mail_outline</mat-icon>
+              <input id="su-email" type="email" [(ngModel)]="email" name="email"
+                     placeholder="you@example.com" required autocomplete="email" class="field-input" />
+            </div>
+          </div>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Email address</mat-label>
-              <input matInput type="email" [(ngModel)]="email" name="email" placeholder="you@example.com" required />
-              <mat-icon matPrefix>email</mat-icon>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Password</mat-label>
-              <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="password" name="password" required />
-              <mat-icon matPrefix>lock</mat-icon>
-              <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+          <div class="field-group">
+            <label class="field-label" for="su-password">Password</label>
+            <div class="field-input-wrap">
+              <mat-icon class="field-icon">lock_outline</mat-icon>
+              <input id="su-password" [type]="hidePassword ? 'password' : 'text'"
+                     [(ngModel)]="password" name="password"
+                     placeholder="Min. 6 characters" required autocomplete="new-password" class="field-input"
+                     (input)="updateStrength()" />
+              <button type="button" class="toggle-pw-btn" (click)="hidePassword = !hidePassword" tabindex="-1">
                 <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
               </button>
-              <mat-hint>At least 6 characters</mat-hint>
-            </mat-form-field>
+            </div>
+            <!-- Password strength bar -->
+            @if (password.length > 0) {
+              <div class="strength-wrap">
+                <div class="strength-bar">
+                  <div class="strength-fill" [ngClass]="strengthClass" [style.width]="strengthWidth"></div>
+                </div>
+                <span class="strength-label" [ngClass]="strengthClass">{{ strengthLabel }}</span>
+              </div>
+            }
+          </div>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Confirm Password</mat-label>
-              <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="confirmPassword" name="confirmPassword" required />
-              <mat-icon matPrefix>lock_outline</mat-icon>
-            </mat-form-field>
+          <div class="field-group">
+            <label class="field-label" for="su-confirm">Confirm Password</label>
+            <div class="field-input-wrap">
+              <mat-icon class="field-icon">lock_outline</mat-icon>
+              <input id="su-confirm" [type]="hidePassword ? 'password' : 'text'"
+                     [(ngModel)]="confirmPassword" name="confirmPassword"
+                     placeholder="Re-enter password" required autocomplete="new-password" class="field-input"
+                     [class.input-error]="confirmPassword.length > 0 && confirmPassword !== password" />
+            </div>
+            @if (confirmPassword.length > 0 && confirmPassword !== password) {
+              <p class="field-hint error">Passwords do not match</p>
+            }
+          </div>
 
-            <button mat-flat-button color="primary" type="submit" class="submit-btn" [disabled]="loading()">
-              @if (loading()) {
-                <mat-spinner diameter="20"></mat-spinner>
-              } @else {
-                Create Account
-              }
-            </button>
-          </form>
+          <button type="submit" class="submit-btn" [disabled]="loading()">
+            @if (loading()) {
+              <mat-spinner diameter="22" strokeWidth="3"></mat-spinner>
+            } @else {
+              <mat-icon>person_add</mat-icon>
+              Create Account
+            }
+          </button>
+        </form>
 
-          <mat-divider class="divider"></mat-divider>
+        <p class="terms-note">
+          By creating an account you agree to our
+          <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+        </p>
 
-          <p class="switch-auth">
-            Already have an account?
-            <a routerLink="/auth/login">Sign in</a>
-          </p>
-        </mat-card-content>
-      </mat-card>
+        <div class="divider-row">
+          <span class="divider-line"></span>
+          <span class="divider-text">already a member?</span>
+          <span class="divider-line"></span>
+        </div>
+
+        <p class="switch-auth">
+          <a routerLink="/auth/login" class="switch-link">← Sign in to your account</a>
+        </p>
+      </div>
     </div>
+
   </div>
 </div>

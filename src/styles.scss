@@ -57,6 +57,15 @@ a {
   border-radius: 16px !important;
 }
 
+// Create post dialog: rounded corners + no padding reset
+.create-post-dialog-panel .mat-mdc-dialog-container,
+.create-post-dialog .mat-mdc-dialog-container {
+  border-radius: 20px !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+
 .mat-mdc-tab-group {
   .mat-mdc-tab-header {
     border-bottom: 1px solid #e0e0e0;

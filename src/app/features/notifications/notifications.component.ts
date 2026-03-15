@@ -1,29 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
 import { NotificationService } from '../../core/services/notification.service';
 import { TimeAgoPipe } from '../../shared/pipes/time-ago.pipe';
 
 @Component({
   selector: 'app-notifications',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDividerModule,
-    TimeAgoPipe
-  ],
+  imports: [ CommonModule, RouterModule, MatIconModule, TimeAgoPipe ],
   templateUrl: './notifications.component.html',
   styleUrl: './notifications.component.scss'
 })
 export class NotificationsComponent implements OnInit {
+  activeFilter: 'all' | 'unread' = 'all';
+
+  filteredNotifications = computed(() => {
+    const all = this.notificationService.notifications();
+    return this.activeFilter === 'unread' ? all.filter(n => !n.isRead) : all;
+  });
+
   constructor(public notificationService: NotificationService) {}
 
   ngOnInit(): void {
@@ -31,27 +27,19 @@ export class NotificationsComponent implements OnInit {
   }
 
   getNotificationIcon(type: string): string {
-    switch (type) {
-      case 'like': return 'favorite';
-      case 'comment': return 'chat_bubble';
-      case 'follow': return 'person_add';
-      case 'mention': return 'alternate_email';
-      case 'community_invite': return 'group_add';
-      case 'post': return 'article';
-      default: return 'notifications';
-    }
+    const icons: Record<string, string> = {
+      like: 'favorite', comment: 'chat_bubble', follow: 'person_add',
+      mention: 'alternate_email', community_invite: 'group_add', post: 'article'
+    };
+    return icons[type] ?? 'notifications';
   }
 
   getNotificationColor(type: string): string {
-    switch (type) {
-      case 'like': return '#e53935';
-      case 'comment': return '#1e88e5';
-      case 'follow': return '#6366f1';
-      case 'mention': return '#f59e0b';
-      case 'community_invite': return '#10b981';
-      case 'post': return '#8b5cf6';
-      default: return '#999';
-    }
+    const colors: Record<string, string> = {
+      like: '#ef4444', comment: '#3b82f6', follow: '#5865f2',
+      mention: '#f59e0b', community_invite: '#10b981', post: '#8b5cf6'
+    };
+    return colors[type] ?? '#9ca3af';
   }
 
   markAsRead(id: string): void {

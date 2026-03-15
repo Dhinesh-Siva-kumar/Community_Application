@@ -1,52 +1,50 @@
 <div class="notifications-page">
+
+  <!-- Page Header -->
   <div class="page-header">
-    <h1>Notifications</h1>
-    <div class="header-actions">
+    <div class="header-left">
+      <h1>Notifications</h1>
       @if (notificationService.unreadCount() > 0) {
-        <span class="unread-badge">{{ notificationService.unreadCount() }} unread</span>
+        <span class="unread-badge">{{ notificationService.unreadCount() }} new</span>
       }
-      <button mat-button color="primary" (click)="markAllAsRead()">
-        <mat-icon>done_all</mat-icon>
-        Mark all as read
+    </div>
+    <div class="header-actions">
+      <button class="filter-btn" [class.active]="activeFilter === 'all'" (click)="activeFilter = 'all'">All</button>
+      <button class="filter-btn" [class.active]="activeFilter === 'unread'" (click)="activeFilter = 'unread'">Unread</button>
+      <button class="mark-all-btn" (click)="markAllAsRead()">
+        <mat-icon>done_all</mat-icon> Mark all read
       </button>
     </div>
   </div>
 
+  <!-- Notification List -->
   <div class="notification-list">
-    @for (notification of notificationService.notifications(); track notification.id) {
-      <mat-card
-        class="notification-card"
-        appearance="outlined"
-        [class.unread]="!notification.isRead"
-        (click)="markAsRead(notification.id)"
-      >
-        <div class="notification-content">
-          <div class="notification-icon" [style.background]="getNotificationColor(notification.type) + '15'" [style.color]="getNotificationColor(notification.type)">
-            <mat-icon>{{ getNotificationIcon(notification.type) }}</mat-icon>
-          </div>
-          <div class="notification-body">
-            <div class="notification-text">
-              <div class="notification-avatar">{{ notification.fromUser.username[0] | uppercase }}</div>
-              <div>
-                <strong>{{ notification.fromUser.username }}</strong>
-                <span>{{ notification.message }}</span>
-              </div>
-            </div>
-            <span class="notification-time">{{ notification.createdAt | timeAgo }}</span>
-          </div>
-          @if (!notification.isRead) {
-            <div class="unread-dot"></div>
-          }
+    @for (notification of filteredNotifications(); track notification.id) {
+      <div class="notification-card" [class.unread]="!notification.isRead" (click)="markAsRead(notification.id)">
+        <div class="notif-icon-wrap"
+             [style.background]="getNotificationColor(notification.type) + '18'"
+             [style.color]="getNotificationColor(notification.type)">
+          <mat-icon>{{ getNotificationIcon(notification.type) }}</mat-icon>
         </div>
-      </mat-card>
+        <div class="notif-avatar">{{ notification.fromUser.username[0] | uppercase }}</div>
+        <div class="notif-body">
+          <p class="notif-text">
+            <strong>{{ notification.fromUser.username }}</strong>
+            <span> {{ notification.message }}</span>
+          </p>
+          <span class="notif-time">{{ notification.createdAt | timeAgo }}</span>
+        </div>
+        @if (!notification.isRead) {
+          <span class="unread-dot"></span>
+        }
+      </div>
     } @empty {
-      <mat-card class="empty-state" appearance="outlined">
-        <mat-card-content>
-          <mat-icon>notifications_none</mat-icon>
-          <h3>All caught up!</h3>
-          <p>You don't have any notifications yet.</p>
-        </mat-card-content>
-      </mat-card>
+      <div class="empty-state">
+        <div class="empty-icon"><mat-icon>notifications_none</mat-icon></div>
+        <h3>All caught up!</h3>
+        <p>No notifications to show right now.</p>
+      </div>
     }
   </div>
+
 </div>

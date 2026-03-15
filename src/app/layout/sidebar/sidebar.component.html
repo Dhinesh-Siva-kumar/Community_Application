@@ -1,64 +1,82 @@
-<div class="sidebar">
+<aside class="sidebar" [class.sidebar-open]="isOpen()">
+
+  <!-- Mobile Header -->
+  <div class="sidebar-mobile-header">
+    <span class="sidebar-mobile-title">Menu</span>
+    <button mat-icon-button class="sidebar-close-btn" (click)="closeRequest.emit()" aria-label="Close menu">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
   <!-- Main Navigation -->
   <nav class="sidebar-nav">
-    <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
-      <mat-icon>home</mat-icon>
+    <p class="section-label">Main</p>
+    <a routerLink="/dashboard" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+      <span class="nav-icon-wrap"><mat-icon>home</mat-icon></span>
       <span>Home</span>
     </a>
-    <a routerLink="/communities" routerLinkActive="active" class="nav-item">
-      <mat-icon>groups</mat-icon>
+    <a routerLink="/communities" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+      <span class="nav-icon-wrap"><mat-icon>groups</mat-icon></span>
       <span>Communities</span>
     </a>
-    <a routerLink="/notifications" routerLinkActive="active" class="nav-item">
-      <mat-icon>notifications_none</mat-icon>
+    <a routerLink="/notifications" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+      <span class="nav-icon-wrap"><mat-icon>notifications_none</mat-icon></span>
       <span>Notifications</span>
     </a>
-    <a routerLink="/profile" routerLinkActive="active" class="nav-item">
-      <mat-icon>person_outline</mat-icon>
+    <a routerLink="/profile" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+      <span class="nav-icon-wrap"><mat-icon>person_outline</mat-icon></span>
       <span>Profile</span>
     </a>
   </nav>
 
-  <mat-divider></mat-divider>
+  <mat-divider class="sidebar-divider"></mat-divider>
 
   <!-- Joined Communities -->
   <div class="sidebar-section">
-    <h4 class="section-title">Your Communities</h4>
+    <p class="section-label">Your Communities</p>
     @for (community of joinedCommunities(); track community.id) {
-      <a [routerLink]="['/community', community.id]" routerLinkActive="active" class="community-item">
-        <mat-icon class="community-icon">{{ community.icon }}</mat-icon>
+      <a [routerLink]="['/community', community.id]" routerLinkActive="active"
+         class="community-item" (click)="onNavClick()">
+        <span class="community-icon-wrap">
+          <mat-icon>{{ community.icon }}</mat-icon>
+        </span>
         <span class="community-name">{{ community.name }}</span>
-        <span class="member-count">{{ community.members | number }}</span>
+        <span class="member-badge">{{ community.members | number }}</span>
       </a>
+    } @empty {
+      <p class="empty-hint">No communities joined yet.</p>
     }
   </div>
 
-  <mat-divider></mat-divider>
+  <mat-divider class="sidebar-divider"></mat-divider>
 
-  <!-- Quick Links -->
+  <!-- Discover -->
   <div class="sidebar-section">
-    <h4 class="section-title">Discover</h4>
-    <a routerLink="/communities" class="nav-item">
-      <mat-icon>explore</mat-icon>
-      <span>Explore Communities</span>
+    <p class="section-label">Discover</p>
+    <a routerLink="/communities" class="nav-item" (click)="onNavClick()">
+      <span class="nav-icon-wrap"><mat-icon>explore</mat-icon></span>
+      <span>Explore</span>
     </a>
-    <a class="nav-item">
-      <mat-icon>trending_up</mat-icon>
+    <a class="nav-item nav-item-muted">
+      <span class="nav-icon-wrap"><mat-icon>trending_up</mat-icon></span>
       <span>Trending</span>
+      <span class="coming-soon-badge">Soon</span>
     </a>
-    <a class="nav-item">
-      <mat-icon>local_fire_department</mat-icon>
+    <a class="nav-item nav-item-muted">
+      <span class="nav-icon-wrap"><mat-icon>local_fire_department</mat-icon></span>
       <span>Popular</span>
+      <span class="coming-soon-badge">Soon</span>
     </a>
   </div>
 
   <!-- Footer -->
   <div class="sidebar-footer">
-    <p>© 2026 Community App</p>
+    <p class="footer-copy">© 2026 Community App</p>
     <div class="footer-links">
       <a href="#">About</a>
       <a href="#">Privacy</a>
       <a href="#">Terms</a>
     </div>
   </div>
-</div>
+
+</aside>

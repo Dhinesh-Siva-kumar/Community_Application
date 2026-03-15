@@ -1,100 +1,163 @@
-<mat-toolbar class="navbar">
-  <div class="navbar-container">
-    <!-- Logo -->
-    <a routerLink="/dashboard" class="navbar-brand">
-      <!-- <mat-icon class="brand-icon">hub</mat-icon> -->
-      <img src="logo.svg" alt="Community logo" class="brand-icon" />
-      <span class="brand-text">Community</span>
-    </a>
+<nav class="navbar">
+  <!-- Full-width gradient divider at bottom -->
+  <div class="nav-divider"></div>
+  <div class="nav-container">
 
-    <!-- Search Bar -->
-    <div class="search-wrapper">
-      <mat-icon class="search-icon">search</mat-icon>
-      <input
-        type="text"
-        placeholder="Search communities, posts, people..."
-        class="search-input"
-        [(ngModel)]="searchQuery"
-        (keyup.enter)="onSearch()"
-      />
-    </div>
-
-    <!-- Right Actions -->
-    <div class="navbar-actions">
-      <!-- Notifications -->
-      <button
-        mat-icon-button
-        [matMenuTriggerFor]="notifMenu"
-        [matBadge]="notificationService.unreadCount() > 0 ? notificationService.unreadCount() : null"
-        matBadgeColor="warn"
-        matBadgeSize="small"
-        class="action-btn"
-      >
-        <mat-icon>notifications_none</mat-icon>
+    <!-- LEFT: Hamburger + Brand -->
+    <div class="nav-left">
+      <button class="nav-hamburger" (click)="menuToggle.emit()">
+        <mat-icon>menu</mat-icon>
       </button>
 
-      <mat-menu #notifMenu="matMenu" class="notification-menu">
-        <div class="notif-header" (click)="$event.stopPropagation()">
-          <strong>Notifications</strong>
-          <button mat-button color="primary" (click)="notificationService.markAllAsRead().subscribe()">
+      <a routerLink="/dashboard" class="nav-brand">
+        <img src="logo.svg" alt="Community logo" class="brand-icon" />
+        <span class="brand-name">Community</span>
+      </a>
+    </div>
+
+    <!-- CENTER: Search -->
+    <div class="nav-search" [class.active]="searchFocused">
+      <mat-icon class="nav-search-icon">search</mat-icon>
+      <input
+        class="nav-search-input"
+        type="text"
+        placeholder="Search communities, posts, people..."
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="onSearch()"
+        (focus)="searchFocused = true"
+        (blur)="searchFocused = false"
+      />
+      <span class="nav-search-kbd">Ctrl+K</span>
+    </div>
+
+    <!-- RIGHT: Actions -->
+    <div class="nav-actions">
+
+      <!-- Create -->
+      <button class="nav-create-btn" (click)="openCreatePost()">
+        <mat-icon>add</mat-icon>
+        <span class="nav-create-label">Create</span>
+      </button>
+
+      <!-- Notifications -->
+      <button class="nav-icon-btn" [matMenuTriggerFor]="notifMenu" matTooltip="Notifications">
+        <mat-icon>notifications_none</mat-icon>
+        @if (notificationService.unreadCount() > 0) {
+          <span class="nav-badge">{{ notificationService.unreadCount() > 9 ? '9+' : notificationService.unreadCount() }}</span>
+        }
+      </button>
+
+      <mat-menu #notifMenu="matMenu" panelClass="nav-notif-panel">
+        <div class="np-header" (click)="$event.stopPropagation()">
+          <div class="np-header-left">
+            <span class="np-title">Notifications</span>
+            @if (notificationService.unreadCount() > 0) {
+              <span class="np-count-badge">{{ notificationService.unreadCount() }}</span>
+            }
+          </div>
+          <button class="np-mark-all" (click)="notificationService.markAllAsRead().subscribe()">
             Mark all read
           </button>
         </div>
-        <mat-divider></mat-divider>
-        @for (notif of notificationService.notifications(); track notif.id) {
-          <button mat-menu-item class="notif-item" [class.unread]="!notif.isRead" (click)="notificationService.markAsRead(notif.id).subscribe()">
-            <div class="notif-avatar">{{ notif.fromUser.username[0] | uppercase }}</div>
-            <div class="notif-content">
-              <span class="notif-user">{{ notif.fromUser.username }}</span>
-              <span class="notif-msg">{{ notif.message }}</span>
+        <div class="np-list" (click)="$event.stopPropagation()">
+          @for (notif of notificationService.notifications(); track notif.id) {
+            <div class="np-item" [class.np-unread]="!notif.isRead" (click)="notificationService.markAsRead(notif.id).subscribe()">
+              <div class="np-avatar">{{ notif.fromUser.username[0] | uppercase }}</div>
+              <div class="np-body">
+                <p><strong>{{ notif.fromUser.username }}</strong> {{ notif.message }}</p>
+                <span class="np-time">{{ notif.createdAt | date:'shortTime' }}</span>
+              </div>
+              @if (!notif.isRead) {
+                <div class="np-dot"></div>
+              }
+            </div>
+          } @empty {
+            <div class="np-empty">
+              <mat-icon>notifications_off</mat-icon>
+              <p>All caught up!</p>
+            </div>
+          }
+        </div>
+        <div class="np-footer">
+          <a routerLink="/notifications" class="np-view-all">
+            View all notifications <mat-icon>arrow_forward</mat-icon>
+          </a>
+        </div>
+      </mat-menu>
+
+      <!-- Avatar / User Menu -->
+      <button class="nav-avatar-btn" [matMenuTriggerFor]="userMenu">
+        <div class="nav-avatar">{{ userInitials() }}</div>
+        <div class="nav-avatar-online"></div>
+      </button>
+
+      <mat-menu #userMenu="matMenu" panelClass="nav-user-panel">
+        <div class="up-header" (click)="$event.stopPropagation()">
+          <div class="up-banner"></div>
+          <div class="up-avatar-wrap">
+            <div class="up-avatar">{{ userInitials() }}</div>
+            <div class="up-online"></div>
+          </div>
+          <div class="up-info">
+            <strong class="up-name">{{ authService.currentUser()?.displayName }}</strong>
+            <span class="up-username">&#64;{{ authService.currentUser()?.username }}</span>
+            <span class="up-email">{{ authService.currentUser()?.email }}</span>
+          </div>
+        </div>
+
+        <div class="up-stats" (click)="$event.stopPropagation()">
+          <div class="up-stat">
+            <strong>{{ authService.currentUser()?.followers ?? 0 }}</strong>
+            <span>Followers</span>
+          </div>
+          <div class="up-stat-sep"></div>
+          <div class="up-stat">
+            <strong>{{ authService.currentUser()?.following ?? 0 }}</strong>
+            <span>Following</span>
+          </div>
+          <div class="up-stat-sep"></div>
+          <div class="up-stat">
+            <strong>{{ authService.currentUser()?.communities?.length ?? 0 }}</strong>
+            <span>Communities</span>
+          </div>
+        </div>
+
+        <div class="up-menu-section">
+          <button mat-menu-item class="up-item" routerLink="/profile">
+            <div class="up-item-icon up-icon-blue"><mat-icon>person_outline</mat-icon></div>
+            <div class="up-item-text">
+              <span>My Profile</span>
+              <small>View and edit your profile</small>
             </div>
           </button>
-        } @empty {
-          <div class="notif-empty">No notifications</div>
-        }
-        <mat-divider></mat-divider>
-        <button mat-menu-item routerLink="/notifications" class="view-all-btn">
-          <span>View all notifications</span>
-        </button>
+          <button mat-menu-item class="up-item" (click)="openCreatePost()">
+            <div class="up-item-icon up-icon-purple"><mat-icon>edit_note</mat-icon></div>
+            <div class="up-item-text">
+              <span>Create Post</span>
+              <small>Share something new</small>
+            </div>
+          </button>
+          <button mat-menu-item class="up-item" routerLink="/notifications">
+            <div class="up-item-icon up-icon-orange"><mat-icon>notifications_none</mat-icon></div>
+            <div class="up-item-text">
+              <span>Notifications</span>
+              @if (notificationService.unreadCount() > 0) {
+                <small class="up-unread-hint">{{ notificationService.unreadCount() }} unread</small>
+              } @else {
+                <small>No new notifications</small>
+              }
+            </div>
+          </button>
+        </div>
+
+        <div class="up-footer">
+          <button mat-menu-item class="up-logout" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Sign out</span>
+          </button>
+        </div>
       </mat-menu>
 
-      <!-- Messages -->
-      <button mat-icon-button class="action-btn">
-        <mat-icon>chat_bubble_outline</mat-icon>
-      </button>
-
-      <!-- User Menu -->
-      <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-avatar-btn">
-        <div class="nav-avatar">
-          {{ authService.currentUser()?.displayName?.[0] || 'U' }}
-        </div>
-      </button>
-
-      <mat-menu #userMenu="matMenu">
-        <div class="user-menu-header" (click)="$event.stopPropagation()">
-          <div class="user-menu-avatar">
-            {{ authService.currentUser()?.displayName?.[0] || 'U' }}
-          </div>
-          <div class="user-menu-info">
-            <strong>{{ authService.currentUser()?.displayName }}</strong>
-            <small>&#64;{{ authService.currentUser()?.username }}</small>
-          </div>
-        </div>
-        <mat-divider></mat-divider>
-        <button mat-menu-item routerLink="/profile">
-          <mat-icon>person</mat-icon>
-          <span>Profile</span>
-        </button>
-        <button mat-menu-item routerLink="/settings">
-          <mat-icon>settings</mat-icon>
-          <span>Settings</span>
-        </button>
-        <mat-divider></mat-divider>
-        <button mat-menu-item (click)="logout()">
-          <mat-icon>logout</mat-icon>
-          <span>Logout</span>
-        </button>
-      </mat-menu>
     </div>
   </div>
-</mat-toolbar>
+</nav>

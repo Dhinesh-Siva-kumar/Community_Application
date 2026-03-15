@@ -1,22 +1,268 @@
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px;
-  color: #999;
+$primary:       #5865f2;
+$primary-light: #ede9fe;
+$accent:        #eb459e;
+$dark:          #0f0f1a;
+$text:          #374151;
+$muted:         #9ca3af;
+$border:        #e5e7eb;
+$bg:            #f4f5ff;
+$white:         #ffffff;
 
-  p { margin-top: 16px; }
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
 }
+$sk: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
 
-.community-detail {
-  max-width: 1100px;
-  margin: -24px -24px 0;
+// ---- Skeleton ----
+.cd-loading { }
+.sk-banner-full { height: 220px; background: $sk; background-size: 800px 100%; animation: shimmer 1.4s infinite; }
+.sk-info-strip { display: flex; gap: 16px; padding: 16px; }
+.sk-icon-lg { width: 72px; height: 72px; border-radius: 18px; background: $sk; background-size: 800px 100%; animation: shimmer 1.4s infinite; flex-shrink: 0; }
+.sk-lines { flex: 1; display: flex; flex-direction: column; gap: 10px; padding-top: 4px; }
+.sk-line { height: 13px; border-radius: 6px; background: $sk; background-size: 800px 100%; animation: shimmer 1.4s infinite; }
+.sk-w50 { width: 50%; }
+.sk-w80 { width: 80%; }
 
-  @media (max-width: 992px) {
-    margin: -16px -16px 0;
+// ---- Page ----
+.cd-page { max-width: 1100px; margin: -24px auto 0; }
+
+// ---- Banner ----
+.cd-banner {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+  border-radius: 0 0 24px 24px;
+
+  .cd-banner-gradient {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, $primary 0%, #7c3aed 50%, $accent 100%);
   }
 }
+
+.cd-banner-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  padding: 24px 32px;
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%);
+  flex-wrap: wrap;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 16px;
+  }
+}
+
+.cd-icon-wrap {
+  width: 68px; height: 68px;
+  border-radius: 20px;
+  background: rgba($white, 0.2);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba($white, 0.4);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  mat-icon { color: $white; font-size: 34px; width: 34px; height: 34px; }
+}
+
+.cd-info {
+  flex: 1;
+  min-width: 0;
+  color: $white;
+  h1 { font-size: clamp(1.3rem, 2.5vw, 1.9rem); font-weight: 900; margin: 0 0 4px; }
+  p  { font-size: 13.5px; opacity: 0.88; margin: 0 0 10px; line-height: 1.4; }
+}
+
+.cd-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12.5px;
+  opacity: 0.88;
+  span { display: flex; align-items: center; gap: 3px; }
+  mat-icon { font-size: 14px; width: 14px; height: 14px; }
+  .dot { opacity: 0.5; }
+}
+
+.cd-join-btn {
+  display: flex; align-items: center; gap: 7px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: none;
+  background: $white;
+  color: $primary;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  flex-shrink: 0;
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+  &:hover { opacity: 0.92; transform: translateY(-1px); }
+  &.joined { background: rgba($white, 0.2); color: $white; border: 1.5px solid rgba($white, 0.6); }
+
+  @media (max-width: 600px) { width: 100%; justify-content: center; }
+}
+
+// ---- Body ----
+.cd-body {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 24px;
+  padding-top: 24px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    .cd-sidebar { order: -1; }
+  }
+}
+
+// ---- Tabs ----
+.cd-tabs { }
+
+.tab-nav {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid $border;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 16px;
+  border: none; background: none;
+  border-bottom: 2.5px solid transparent;
+  margin-bottom: -1px;
+  font-size: 13.5px; font-weight: 600; color: $muted;
+  cursor: pointer; transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+  mat-icon { font-size: 17px; width: 17px; height: 17px; }
+  &:hover { color: $dark; }
+  &.active { color: $primary; border-bottom-color: $primary; }
+}
+
+// ---- Empty ----
+.cd-empty {
+  text-align: center; padding: 56px 24px;
+  background: $white; border: 1px solid $border; border-radius: 16px;
+  .empty-icon { width: 60px; height: 60px; border-radius: 18px; background: $primary-light;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+    mat-icon { font-size: 28px; width: 28px; height: 28px; color: $primary; } }
+  h3 { font-size: 1rem; font-weight: 700; color: $dark; margin: 0 0 8px; }
+  p  { font-size: 13.5px; color: $muted; margin: 0; }
+}
+
+// ---- About Tab ----
+.cd-about-tab { display: flex; flex-direction: column; gap: 16px; }
+
+.about-section-card {
+  background: $white; border: 1px solid $border; border-radius: 16px; padding: 20px;
+  h3 { font-size: 15px; font-weight: 800; color: $dark; margin: 0 0 12px; }
+  p  { font-size: 13.5px; color: $text; line-height: 1.6; margin: 0; }
+}
+
+.rule-row {
+  display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid $bg;
+  &:last-child { border-bottom: none; }
+  strong { font-size: 13.5px; color: $dark; display: block; margin-bottom: 2px; }
+  p { font-size: 12.5px; color: $muted; margin: 0; }
+}
+
+.rule-num {
+  width: 26px; height: 26px; border-radius: 8px; background: $primary-light;
+  color: $primary; font-size: 12px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
+}
+
+.mods-list { display: flex; flex-direction: column; gap: 8px; }
+
+.mod-row {
+  display: flex; align-items: center; gap: 10px;
+  strong { font-size: 13.5px; color: $dark; display: block; }
+}
+
+.mod-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, $primary 0%, $accent 100%);
+  color: $white; font-size: 15px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+.mod-role { font-size: 11.5px; color: $muted; }
+
+// ---- Members Tab ----
+.cd-members-tab { }
+
+.members-header {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13.5px; color: $muted; margin-bottom: 16px;
+  strong { font-size: 15px; color: $dark; }
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+}
+
+.members-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px;
+}
+
+.member-card {
+  background: $white; border: 1px solid $border; border-radius: 14px;
+  padding: 16px 12px; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  text-align: center;
+  strong { font-size: 13px; color: $dark; }
+}
+
+.member-avatar {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: linear-gradient(135deg, $primary 0%, $accent 100%);
+  color: $white; font-size: 18px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.member-role { font-size: 11px; color: $primary; font-weight: 600; background: $primary-light; padding: 2px 8px; border-radius: 20px; }
+
+// ---- Sidebar ----
+.cd-sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+.cd-side-card {
+  background: $white; border: 1px solid $border; border-radius: 16px; padding: 18px;
+  h4 { font-size: 14px; font-weight: 800; color: $dark; margin: 0 0 10px; }
+  p  { font-size: 13px; color: $text; line-height: 1.6; margin: 0 0 14px; }
+}
+
+.side-stats {
+  display: flex; gap: 0; border: 1px solid $border; border-radius: 10px; overflow: hidden; margin-bottom: 12px;
+}
+
+.side-stat {
+  flex: 1; padding: 10px 8px; text-align: center;
+  & + .side-stat { border-left: 1px solid $border; }
+  strong { font-size: 1.1rem; font-weight: 800; color: $dark; display: block; }
+  span   { font-size: 11px; color: $muted; }
+}
+
+.side-created {
+  display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: $muted;
+  mat-icon { font-size: 14px; width: 14px; height: 14px; }
+}
+
+.side-rule {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid $bg;
+  &:last-child { border-bottom: none; }
+  font-size: 13px; color: $text;
+}
+
+.rule-dot {
+  width: 22px; height: 22px; border-radius: 6px; background: $primary-light;
+  color: $primary; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
 
 .community-banner {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);

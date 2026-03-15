@@ -112,7 +112,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   ];
 
   teamStats = [
-    { icon: 'bi-calendar2-heart-fill', value: '2021', label: 'Founded' },
+    { icon: 'bi-calendar2-heart-fill', value: '2026', label: 'Founded' },
     { icon: 'bi-people-fill',          value: '10K+',  label: 'Active Members' },
     { icon: 'bi-globe2',               value: '150+',  label: 'Countries' },
     { icon: 'bi-collection-fill',      value: '15K+',  label: 'Communities' }
@@ -120,7 +120,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
 
   coreValues = [
     {
-      icon: 'bi-shield-heart-fill',
+      icon: 'bi-shield-fill-check',
       title: 'Inclusivity',
       description: 'We build spaces where everyone feels welcome, respected, and heard — regardless of background or belief.',
       color: 'value-purple'

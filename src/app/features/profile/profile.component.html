@@ -1,102 +1,120 @@
 @if (loading()) {
-  <div class="loading-state">
-    <p>Loading profile...</p>
+  <div class="profile-loading">
+    <div class="sk-banner"></div>
+    <div class="sk-info-row">
+      <div class="sk-avatar-lg"></div>
+      <div class="sk-lines-col">
+        <div class="sk-line sk-w60"></div>
+        <div class="sk-line sk-w40"></div>
+        <div class="sk-line sk-w80"></div>
+      </div>
+    </div>
   </div>
 } @else if (user()) {
-  <div class="profile-page">
-    <!-- Profile Header -->
-    <div class="profile-header">
-      <div class="profile-banner">
-        <div class="banner-gradient"></div>
+<div class="profile-page">
+
+  <!-- ===== PROFILE HEADER ===== -->
+  <div class="profile-header">
+    <!-- Cover -->
+    <div class="profile-cover">
+      <div class="cover-gradient"></div>
+      <div class="cover-overlay"></div>
+    </div>
+
+    <!-- Info bar -->
+    <div class="profile-info-bar">
+      <div class="avatar-section">
+        <div class="profile-avatar">{{ getInitials(user()!.displayName) }}</div>
+        <div class="avatar-status"></div>
       </div>
-      <div class="profile-info-wrapper">
-        <div class="profile-avatar">
-          {{ getInitials(user()!.displayName) }}
-        </div>
-        <div class="profile-info">
+
+      <div class="profile-details">
+        <div class="profile-name-row">
           <h1>{{ user()!.displayName }}</h1>
-          <p class="username">&#64;{{ user()!.username }}</p>
+          <span class="username-badge">&#64;{{ user()!.username }}</span>
+        </div>
+        @if (user()!.bio) {
           <p class="bio">{{ user()!.bio }}</p>
-          <div class="profile-meta">
-            <span><mat-icon>calendar_today</mat-icon> Joined {{ user()!.joinedDate | date: 'mediumDate' }}</span>
-            <span><mat-icon>email</mat-icon> {{ user()!.email }}</span>
-          </div>
-          <div class="profile-stats">
-            <div class="stat">
-              <strong>{{ user()!.followers }}</strong>
-              <span>Followers</span>
-            </div>
-            <div class="stat">
-              <strong>{{ user()!.following }}</strong>
-              <span>Following</span>
-            </div>
-            <div class="stat">
-              <strong>{{ userPosts().length }}</strong>
-              <span>Posts</span>
-            </div>
-            <div class="stat">
-              <strong>{{ user()!.communities.length }}</strong>
-              <span>Communities</span>
-            </div>
-          </div>
+        }
+        <div class="profile-meta-row">
+          <span class="meta-item"><mat-icon>calendar_today</mat-icon>Joined {{ user()!.joinedDate | date: 'MMM yyyy' }}</span>
+          <span class="meta-item"><mat-icon>mail_outline</mat-icon>{{ user()!.email }}</span>
         </div>
-        <div class="profile-actions">
-          <button mat-flat-button class="edit-btn">
-            <mat-icon>edit</mat-icon>
-            Edit Profile
-          </button>
-          <button mat-stroked-button>
-            <mat-icon>share</mat-icon>
-            Share
-          </button>
-        </div>
+      </div>
+
+      <div class="profile-action-btns">
+        <button class="btn-edit">
+          <mat-icon>edit</mat-icon> Edit Profile
+        </button>
+        <button class="btn-share">
+          <mat-icon>ios_share</mat-icon>
+        </button>
       </div>
     </div>
 
-    <!-- Profile Content -->
-    <div class="profile-content">
-      <mat-tab-group>
-        <mat-tab label="Posts">
-          <div class="tab-content">
-            @for (post of userPosts(); track post.id) {
-              <app-post-card
-                [post]="post"
-                (liked)="onLike($event)"
-              ></app-post-card>
-            } @empty {
-              <mat-card class="empty-state" appearance="outlined">
-                <mat-card-content>
-                  <mat-icon>edit_note</mat-icon>
-                  <h3>No posts yet</h3>
-                  <p>Your posts will appear here once you start sharing.</p>
-                </mat-card-content>
-              </mat-card>
-            }
-          </div>
-        </mat-tab>
-        <mat-tab label="Comments">
-          <div class="tab-content">
-            <mat-card class="empty-state" appearance="outlined">
-              <mat-card-content>
-                <mat-icon>chat_bubble_outline</mat-icon>
-                <h3>Comments you've made</h3>
-                <p>Your comment history will appear here.</p>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </mat-tab>
-        <mat-tab label="Saved">
-          <div class="tab-content">
-            <mat-card class="empty-state" appearance="outlined">
-              <mat-card-content>
-                <mat-icon>bookmark_border</mat-icon>
-                <h3>Saved posts</h3>
-                <p>Posts you save will appear here for easy access.</p>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
+    <!-- Stats strip -->
+    <div class="stats-strip">
+      <div class="stat-pill">
+        <strong>{{ user()!.followers }}</strong>
+        <span>Followers</span>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat-pill">
+        <strong>{{ user()!.following }}</strong>
+        <span>Following</span>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat-pill">
+        <strong>{{ userPosts().length }}</strong>
+        <span>Posts</span>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat-pill">
+        <strong>{{ user()!.communities.length }}</strong>
+        <span>Communities</span>
+      </div>
     </div>
   </div>
+
+  <!-- ===== CONTENT TABS ===== -->
+  <div class="profile-tabs">
+    <div class="tab-nav">
+      @for (tab of tabs; track tab.id) {
+        <button class="tab-btn" [class.active]="activeTab === tab.id" (click)="activeTab = $any(tab.id)">
+          <mat-icon>{{ tab.icon }}</mat-icon>
+          {{ tab.label }}
+        </button>
+      }
+    </div>
+
+    <div class="tab-pane">
+      @if (activeTab === 'posts') {
+        @for (post of userPosts(); track post.id) {
+          <app-post-card [post]="post" (liked)="onLike($event)"></app-post-card>
+        } @empty {
+          <div class="empty-state">
+            <div class="empty-icon"><mat-icon>edit_note</mat-icon></div>
+            <h3>No posts yet</h3>
+            <p>Your posts will appear here once you start sharing.</p>
+          </div>
+        }
+      }
+      @if (activeTab === 'comments') {
+        <div class="empty-state">
+          <div class="empty-icon"><mat-icon>chat_bubble_outline</mat-icon></div>
+          <h3>No comments yet</h3>
+          <p>Comments you've made will appear here.</p>
+        </div>
+      }
+      @if (activeTab === 'saved') {
+        <div class="empty-state">
+          <div class="empty-icon"><mat-icon>bookmark_border</mat-icon></div>
+          <h3>Nothing saved yet</h3>
+          <p>Posts you bookmark will appear here for quick access.</p>
+        </div>
+      }
+    </div>
+  </div>
+
+</div>
 }

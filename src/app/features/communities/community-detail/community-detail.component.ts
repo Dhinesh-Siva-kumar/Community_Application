@@ -1,13 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Community, Post } from '../../../core/models';
 import { CommunityService } from '../../../core/services/community.service';
 import { PostService } from '../../../core/services/post.service';
@@ -16,18 +10,7 @@ import { PostCardComponent } from '../../../shared/components/post-card/post-car
 @Component({
   selector: 'app-community-detail',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTabsModule,
-    MatChipsModule,
-    MatDividerModule,
-    MatProgressSpinnerModule,
-    PostCardComponent
-  ],
+  imports: [ CommonModule, RouterModule, MatIconModule, PostCardComponent ],
   templateUrl: './community-detail.component.html',
   styleUrl: './community-detail.component.scss'
 })
@@ -35,6 +18,13 @@ export class CommunityDetailComponent implements OnInit {
   community = signal<Community | null>(null);
   posts = signal<Post[]>([]);
   loading = signal(true);
+  activeTab: 'posts' | 'about' | 'members' = 'posts';
+
+  tabs = [
+    { id: 'posts',   label: 'Posts',   icon: 'article' },
+    { id: 'about',   label: 'About',   icon: 'info_outline' },
+    { id: 'members', label: 'Members', icon: 'people_outline' }
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -49,7 +39,6 @@ export class CommunityDetailComponent implements OnInit {
         this.community.set(community);
         this.loading.set(false);
       });
-
       this.postService.getPostsByCommunity(id).subscribe(posts => {
         this.posts.set(posts);
       });
@@ -59,23 +48,17 @@ export class CommunityDetailComponent implements OnInit {
   toggleJoin(): void {
     const c = this.community();
     if (!c) return;
-
     if (c.isJoined) {
-      this.communityService.leaveCommunity(c.id).subscribe(updated => {
-        this.community.set(updated);
-      });
+      this.communityService.leaveCommunity(c.id).subscribe(updated => this.community.set(updated));
     } else {
-      this.communityService.joinCommunity(c.id).subscribe(updated => {
-        this.community.set(updated);
-      });
+      this.communityService.joinCommunity(c.id).subscribe(updated => this.community.set(updated));
     }
   }
 
   onLike(postId: string): void {
     this.postService.likePost(postId).subscribe(updatedPost => {
-      this.posts.update(posts =>
-        posts.map(p => p.id === postId ? updatedPost : p)
-      );
+      this.posts.update(posts => posts.map(p => p.id === postId ? updatedPost : p));
     });
   }
 }
+
