@@ -1,0 +1,9 @@
+// ============================================================
+// ASSETS STYLES - MAIN ENTRY POINT
+// ============================================================
+// This file imports all global styles and design tokens
+// It should be imported once in the global styles.scss
+
+@import 'variables.scss';
+@import 'breakpoints.scss';
+@import 'common.scss';

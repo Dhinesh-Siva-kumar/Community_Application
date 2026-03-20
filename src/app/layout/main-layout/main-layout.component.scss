@@ -1,3 +1,6 @@
+@import '../../../assets/styles/_variables.scss';
+@import '../../../assets/styles/_breakpoints.scss';
+
 .layout-wrapper {
   display: flex;
   padding-top: 64px;
@@ -8,7 +11,7 @@
 .sidebar-backdrop {
   display: none;
 
-  @media (max-width: 992px) {
+  @media (max-width: $breakpoint-sidebar) {
     display: block;
     position: fixed;
     inset: 0;
@@ -31,7 +34,7 @@
   max-width: 100%;
   min-height: calc(100vh - 64px);
 
-  @media (max-width: 992px) {
+  @media (max-width: $breakpoint-sidebar) {
     margin-left: 0;
     padding: 16px;
   }

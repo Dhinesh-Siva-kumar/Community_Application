@@ -1,23 +1,11 @@
-$primary:       #5865f2;
-$primary-light: #ede9fe;
-$accent:        #eb459e;
-$dark:          #0f0f1a;
-$text:          #374151;
-$muted:         #9ca3af;
-$border:        #e5e7eb;
-$bg:            #f4f5ff;
-$white:         #ffffff;
-
-@keyframes shimmer {
-  0%   { background-position: -400px 0; }
-  100% { background-position:  400px 0; }
-}
-$sk: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
+// ---- Design System Import ----
+@import '../../../../assets/styles/_variables.scss';
+@import '../../../../assets/styles/_breakpoints.scss';
 
 .sk-card { border-radius: 14px; overflow: hidden; background: $white; border: 1px solid $border; }
-.sk-banner { height: 110px; background: $sk; background-size: 800px 100%; animation: shimmer 1.4s infinite; }
+.sk-banner { height: 110px; background: $shimmer-gradient; background-size: 800px 100%; animation: shimmer 1.4s infinite; }
 .sk-body { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
-.sk-line { height: 11px; border-radius: 6px; background: $sk; background-size: 800px 100%; animation: shimmer 1.4s infinite; }
+.sk-line { height: 11px; border-radius: 6px; background: $shimmer-gradient; background-size: 800px 100%; animation: shimmer 1.4s infinite; }
 .sk-w60 { width: 60%; }
 .sk-w90 { width: 90%; }
 .sk-w40 { width: 40%; }
@@ -62,7 +50,7 @@ $sk: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
 
 .cl-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
-  @media (max-width: 600px) { grid-template-columns: 1fr; }
+  @media (max-width: $breakpoint-sm) { grid-template-columns: 1fr; }
 }
 
 .c-card {

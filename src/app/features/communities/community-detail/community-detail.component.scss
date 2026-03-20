@@ -1,26 +1,14 @@
-$primary:       #5865f2;
-$primary-light: #ede9fe;
-$accent:        #eb459e;
-$dark:          #0f0f1a;
-$text:          #374151;
-$muted:         #9ca3af;
-$border:        #e5e7eb;
-$bg:            #f4f5ff;
-$white:         #ffffff;
-
-@keyframes shimmer {
-  0%   { background-position: -400px 0; }
-  100% { background-position:  400px 0; }
-}
-$sk: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
+// ---- Design System Import ----
+@import '../../../../assets/styles/_variables.scss';
+@import '../../../../assets/styles/_breakpoints.scss';
 
 // ---- Skeleton ----
 .cd-loading { }
-.sk-banner-full { height: 220px; background: $sk; background-size: 800px 100%; animation: shimmer 1.4s infinite; }
+.sk-banner-full { height: 220px; background: $shimmer-gradient; background-size: 800px 100%; animation: shimmer 1.4s infinite; }
 .sk-info-strip { display: flex; gap: 16px; padding: 16px; }
-.sk-icon-lg { width: 72px; height: 72px; border-radius: 18px; background: $sk; background-size: 800px 100%; animation: shimmer 1.4s infinite; flex-shrink: 0; }
+.sk-icon-lg { width: 72px; height: 72px; border-radius: 18px; background: $shimmer-gradient; background-size: 800px 100%; animation: shimmer 1.4s infinite; flex-shrink: 0; }
 .sk-lines { flex: 1; display: flex; flex-direction: column; gap: 10px; padding-top: 4px; }
-.sk-line { height: 13px; border-radius: 6px; background: $sk; background-size: 800px 100%; animation: shimmer 1.4s infinite; }
+.sk-line { height: 13px; border-radius: 6px; background: $shimmer-gradient; background-size: 800px 100%; animation: shimmer 1.4s infinite; }
 .sk-w50 { width: 50%; }
 .sk-w80 { width: 80%; }
 
@@ -50,7 +38,7 @@ $sk: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
   background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%);
   flex-wrap: wrap;
 
-  @media (max-width: 600px) {
+  @media (max-width: $breakpoint-sm) {
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -105,7 +93,7 @@ $sk: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
   &:hover { opacity: 0.92; transform: translateY(-1px); }
   &.joined { background: rgba($white, 0.2); color: $white; border: 1.5px solid rgba($white, 0.6); }
 
-  @media (max-width: 600px) { width: 100%; justify-content: center; }
+  @media (max-width: $breakpoint-sm) { width: 100%; justify-content: center; }
 }
 
 // ---- Body ----
@@ -115,7 +103,7 @@ $sk: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
   gap: 24px;
   padding-top: 24px;
 
-  @media (max-width: 900px) {
+  @media (max-width: $breakpoint-sidebar) {
     grid-template-columns: 1fr;
     .cd-sidebar { order: -1; }
   }
@@ -284,7 +272,7 @@ $sk: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
     margin: 0 auto;
     color: #fff;
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       flex-direction: column;
       text-align: center;
     }
@@ -358,7 +346,7 @@ $sk: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
   max-width: 1100px;
   margin: 0 auto;
 
-  @media (max-width: 992px) {
+  @media (max-width: $breakpoint-sidebar) {
     flex-direction: column;
     padding: 16px;
   }
@@ -522,7 +510,7 @@ $sk: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
   width: 300px;
   flex-shrink: 0;
 
-  @media (max-width: 992px) {
+  @media (max-width: $breakpoint-sidebar) {
     width: 100%;
   }
 }

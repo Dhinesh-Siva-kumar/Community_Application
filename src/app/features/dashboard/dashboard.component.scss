@@ -1,12 +1,5 @@
-$primary:       #5865f2;
-$primary-light: #ede9fe;
-$accent:        #eb459e;
-$dark:          #0f0f1a;
-$text:          #374151;
-$muted:         #9ca3af;
-$border:        #e5e7eb;
-$bg:            #f4f5ff;
-$white:         #ffffff;
+@import '../../../assets/styles/_variables.scss';
+@import '../../../assets/styles/_breakpoints.scss';
 
 // ============================================================
 // LAYOUT
@@ -22,12 +15,12 @@ $white:         #ffffff;
   gap: 24px;
   align-items: start;
 
-  @media (max-width: 1024px) {
+  @media (max-width: $breakpoint-lg) {
     grid-template-columns: 1fr 280px;
     gap: 16px;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-md) {
     grid-template-columns: 1fr;
   }
 }
@@ -73,7 +66,7 @@ $white:         #ffffff;
     &:hover { background: rgba(255,255,255,0.28); }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: $breakpoint-xs) {
     flex-direction: column;
     align-items: flex-start;
     .explore-link { width: 100%; justify-content: center; }
@@ -143,11 +136,9 @@ $white:         #ffffff;
   100% { background-position: 400px 0; }
 }
 
-$sk-gradient: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-
 .sk-avatar {
   width: 40px; height: 40px; border-radius: 50%;
-  background: $sk-gradient;
+  background: $shimmer-gradient;
   background-size: 800px 100%;
   animation: shimmer 1.4s infinite;
   flex-shrink: 0;
@@ -157,7 +148,7 @@ $sk-gradient: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
 
 .sk-line {
   height: 12px; border-radius: 6px;
-  background: $sk-gradient;
+  background: $shimmer-gradient;
   background-size: 800px 100%;
   animation: shimmer 1.4s infinite;
   width: 100%;
@@ -209,7 +200,7 @@ $sk-gradient: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
   position: sticky;
   top: 88px;
 
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-md) {
     position: static;
   }
 }
@@ -341,4 +332,5 @@ $sk-gradient: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
     span   { display: block; font-size: 11px; color: $muted; }
   }
 }
+
 

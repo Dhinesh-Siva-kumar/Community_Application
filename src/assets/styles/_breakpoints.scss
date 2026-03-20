@@ -1,0 +1,69 @@
+// ============================================================
+// BREAKPOINTS & MEDIA QUERIES
+// ============================================================
+// Centralized responsive design breakpoints for consistent
+// responsive behavior across the entire application
+
+// ============================================================
+// BREAKPOINT VARIABLES
+// ============================================================
+
+// Extra Small Devices (phones)
+$breakpoint-xs: 480px;
+
+// Small Devices (tablets, small phones in landscape)
+$breakpoint-sm: 600px;
+
+// Medium Devices (tablets, small laptops)
+$breakpoint-md: 768px;
+
+// Large Devices (laptops, desktops)
+$breakpoint-lg: 1024px;
+
+// Extra Large Devices (large desktops)
+$breakpoint-xl: 1200px;
+
+// Custom breakpoint for sidebar behavior
+$breakpoint-sidebar: 992px;
+
+// ============================================================
+// MEDIA QUERY MIXINS (Optional - for convenience)
+// ============================================================
+// These are optional helpers for cleaner media query syntax
+// Usage: @include media-sm { ... }
+
+@mixin media-xs {
+  @media (max-width: $breakpoint-xs) {
+    @content;
+  }
+}
+
+@mixin media-sm {
+  @media (max-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin media-md {
+  @media (max-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin media-lg {
+  @media (max-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+@mixin media-xl {
+  @media (max-width: $breakpoint-xl) {
+    @content;
+  }
+}
+
+@mixin media-sidebar {
+  @media (max-width: $breakpoint-sidebar) {
+    @content;
+  }
+}

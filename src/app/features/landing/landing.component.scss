@@ -1,16 +1,17 @@
+@import '../../../assets/styles/_variables.scss';
+@import '../../../assets/styles/_breakpoints.scss';
+
 // ============================================================
 // Landing Page – Custom SCSS
 // Stack: Angular 19 + Bootstrap 5.3 + Bootstrap Icons
 // ============================================================
 
-// ---- Design Tokens ----
-$primary: #5865f2;
+// ---- Design Tokens (using imported variables) ----
 $primary-dark: #4752c4;
 $secondary: #7289da;
-$accent-pink: #eb459e;
+$accent-pink: $accent;
 $accent-green: #57f287;
 $accent-yellow: #fee75c;
-$dark: #0d0d1a;
 $dark-secondary: #1a1a2e;
 $text-muted-custom: #8b8fa8;
 $card-bg: #ffffff;

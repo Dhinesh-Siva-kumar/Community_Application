@@ -1,14 +1,6 @@
-// ---- Design tokens ----
-$primary:       #5865f2;
-$primary-dark:  #4752c4;
-$accent-pink:   #eb459e;
-$dark:          #0f0f1a;
-$text-body:     #374151;
-$text-muted:    #9ca3af;
-$border:        #e5e7eb;
-$error:         #dc2626;
-$error-bg:      #fef2f2;
-$white:         #ffffff;
+// ---- Design System Import ----
+@import '../../../../assets/styles/_variables.scss';
+@import '../../../../assets/styles/_breakpoints.scss';
 
 // ============================================================
 // PAGE
@@ -17,7 +9,7 @@ $white:         #ffffff;
   min-height: 100vh;
   display: flex;
   align-items: stretch;
-  background: #f4f5ff;
+  background: $bg;
 }
 
 .auth-container {
@@ -32,7 +24,7 @@ $white:         #ffffff;
 .auth-branding {
   position: relative;
   flex: 0 0 42%;
-  background: linear-gradient(145deg, #5865f2 0%, #7c3aed 50%, #eb459e 100%);
+  background: linear-gradient(145deg, $primary 0%, #7c3aed 50%, $accent 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,7 +32,7 @@ $white:         #ffffff;
   overflow: hidden;
   color: $white;
 
-  @media (max-width: 900px) { display: none; }
+  @media (max-width: $breakpoint-sidebar) { display: none; }
 }
 
 // Animated blobs
@@ -206,7 +198,7 @@ $white:         #ffffff;
   background: $white;
   overflow-y: auto;
 
-  @media (max-width: 480px) {
+  @media (max-width: $breakpoint-xs) {
     padding: 32px 20px;
   }
 }
@@ -220,7 +212,7 @@ $white:         #ffffff;
   img { width: 36px; height: 36px; border-radius: 8px; }
   span { font-size: 18px; font-weight: 700; color: $primary; }
 
-  @media (max-width: 900px) { display: flex; }
+  @media (max-width: $breakpoint-sidebar) { display: flex; }
 }
 
 .auth-card {
@@ -295,7 +287,7 @@ $white:         #ffffff;
   }
 }
 
-.field-input-wrap {
+  .field-input-wrap {
   position: relative;
   display: flex;
   align-items: center;
@@ -392,6 +384,46 @@ $white:         #ffffff;
   }
 }
 
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: $text-body;
+  cursor: pointer;
+  user-select: none;
+
+  input[type="checkbox"] { display: none; }
+
+  .checkbox-custom {
+    width: 17px;
+    height: 17px;
+    border: 1.5px solid $border;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+  }
+
+  input[type="checkbox"]:checked + .checkbox-custom {
+    background: $primary;
+    border-color: $primary;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 9px;
+      height: 5px;
+      border-left: 2px solid white;
+      border-bottom: 2px solid white;
+      transform: rotate(-45deg) translateY(-1px);
+    }
+  }
+}
+
 // Submit button
 .submit-btn {
   display: flex;
@@ -402,7 +434,7 @@ $white:         #ffffff;
   height: 50px;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(135deg, $primary 0%, $accent-pink 100%);
+  background: linear-gradient(135deg, $primary 0%, $accent 100%);
   color: $white;
   font-size: 15px;
   font-weight: 700;
@@ -481,6 +513,30 @@ $white:         #ffffff;
   svg { flex-shrink: 0; }
 }
 
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  border: 1.5px solid $border;
+  border-radius: 10px;
+  background: $white;
+  font-size: 13px;
+  font-weight: 600;
+  color: $text-body;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    background: #f9fafb;
+    border-color: #c7cdd9;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  svg { flex-shrink: 0; }
+}
+
 // Switch auth link
 .switch-auth {
   text-align: center;
@@ -496,4 +552,3 @@ $white:         #ffffff;
     &:hover { text-decoration: underline; }
   }
 }
-

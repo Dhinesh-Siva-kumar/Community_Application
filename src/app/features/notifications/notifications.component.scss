@@ -1,11 +1,5 @@
-$primary:       #5865f2;
-$primary-light: #ede9fe;
-$dark:          #0f0f1a;
-$text:          #374151;
-$muted:         #9ca3af;
-$border:        #e5e7eb;
-$bg:            #f4f5ff;
-$white:         #ffffff;
+@import '../../../assets/styles/_variables.scss';
+@import '../../../assets/styles/_breakpoints.scss';
 
 .notifications-page {
   max-width: 680px;

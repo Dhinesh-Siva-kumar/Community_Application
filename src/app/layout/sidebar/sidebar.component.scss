@@ -1,11 +1,5 @@
-// ---- Design tokens (mirrored from app) ----
-$primary: #6366f1;
-$primary-light: #ede9fe;
-$text-dark: #1e1e2e;
-$text-muted: #9ca3af;
-$border: #e5e7eb;
-$hover-bg: #f5f5f8;
-$sidebar-width: 260px;
+@import '../../../assets/styles/_variables.scss';
+@import '../../../assets/styles/_breakpoints.scss';
 
 // ============================================================
 // SIDEBAR BASE
@@ -34,7 +28,7 @@ $sidebar-width: 260px;
   &::-webkit-scrollbar-track { background: transparent; }
   &::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
 
-  @media (max-width: 992px) {
+  @media (max-width: $breakpoint-sidebar) {
     transform: translateX(-100%);
     box-shadow: none;
     z-index: 1000;
@@ -57,7 +51,7 @@ $sidebar-width: 260px;
   border-bottom: 1px solid $border;
   margin-bottom: 8px;
 
-  @media (max-width: 992px) {
+  @media (max-width: $breakpoint-sidebar) {
     display: flex;
   }
 
