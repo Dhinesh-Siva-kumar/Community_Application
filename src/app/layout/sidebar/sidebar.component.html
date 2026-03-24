@@ -26,7 +26,7 @@
 
   <!-- Main Navigation -->
   <nav class="sidebar-nav" aria-label="Main navigation">
-    <p class="section-label">Main</p>
+    <p class="section-label" *ngIf="isExpanded()">Main</p>
     <ng-container *ngFor="let item of getMenuItems()">
       <a 
         [routerLink]="item.route" 
