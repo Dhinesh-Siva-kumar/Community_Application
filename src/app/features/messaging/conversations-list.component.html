@@ -1,0 +1,62 @@
+<div class="conversations-list-container">
+  <div class="conversations-header">
+    <h1>Messages</h1>
+    <button mat-icon-button (click)="refreshConversations()" [disabled]="isLoading()">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+
+  <div class="search-container">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search conversations...</mat-label>
+      <input matInput #searchInput (input)="onSearch(searchInput.value)" type="text" />
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="isLoading()" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <div *ngIf="!isLoading()" class="conversations-content">
+    <div *ngIf="filteredConversations().length === 0" class="empty-state">
+      <mat-icon>mail_outline</mat-icon>
+      <p>No conversations yet</p>
+      <p class="subtext">Start messaging with users to create conversations</p>
+    </div>
+
+    <mat-list class="conversations-list" *ngIf="filteredConversations().length > 0">
+      <mat-list-item
+        *ngFor="let conversation of filteredConversations()"
+        class="conversation-item"
+        [class.unread]="conversation.unreadCount > 0"
+        (click)="selectConversation(conversation)"
+      >
+        <app-avatar
+          matListItemAvatar
+          [name]="getOtherParticipant(conversation)"
+          backgroundColor="primary"
+        ></app-avatar>
+
+        <div matListItemTitle class="conversation-title">
+          <span class="participant-name">{{ getOtherParticipant(conversation) }}</span>
+          <span
+            *ngIf="conversation.unreadCount > 0"
+            class="unread-badge"
+            matBadge="{{ conversation.unreadCount }}"
+            matBadgeColor="accent"
+            matBadgeSize="small"
+          ></span>
+        </div>
+
+        <p matListItemLine class="conversation-message" [class.unread]="conversation.unreadCount > 0">
+          {{ conversation.lastMessage || 'No messages yet' }}
+        </p>
+
+        <span matListItemMeta class="conversation-time">
+          {{ formatTime(conversation.lastMessageTime) }}
+        </span>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>

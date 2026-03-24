@@ -83,6 +83,9 @@
             <a routerLink="/profile" class="user-menu-item">
               <span>👤 My Profile</span>
             </a>
+            <a routerLink="/messaging" class="user-menu-item">
+              <span>💬 Messages</span>
+            </a>
             <a routerLink="/notifications" class="user-menu-item">
               <span>🔔 Notifications</span>
               <span *ngIf="notificationService.unreadCount() > 0" class="unread-count">

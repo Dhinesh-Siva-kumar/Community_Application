@@ -1,0 +1,74 @@
+<div class="message-thread-container">
+  <div class="message-header">
+    <div class="header-left">
+      <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="participant-info">
+        <app-avatar
+          [name]="otherParticipantName()"
+          backgroundColor="primary"
+          size="sm"
+        ></app-avatar>
+        <h2>{{ otherParticipantName() }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="messages-container" *ngIf="!isLoading()">
+    <div *ngIf="messages().length === 0" class="empty-messages">
+      <mat-icon>mail_outline</mat-icon>
+      <p>No messages yet. Start the conversation!</p>
+    </div>
+
+    <div *ngFor="let message of messages()" class="message-wrapper" [class.current-user]="isCurrentUserMessage(message)">
+      <div class="message-bubble" [class.current-user]="isCurrentUserMessage(message)">
+        <div class="message-content">
+          <p class="message-text">{{ message.content }}</p>
+          <span class="message-time">{{ formatTime(message.createdAt) }}</span>
+        </div>
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="messageMenu"
+          class="message-menu"
+          *ngIf="isCurrentUserMessage(message)"
+          (click)="selectedMessage = message"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <mat-menu #messageMenu="matMenu">
+      <button mat-menu-item (click)="deleteMessage(selectedMessage!)" *ngIf="selectedMessage">
+        <mat-icon>delete</mat-icon>
+        <span>Delete</span>
+      </button>
+    </mat-menu>
+  </div>
+
+  <div class="loading-container" *ngIf="isLoading()">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <div class="message-input-container">
+    <mat-form-field appearance="outline" class="message-input-field">
+      <mat-label>Type a message...</mat-label>
+      <textarea
+        matInput
+        [(ngModel)]="newMessage"
+        (keydown)="onKeyDown($event)"
+        [disabled]="isSending()"
+        rows="3"
+      ></textarea>
+    </mat-form-field>
+    <button
+      mat-icon-button
+      (click)="sendMessage()"
+      [disabled]="!newMessage().trim() || isSending()"
+      class="send-button"
+    >
+      <mat-icon>send</mat-icon>
+    </button>
+  </div>
+</div>
