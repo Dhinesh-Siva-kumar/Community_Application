@@ -169,7 +169,7 @@ describe('InputComponent', () => {
       spyOn(component.focused, 'emit');
       const input = fixture.nativeElement.querySelector('input');
       
-      input.focus();
+      input.dispatchEvent(new Event('focus'));
       
       expect(component.focused.emit).toHaveBeenCalled();
     });
@@ -178,8 +178,7 @@ describe('InputComponent', () => {
       spyOn(component.blurred, 'emit');
       const input = fixture.nativeElement.querySelector('input');
       
-      input.focus();
-      input.blur();
+      input.dispatchEvent(new Event('blur'));
       
       expect(component.blurred.emit).toHaveBeenCalled();
     });
