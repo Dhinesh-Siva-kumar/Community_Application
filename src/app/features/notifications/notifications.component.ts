@@ -43,10 +43,18 @@ export class NotificationsComponent implements OnInit {
   }
 
   markAsRead(id: string): void {
-    this.notificationService.markAsRead(id).subscribe();
+    this.notificationService.markAsRead(id).subscribe({
+      error: (error) => {
+        console.error('Error marking notification as read:', error);
+      }
+    });
   }
 
   markAllAsRead(): void {
-    this.notificationService.markAllAsRead().subscribe();
+    this.notificationService.markAllAsRead().subscribe({
+      error: (error) => {
+        console.error('Error marking all notifications as read:', error);
+      }
+    });
   }
 }

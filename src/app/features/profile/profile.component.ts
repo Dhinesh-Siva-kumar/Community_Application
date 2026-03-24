@@ -74,21 +74,33 @@ export class ProfileComponent implements OnInit {
 
   private loadUserProfile(userId: string): void {
     this.loading.set(true);
-    this.userService.getUserProfile(userId).subscribe(profile => {
-      if (profile) {
-        this.user.set(profile);
-        this.isFollowing.set(profile.isFollowing ?? false);
-        const currentId = this.currentUser()?.id;
-        this.isOwnProfile.set(currentId === userId);
-        this.loadUserPosts(userId);
+    this.userService.getUserProfile(userId).subscribe({
+      next: (profile) => {
+        if (profile) {
+          this.user.set(profile);
+          this.isFollowing.set(profile.isFollowing ?? false);
+          const currentId = this.currentUser()?.id;
+          this.isOwnProfile.set(currentId === userId);
+          this.loadUserPosts(userId);
+        }
+        this.loading.set(false);
+      },
+      error: (error) => {
+        console.error('Error loading user profile:', error);
+        this.loading.set(false);
       }
-      this.loading.set(false);
     });
   }
 
   private loadUserPosts(userId: string): void {
-    this.postService.getPostsByUser(userId).subscribe(posts => {
-      this.userPosts.set(posts);
+    this.postService.getPostsByUser(userId).subscribe({
+      next: (posts) => {
+        this.userPosts.set(posts);
+      },
+      error: (error) => {
+        console.error('Error loading user posts:', error);
+        this.userPosts.set([]);
+      }
     });
   }
 
@@ -98,23 +110,40 @@ export class ProfileComponent implements OnInit {
     this.followLoading.set(true);
     
     if (this.isFollowing()) {
-      this.userService.unfollowUser(this.user()!.id).subscribe(updated => {
-        this.user.set(updated);
-        this.isFollowing.set(false);
-        this.followLoading.set(false);
+      this.userService.unfollowUser(this.user()!.id).subscribe({
+        next: (updated) => {
+          this.user.set(updated);
+          this.isFollowing.set(false);
+          this.followLoading.set(false);
+        },
+        error: (error) => {
+          console.error('Error unfollowing user:', error);
+          this.followLoading.set(false);
+        }
       });
     } else {
-      this.userService.followUser(this.user()!.id).subscribe(updated => {
-        this.user.set(updated);
-        this.isFollowing.set(true);
-        this.followLoading.set(false);
+      this.userService.followUser(this.user()!.id).subscribe({
+        next: (updated) => {
+          this.user.set(updated);
+          this.isFollowing.set(true);
+          this.followLoading.set(false);
+        },
+        error: (error) => {
+          console.error('Error following user:', error);
+          this.followLoading.set(false);
+        }
       });
     }
   }
 
   onLike(postId: string): void {
-    this.postService.likePost(postId).subscribe(updatedPost => {
-      this.userPosts.update(posts => posts.map(p => p.id === postId ? updatedPost : p));
+    this.postService.likePost(postId).subscribe({
+      next: (updatedPost) => {
+        this.userPosts.update(posts => posts.map(p => p.id === postId ? updatedPost : p));
+      },
+      error: (error) => {
+        console.error('Error liking post:', error);
+      }
     });
   }
 

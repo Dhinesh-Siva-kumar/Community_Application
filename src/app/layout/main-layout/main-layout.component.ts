@@ -40,7 +40,11 @@ export class MainLayoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.notificationService.fetchNotifications();
+    try {
+      this.notificationService.fetchNotifications();
+    } catch (error) {
+      console.error('Error initializing notifications in main layout:', error);
+    }
   }
 
   toggleSidebar(): void {

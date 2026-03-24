@@ -66,8 +66,14 @@ export class NotificationService {
   }
 
   fetchNotifications(): void {
-    this.loadNotifications().subscribe(notifications => {
-      this.notificationsSignal.set(notifications);
+    this.loadNotifications().subscribe({
+      next: (notifications) => {
+        this.notificationsSignal.set(notifications);
+      },
+      error: (error) => {
+        console.error('Error fetching notifications:', error);
+        this.notificationsSignal.set([]);
+      }
     });
   }
 

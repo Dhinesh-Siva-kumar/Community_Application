@@ -83,15 +83,26 @@ export class PostDetailComponent implements OnInit {
   }
 
   loadComments(postId: string): void {
-    this.postService.getComments(postId).subscribe(comments => {
-      this.comments.set(comments);
+    this.postService.getComments(postId).subscribe({
+      next: (comments) => {
+        this.comments.set(comments);
+      },
+      error: (error) => {
+        console.error('Error loading comments:', error);
+        this.comments.set([]);
+      }
     });
   }
 
   onLike(): void {
     if (!this.post()) return;
-    this.postService.likePost(this.post()!.id).subscribe(updatedPost => {
-      this.post.set(updatedPost);
+    this.postService.likePost(this.post()!.id).subscribe({
+      next: (updatedPost) => {
+        this.post.set(updatedPost);
+      },
+      error: (error) => {
+        console.error('Error liking post:', error);
+      }
     });
   }
 
@@ -104,8 +115,13 @@ export class PostDetailComponent implements OnInit {
   onDelete(): void {
     if (!this.post()) return;
     if (confirm('Are you sure you want to delete this post?')) {
-      this.postService.deletePost(this.post()!.id).subscribe(() => {
-        this.router.navigate(['/dashboard']);
+      this.postService.deletePost(this.post()!.id).subscribe({
+        next: () => {
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          console.error('Error deleting post:', error);
+        }
       });
     }
   }
@@ -127,9 +143,14 @@ export class PostDetailComponent implements OnInit {
       content: this.newCommentContent(),
       postId: this.post()!.id
     };
-    this.postService.addComment(request).subscribe(newComment => {
-      this.comments.update(comments => [...comments, newComment]);
-      this.newCommentContent.set('');
+    this.postService.addComment(request).subscribe({
+      next: (newComment) => {
+        this.comments.update(comments => [...comments, newComment]);
+        this.newCommentContent.set('');
+      },
+      error: (error) => {
+        console.error('Error adding comment:', error);
+      }
     });
   }
 
