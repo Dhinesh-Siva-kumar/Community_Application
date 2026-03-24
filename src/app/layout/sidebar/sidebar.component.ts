@@ -34,8 +34,14 @@ export class SidebarComponent implements OnInit {
   constructor(private communityService: CommunityService) {}
 
   ngOnInit(): void {
-    this.communityService.getJoinedCommunities().subscribe(communities => {
-      this.joinedCommunities.set(communities);
+    this.communityService.getJoinedCommunities().subscribe({
+      next: (communities) => {
+        this.joinedCommunities.set(communities);
+      },
+      error: (error) => {
+        console.error('Error loading joined communities:', error);
+        this.joinedCommunities.set([]);
+      }
     });
   }
 
@@ -53,8 +59,7 @@ export class SidebarComponent implements OnInit {
     return [
       { label: 'Dashboard', icon: '📊', route: '/dashboard' },
       { label: 'Communities', icon: '🏘️', route: '/communities' },
-      { label: 'Messages', icon: '💬', route: '/messages' },
-      { label: 'Saved', icon: '🔖', route: '/saved' },
+      { label: 'Messages', icon: '💬', route: '/messaging' },
       { label: 'Profile', icon: '👤', route: '/profile' }
     ];
   }

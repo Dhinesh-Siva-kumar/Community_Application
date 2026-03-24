@@ -153,7 +153,7 @@ describe('SidebarComponent', () => {
   describe('Menu Items', () => {
     it('should return menu items array', () => {
       const items = component.getMenuItems();
-      expect(items.length).toBe(5); // Dashboard, Communities, Messages, Saved, Profile
+      expect(items.length).toBe(4); // Dashboard, Communities, Messages, Profile
     });
 
     it('menu items should have required properties', () => {
