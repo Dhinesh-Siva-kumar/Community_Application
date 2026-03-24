@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
 import { CardComponent } from './card.component';
 
 describe('CardComponent', () => {
@@ -26,11 +27,20 @@ describe('CardComponent', () => {
     });
 
     it('should project content into card', () => {
-      fixture.nativeElement.innerHTML = '<app-card><p>Card Content</p></app-card>';
-      fixture.detectChanges();
+      // Create a test host component to properly test content projection
+      @Component({
+        selector: 'app-test-host',
+        template: '<app-card><p>Card Content</p></app-card>',
+        standalone: true,
+        imports: [CardComponent]
+      })
+      class TestHostComponent {}
       
-      const card = fixture.nativeElement.querySelector('div');
-      expect(card.textContent).toContain('Card Content');
+      const hostFixture = TestBed.createComponent(TestHostComponent);
+      hostFixture.detectChanges();
+      
+      const card = hostFixture.nativeElement.querySelector('div');
+      expect(card?.textContent).toContain('Card Content');
     });
   });
 

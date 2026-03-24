@@ -1,6 +1,5 @@
 <div 
-  class="location-badge" 
-  [ngClass]="['badge-' + size, 'badge-' + variant, {'clickable': clickable}, customClass]"
+  [class]="'location-badge location-badge-' + size + ' location-badge-' + variant + (clickable ? ' clickable' : '') + (customClass ? ' ' + customClass : '')"
   role="img"
   [attr.aria-label]="'Location: ' + postcode + ', ' + area + (hasDistance() ? ', ' + getDisplayDistance() + ' away' : '')"
   [attr.tabindex]="clickable ? 0 : -1"

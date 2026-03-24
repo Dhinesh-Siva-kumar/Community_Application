@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
 import { BadgeComponent } from './badge.component';
 
 describe('BadgeComponent', () => {
@@ -20,11 +21,20 @@ describe('BadgeComponent', () => {
   });
 
   it('should render badge with content', () => {
-    fixture.nativeElement.innerHTML = '<app-badge>New</app-badge>';
-    fixture.detectChanges();
+    // Create a test host component to properly test content projection
+    @Component({
+      selector: 'app-test-host',
+      template: '<app-badge>New</app-badge>',
+      standalone: true,
+      imports: [BadgeComponent]
+    })
+    class TestHostComponent {}
     
-    const badge = fixture.nativeElement.querySelector('span');
-    expect(badge.textContent).toContain('New');
+    const hostFixture = TestBed.createComponent(TestHostComponent);
+    hostFixture.detectChanges();
+    
+    const badge = hostFixture.nativeElement.querySelector('span');
+    expect(badge?.textContent).toContain('New');
   });
 
   it('should apply variant classes', () => {

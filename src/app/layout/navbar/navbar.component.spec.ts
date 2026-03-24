@@ -15,12 +15,18 @@ describe('NavbarComponent', () => {
   let fixture: ComponentFixture<NavbarComponent>;
   let authService: jasmine.SpyObj<AuthService>;
   let notificationService: jasmine.SpyObj<NotificationService>;
+  let unreadCountSignal: any;
 
   beforeEach(async () => {
     const authServiceSpy = jasmine.createSpyObj('AuthService', ['logout', 'currentUser']);
+    
+    // Create real signals for mocking
+    unreadCountSignal = signal(0);
+    const notificationsSignal = signal([]);
+    
     const notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['markAllAsRead', 'markAsRead'], {
-      unreadCount: signal(0),
-      notifications: signal([])
+      unreadCount: unreadCountSignal,
+      notifications: notificationsSignal
     });
 
     await TestBed.configureTestingModule({
@@ -193,7 +199,7 @@ describe('NavbarComponent', () => {
 
   describe('Notifications', () => {
     it('should display notification badge when unread count > 0', () => {
-      (notificationService.unreadCount as jasmine.Spy).and.returnValue(3);
+      unreadCountSignal.set(3);
       fixture.detectChanges();
       const badge = fixture.nativeElement.querySelector('.nav-badge');
       expect(badge).toBeTruthy();
@@ -201,14 +207,14 @@ describe('NavbarComponent', () => {
     });
 
     it('should show 9+ for unread count > 9', () => {
-      (notificationService.unreadCount as jasmine.Spy).and.returnValue(15);
+      unreadCountSignal.set(15);
       fixture.detectChanges();
       const badge = fixture.nativeElement.querySelector('.nav-badge');
       expect(badge?.textContent).toContain('9+');
     });
 
     it('should not display notification badge when unread count is 0', () => {
-      (notificationService.unreadCount as jasmine.Spy).and.returnValue(0);
+      unreadCountSignal.set(0);
       fixture.detectChanges();
       const badge = fixture.nativeElement.querySelector('.nav-badge');
       expect(badge).toBeNull();
@@ -321,7 +327,7 @@ describe('NavbarComponent', () => {
     });
 
     it('notification button should have aria-badge when unread count > 0', () => {
-      (notificationService.unreadCount as jasmine.Spy).and.returnValue(3);
+      unreadCountSignal.set(3);
       fixture.detectChanges();
       const notifBtn = fixture.nativeElement.querySelector('.nav-icon-btn');
       expect(notifBtn?.getAttribute('aria-badge')).toBe('3');

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
 import { ButtonComponent } from './button.component';
 
 describe('ButtonComponent', () => {
@@ -26,12 +27,20 @@ describe('ButtonComponent', () => {
     });
 
     it('should project content into button', () => {
-      fixture.componentInstance.customClass = '';
-      fixture.nativeElement.innerHTML = '<app-button>Click Me</app-button>';
-      fixture.detectChanges();
+      // Create a test host component to properly test content projection
+      @Component({
+        selector: 'app-test-host',
+        template: '<app-button>Click Me</app-button>',
+        standalone: true,
+        imports: [ButtonComponent]
+      })
+      class TestHostComponent {}
       
-      const button = fixture.nativeElement.querySelector('button');
-      expect(button.textContent).toContain('Click Me');
+      const hostFixture = TestBed.createComponent(TestHostComponent);
+      hostFixture.detectChanges();
+      
+      const button = hostFixture.nativeElement.querySelector('button');
+      expect(button?.textContent).toContain('Click Me');
     });
   });
 

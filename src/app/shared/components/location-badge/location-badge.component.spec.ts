@@ -80,21 +80,21 @@ describe('LocationBadgeComponent', () => {
       component.size = 'sm';
       fixture.detectChanges();
       const badge = fixture.nativeElement.querySelector('.location-badge');
-      expect(badge?.classList.contains('badge-sm')).toBe(true);
+      expect(badge?.classList.contains('location-badge-sm')).toBe(true);
     });
 
     it('should apply md size class (default)', () => {
       component.size = 'md';
       fixture.detectChanges();
       const badge = fixture.nativeElement.querySelector('.location-badge');
-      expect(badge?.classList.contains('badge-md')).toBe(true);
+      expect(badge?.classList.contains('location-badge-md')).toBe(true);
     });
 
     it('should apply lg size class', () => {
       component.size = 'lg';
       fixture.detectChanges();
       const badge = fixture.nativeElement.querySelector('.location-badge');
-      expect(badge?.classList.contains('badge-lg')).toBe(true);
+      expect(badge?.classList.contains('location-badge-lg')).toBe(true);
     });
   });
 
@@ -103,28 +103,28 @@ describe('LocationBadgeComponent', () => {
       component.variant = 'primary';
       fixture.detectChanges();
       const badge = fixture.nativeElement.querySelector('.location-badge');
-      expect(badge?.classList.contains('badge-primary')).toBe(true);
+      expect(badge?.classList.contains('location-badge-primary')).toBe(true);
     });
 
     it('should apply secondary variant class', () => {
       component.variant = 'secondary';
       fixture.detectChanges();
       const badge = fixture.nativeElement.querySelector('.location-badge');
-      expect(badge?.classList.contains('badge-secondary')).toBe(true);
+      expect(badge?.classList.contains('location-badge-secondary')).toBe(true);
     });
 
     it('should apply success variant class', () => {
       component.variant = 'success';
       fixture.detectChanges();
       const badge = fixture.nativeElement.querySelector('.location-badge');
-      expect(badge?.classList.contains('badge-success')).toBe(true);
+      expect(badge?.classList.contains('location-badge-success')).toBe(true);
     });
 
     it('should apply warning variant class', () => {
       component.variant = 'warning';
       fixture.detectChanges();
       const badge = fixture.nativeElement.querySelector('.location-badge');
-      expect(badge?.classList.contains('badge-warning')).toBe(true);
+      expect(badge?.classList.contains('location-badge-warning')).toBe(true);
     });
   });
 
@@ -334,8 +334,8 @@ describe('LocationBadgeComponent', () => {
       const area = fixture.nativeElement.querySelector('.location-area');
       const distance = fixture.nativeElement.querySelector('.location-distance');
 
-      expect(badge?.classList.contains('badge-lg')).toBe(true);
-      expect(badge?.classList.contains('badge-primary')).toBe(true);
+      expect(badge?.classList.contains('location-badge-lg')).toBe(true);
+      expect(badge?.classList.contains('location-badge-primary')).toBe(true);
       expect(badge?.classList.contains('clickable')).toBe(true);
       expect(postcode?.textContent).toContain('SW1A 1AA');
       expect(area?.textContent).toContain('Westminster, London');
