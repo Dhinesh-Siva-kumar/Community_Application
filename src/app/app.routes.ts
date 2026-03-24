@@ -49,17 +49,16 @@ export const routes: Routes = [
           path: 'notifications',
           loadComponent: () => import('./features/notifications/notifications.component').then(m => m.NotificationsComponent)
         },
-        {
-          path: 'messaging',
-          loadComponent: () => import('./features/messaging/messaging.component').then(m => m.MessagingComponent),
-          children: [
-            {
-              path: ':id',
-              loadComponent: () => import('./features/messaging/message-thread.component').then(m => m.MessageThreadComponent)
-            },
-            { path: '', redirectTo: '', pathMatch: 'full' }
-          ]
-        },
+         {
+           path: 'messaging',
+           loadComponent: () => import('./features/messaging/messaging.component').then(m => m.MessagingComponent),
+           children: [
+             {
+               path: ':id',
+               loadComponent: () => import('./features/messaging/message-thread.component').then(m => m.MessageThreadComponent)
+             }
+           ]
+         },
         { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
