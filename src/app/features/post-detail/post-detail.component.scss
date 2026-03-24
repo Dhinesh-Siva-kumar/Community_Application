@@ -329,3 +329,31 @@
     width: 100%;
   }
 }
+
+.more-btn {
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-primary);
+  }
+
+  mat-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+  }
+}
+
+.delete-item {
+  color: #ef4444 !important;
+  mat-icon {
+    color: #ef4444 !important;
+  }
+}

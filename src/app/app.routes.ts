@@ -42,6 +42,10 @@ export const routes: Routes = [
          loadComponent: () => import('./features/post-detail/post-detail.component').then(m => m.PostDetailComponent)
        },
        {
+         path: 'search',
+         loadComponent: () => import('./features/search/search-results.component').then(m => m.SearchResultsComponent)
+       },
+       {
          path: 'notifications',
          loadComponent: () => import('./features/notifications/notifications.component').then(m => m.NotificationsComponent)
        },

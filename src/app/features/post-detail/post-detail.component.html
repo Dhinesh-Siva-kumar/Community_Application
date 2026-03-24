@@ -27,6 +27,13 @@
             </div>
           </div>
         </div>
+        <button class="more-btn" [matMenuTriggerFor]="postMenu" aria-label="Post options" *ngIf="isAuthor()">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+        <mat-menu #postMenu="matMenu">
+          <button mat-menu-item (click)="onEdit()"><mat-icon>edit</mat-icon><span>Edit post</span></button>
+          <button mat-menu-item (click)="onDelete()" class="delete-item"><mat-icon>delete</mat-icon><span>Delete post</span></button>
+        </mat-menu>
       </div>
 
       <!-- Post Body -->

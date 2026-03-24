@@ -50,7 +50,13 @@
         </div>
       } @else {
         @for (post of posts(); track post.id) {
-          <app-post-card [post]="post" (liked)="onLike($event)" (commented)="onComment($event)"></app-post-card>
+          <app-post-card 
+            [post]="post" 
+            (liked)="onLike($event)" 
+            (commented)="onComment($event)"
+            (edited)="onEdit($event)"
+            (deleted)="onDelete($event)"
+          ></app-post-card>
         } @empty {
           <div class="empty-state">
             <div class="empty-icon"><mat-icon>article</mat-icon></div>

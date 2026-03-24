@@ -113,6 +113,27 @@ export class PostService {
     return of(newPost).pipe(delay(500));
   }
 
+  updatePost(postId: string, request: CreatePostRequest): Observable<Post> {
+    // return this.http.put<Post>(`${this.API_URL}/${postId}`, request);
+    const post = this.mockPosts.find(p => p.id === postId);
+    if (post) {
+      post.title = request.title;
+      post.content = request.content;
+      post.imageUrl = request.imageUrl;
+      post.updatedAt = new Date();
+    }
+    return of(post!).pipe(delay(500));
+  }
+
+  deletePost(postId: string): Observable<void> {
+    // return this.http.delete<void>(`${this.API_URL}/${postId}`);
+    const index = this.mockPosts.findIndex(p => p.id === postId);
+    if (index > -1) {
+      this.mockPosts.splice(index, 1);
+    }
+    return of(void 0).pipe(delay(300));
+  }
+
   likePost(postId: string): Observable<Post> {
     // return this.http.post<Post>(`${this.API_URL}/${postId}/like`, {});
     const post = this.mockPosts.find(p => p.id === postId);
@@ -171,3 +192,4 @@ export class PostService {
     return of(newComment).pipe(delay(300));
   }
 }
+

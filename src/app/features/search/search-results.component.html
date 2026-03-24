@@ -1,0 +1,173 @@
+<div class="search-results-container">
+  <div class="search-header">
+    <h1>Search Results</h1>
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Search posts, users, communities..."
+        [value]="query()"
+        (input)="onSearchChange($event)"
+        class="search-input"
+        aria-label="Search"
+      />
+    </div>
+
+    @if (query()) {
+      <div class="search-info">
+        @if (isLoading()) {
+          <p class="loading-text">Searching...</p>
+        } @else if (hasResults()) {
+          <p class="results-count">Found {{ getResultsCount() }} result(s) for "{{ query() }}"</p>
+        } @else {
+          <p class="no-results-text">No results found for "{{ query() }}"</p>
+        }
+      </div>
+    }
+  </div>
+
+  @if (query() && hasResults()) {
+    <div class="tabs">
+      <button
+        class="tab"
+        [class.active]="selectedTab() === 'all'"
+        (click)="selectTab('all')"
+      >
+        All ({{ getResultsCount() }})
+      </button>
+      @if (filteredPosts().length > 0) {
+        <button
+          class="tab"
+          [class.active]="selectedTab() === 'posts'"
+          (click)="selectTab('posts')"
+        >
+          Posts ({{ filteredPosts().length }})
+        </button>
+      }
+      @if (filteredUsers().length > 0) {
+        <button
+          class="tab"
+          [class.active]="selectedTab() === 'users'"
+          (click)="selectTab('users')"
+        >
+          Users ({{ filteredUsers().length }})
+        </button>
+      }
+      @if (filteredCommunities().length > 0) {
+        <button
+          class="tab"
+          [class.active]="selectedTab() === 'communities'"
+          (click)="selectTab('communities')"
+        >
+          Communities ({{ filteredCommunities().length }})
+        </button>
+      }
+    </div>
+
+    <div class="results-container">
+      <!-- Posts Results -->
+      @if (filteredPosts().length > 0) {
+        <section class="results-section">
+          <h2 class="section-title">Posts</h2>
+          <div class="posts-list">
+            @for (post of filteredPosts(); track post.id) {
+              <app-post-card [post]="post"></app-post-card>
+            }
+          </div>
+        </section>
+      }
+
+      <!-- Users Results -->
+      @if (filteredUsers().length > 0) {
+        <section class="results-section">
+          <h2 class="section-title">Users</h2>
+          <div class="users-list">
+            @for (user of filteredUsers(); track user.id) {
+              <div class="user-card">
+                <div class="user-header">
+                  <app-avatar [name]="user.displayName" size="lg"></app-avatar>
+                  <div class="user-info">
+                    <h3 class="user-name">
+                      <a [routerLink]="['/profile', user.id]">{{ user.displayName }}</a>
+                    </h3>
+                    <p class="user-username">{{ '@' + user.username }}</p>
+                    @if (user.bio) {
+                      <p class="user-bio">{{ user.bio }}</p>
+                    }
+                  </div>
+                </div>
+                <div class="user-stats">
+                  <div class="stat">
+                    <span class="stat-label">Followers</span>
+                    <span class="stat-value">{{ user.followers || 0 }}</span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-label">Following</span>
+                    <span class="stat-value">{{ user.following || 0 }}</span>
+                  </div>
+                </div>
+                @if (!user.isFollowing) {
+                  <button class="follow-btn" (click)="onFollowUser(user)">
+                    Follow
+                  </button>
+                } @else {
+                  <button class="follow-btn unfollow" (click)="onUnfollowUser(user)">
+                    Unfollow
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        </section>
+      }
+
+      <!-- Communities Results -->
+      @if (filteredCommunities().length > 0) {
+        <section class="results-section">
+          <h2 class="section-title">Communities</h2>
+          <div class="communities-list">
+            @for (community of filteredCommunities(); track community.id) {
+              <div class="community-card">
+                <div class="community-header">
+                  <div class="community-icon">
+                    {{ community.icon }}
+                  </div>
+                  <div class="community-info">
+                    <h3 class="community-name">
+                      <a [routerLink]="['/community', community.id]">{{ community.name }}</a>
+                    </h3>
+                    @if (community.description) {
+                      <p class="community-description">{{ community.description }}</p>
+                    }
+                  </div>
+                </div>
+                <div class="community-stats">
+                  <div class="stat">
+                    <span class="stat-label">Members</span>
+                    <span class="stat-value">{{ community.members || 0 }}</span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-label">Posts</span>
+                    <span class="stat-value">{{ community.posts || 0 }}</span>
+                  </div>
+                </div>
+                <button class="join-btn">Join</button>
+              </div>
+            }
+          </div>
+        </section>
+      }
+    </div>
+  } @else if (query() && !isLoading()) {
+    <app-empty-state
+      icon="search"
+      title="No results found"
+      [description]="'Try different search terms for ' + query()"
+    ></app-empty-state>
+  } @else if (!query()) {
+    <app-empty-state
+      icon="search"
+      title="Start searching"
+      description="Use the search box above to find posts, users, or communities"
+    ></app-empty-state>
+  }
+</div>

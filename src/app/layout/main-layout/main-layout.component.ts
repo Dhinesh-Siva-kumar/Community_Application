@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { NotificationService } from '../../core/services/notification.service';
@@ -15,7 +15,10 @@ import { NotificationService } from '../../core/services/notification.service';
     SidebarComponent
   ],
   template: `
-    <app-navbar (menuToggle)="toggleSidebar()"></app-navbar>
+    <app-navbar 
+      (menuToggle)="toggleSidebar()"
+      (searchSubmit)="onSearch($event)"
+    ></app-navbar>
     <div class="layout-wrapper">
       @if (sidebarOpen()) {
         <div class="sidebar-backdrop" (click)="closeSidebar()"></div>
@@ -31,7 +34,10 @@ import { NotificationService } from '../../core/services/notification.service';
 export class MainLayoutComponent implements OnInit {
   sidebarOpen = signal(false);
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(
+    private notificationService: NotificationService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.notificationService.fetchNotifications();
@@ -43,5 +49,9 @@ export class MainLayoutComponent implements OnInit {
 
   closeSidebar(): void {
     this.sidebarOpen.set(false);
+  }
+
+  onSearch(query: string): void {
+    this.router.navigate(['/search'], { queryParams: { q: query } });
   }
 }

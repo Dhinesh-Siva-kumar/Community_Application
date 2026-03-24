@@ -19,6 +19,11 @@
       <mat-icon>more_horiz</mat-icon>
     </button>
     <mat-menu #postMenu="matMenu">
+      @if (isAuthor()) {
+        <button mat-menu-item (click)="onEdit()"><mat-icon>edit</mat-icon><span>Edit post</span></button>
+        <button mat-menu-item (click)="onDelete()" class="delete-item"><mat-icon>delete</mat-icon><span>Delete post</span></button>
+        <mat-divider></mat-divider>
+      }
       <button mat-menu-item><mat-icon>bookmark_border</mat-icon><span>Save post</span></button>
       <button mat-menu-item><mat-icon>link</mat-icon><span>Copy link</span></button>
       <button mat-menu-item class="report-item"><mat-icon>flag</mat-icon><span>Report</span></button>

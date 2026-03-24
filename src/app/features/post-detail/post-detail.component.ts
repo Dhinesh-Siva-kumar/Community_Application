@@ -1,6 +1,6 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,10 +8,12 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatMenuModule } from '@angular/material/menu';
 import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Post, Comment, CreateCommentRequest } from '../../core/models';
 import { PostService } from '../../core/services/post.service';
+import { AuthService } from '../../core/services/auth.service';
 import { CommentComponent } from '../../shared/components/comment/comment.component';
 import { TimeAgoPipe } from '../../shared/pipes';
 
@@ -29,6 +31,7 @@ import { TimeAgoPipe } from '../../shared/pipes';
     MatInputModule,
     MatFormFieldModule,
     MatDividerModule,
+    MatMenuModule,
     MatProgressSpinnerModule,
     CommentComponent,
     TimeAgoPipe
@@ -39,11 +42,19 @@ import { TimeAgoPipe } from '../../shared/pipes';
 export class PostDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private postService = inject(PostService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   post = signal<Post | null>(null);
   comments = signal<Comment[]>([]);
   loading = signal(true);
   newCommentContent = signal('');
+
+  readonly isAuthor = computed(() => {
+    const currentUser = this.authService.currentUser();
+    const postData = this.post();
+    return currentUser && postData && currentUser.id === postData.author.id;
+  });
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -82,6 +93,21 @@ export class PostDetailComponent implements OnInit {
     this.postService.likePost(this.post()!.id).subscribe(updatedPost => {
       this.post.set(updatedPost);
     });
+  }
+
+  onEdit(): void {
+    if (this.post()) {
+      this.router.navigate(['/post', this.post()!.id, 'edit']);
+    }
+  }
+
+  onDelete(): void {
+    if (!this.post()) return;
+    if (confirm('Are you sure you want to delete this post?')) {
+      this.postService.deletePost(this.post()!.id).subscribe(() => {
+        this.router.navigate(['/dashboard']);
+      });
+    }
   }
 
   onCommentLike(commentId: string): void {

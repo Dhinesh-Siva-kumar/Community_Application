@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { Post, Community } from '../../core/models';
 import { PostService } from '../../core/services/post.service';
@@ -38,7 +38,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private postService: PostService,
-    private communityService: CommunityService
+    private communityService: CommunityService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -72,7 +73,18 @@ export class DashboardComponent implements OnInit {
   }
 
   onComment(postId: string): void {
-    console.log('Comment on post:', postId);
+    this.router.navigate(['/post', postId]);
+  }
+
+  onEdit(postId: string): void {
+    // Navigate to edit page with post ID
+    this.router.navigate(['/post', postId, 'edit']);
+  }
+
+  onDelete(postId: string): void {
+    this.postService.deletePost(postId).subscribe(() => {
+      this.posts.update(posts => posts.filter(p => p.id !== postId));
+    });
   }
 
   onPostCreated(request: CreatePostRequest): void {

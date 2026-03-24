@@ -164,6 +164,17 @@ export class CommunityService {
     return of(community!).pipe(delay(300));
   }
 
+  searchCommunities(query: string): Observable<Community[]> {
+    // return this.http.get<Community[]>(`${this.API_URL}/search`, { params: { q: query } });
+    const lowerQuery = query.toLowerCase();
+    const results = this.mockCommunities.filter(c =>
+      c.name.toLowerCase().includes(lowerQuery) ||
+      c.description.toLowerCase().includes(lowerQuery) ||
+      c.category.toLowerCase().includes(lowerQuery)
+    );
+    return of(results).pipe(delay(300));
+  }
+
   getCategories(): Observable<CommunityCategory[]> {
     const categories: CommunityCategory[] = [
       { id: '1', name: 'Programming', icon: 'code', count: 3 },
