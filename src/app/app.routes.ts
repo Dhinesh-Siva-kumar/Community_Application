@@ -33,15 +33,19 @@ export const routes: Routes = [
         path: 'profile',
         loadComponent: () => import('./features/profile/profile.component').then(m => m.ProfileComponent)
       },
-      {
-        path: 'profile/:id',
-        loadComponent: () => import('./features/profile/profile.component').then(m => m.ProfileComponent)
-      },
-      {
-        path: 'notifications',
-        loadComponent: () => import('./features/notifications/notifications.component').then(m => m.NotificationsComponent)
-      },
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+       {
+         path: 'profile/:id',
+         loadComponent: () => import('./features/profile/profile.component').then(m => m.ProfileComponent)
+       },
+       {
+         path: 'post/:id',
+         loadComponent: () => import('./features/post-detail/post-detail.component').then(m => m.PostDetailComponent)
+       },
+       {
+         path: 'notifications',
+         loadComponent: () => import('./features/notifications/notifications.component').then(m => m.NotificationsComponent)
+       },
+       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
   { path: '**', redirectTo: 'landing' }

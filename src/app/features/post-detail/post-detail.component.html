@@ -1,0 +1,112 @@
+<div class="post-detail-container">
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading()">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <!-- Post Content -->
+  <div class="post-detail" *ngIf="post() && !loading()">
+    <mat-card class="post-card">
+      <!-- Post Header -->
+      <div class="post-header">
+        <div class="post-header-left">
+          <div class="post-avatar">{{ getInitials(post()!.author.displayName) }}</div>
+          <div class="post-meta">
+            <div class="post-community">
+              <mat-icon class="community-icon">{{ post()!.community.icon }}</mat-icon>
+              <a routerLink="/community/{{ post()!.community.id }}" class="community-name">
+                {{ post()!.community.name }}
+              </a>
+            </div>
+            <div class="post-author-row">
+              <a routerLink="/profile/{{ post()!.author.id }}" class="author-name">
+                {{ post()!.author.displayName }}
+              </a>
+              <span class="meta-dot">·</span>
+              <span class="post-time">{{ post()!.createdAt | timeAgo }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post Body -->
+      <div class="post-body">
+        <h1 class="post-title">{{ post()!.title }}</h1>
+        <p class="post-content">{{ post()!.content }}</p>
+        <img *ngIf="post()!.imageUrl" [src]="post()!.imageUrl" [alt]="post()!.title" class="post-image" />
+      </div>
+
+      <!-- Post Stats -->
+      <div class="post-stats">
+        <span class="stat">{{ post()!.likes }} likes</span>
+        <span class="stat">{{ post()!.comments }} comments</span>
+      </div>
+
+      <!-- Post Actions -->
+      <mat-divider></mat-divider>
+      <div class="post-actions">
+        <button class="action-btn like-btn" [class.liked]="post()!.isLiked" (click)="onLike()" 
+                matTooltip="Like post" aria-label="Like this post">
+          <mat-icon>{{ post()!.isLiked ? 'favorite' : 'favorite_border' }}</mat-icon>
+          <span>Like</span>
+        </button>
+        <button class="action-btn" matTooltip="Share" aria-label="Share this post">
+          <mat-icon>ios_share</mat-icon>
+          <span>Share</span>
+        </button>
+      </div>
+    </mat-card>
+
+    <!-- Comments Section -->
+    <div class="comments-section">
+      <h2 class="comments-title">Comments ({{ comments().length }})</h2>
+
+      <!-- Add Comment Form -->
+      <mat-card class="add-comment-card">
+        <div class="add-comment-form">
+          <div class="comment-avatar">{{ getInitials('You') }}</div>
+          <div class="comment-input-wrapper">
+            <mat-form-field class="comment-field" appearance="outline">
+              <input matInput 
+                     [value]="newCommentContent()"
+                     (input)="updateCommentContent($event)"
+                     placeholder="Add a comment..."
+                     aria-label="Write a comment">
+              <button matSuffix mat-icon-button (click)="addComment()" 
+                      [disabled]="!newCommentContent().trim()"
+                      aria-label="Post comment">
+                <mat-icon>send</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- Comments List -->
+      <div class="comments-list" *ngIf="comments().length > 0">
+        <app-comment 
+          *ngFor="let comment of comments()"
+          [comment]="comment"
+          (liked)="onCommentLike($event)"
+          (replied)="onCommentReply($event)">
+        </app-comment>
+      </div>
+
+      <!-- No Comments State -->
+      <div class="no-comments" *ngIf="comments().length === 0">
+        <mat-icon>chat_bubble_outline</mat-icon>
+        <p>No comments yet. Be the first to comment!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!post() && !loading()">
+    <mat-icon>not_found</mat-icon>
+    <h2>Post not found</h2>
+    <p>The post you're looking for doesn't exist or has been deleted.</p>
+    <a routerLink="/dashboard" class="back-link">
+      <button mat-raised-button color="primary">Back to Dashboard</button>
+    </a>
+  </div>
+</div>

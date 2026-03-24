@@ -1,0 +1,51 @@
+<div [ngClass]="'comment ' + getIndentClass()">
+  <!-- Comment Header -->
+  <div class="comment-header">
+    <div class="comment-avatar">{{ getInitials(comment().author.displayName) }}</div>
+    <div class="comment-meta">
+      <a [routerLink]="['/profile', comment().author.id]" class="comment-author">
+        {{ comment().author.displayName }}
+      </a>
+      <span class="meta-dot">·</span>
+      <span class="comment-time">{{ comment().createdAt | timeAgo }}</span>
+    </div>
+    <button class="more-btn" [matMenuTriggerFor]="commentMenu" aria-label="Comment options">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #commentMenu="matMenu">
+      <button mat-menu-item><mat-icon>bookmark_border</mat-icon><span>Save</span></button>
+      <button mat-menu-item class="report-item"><mat-icon>flag</mat-icon><span>Report</span></button>
+    </mat-menu>
+  </div>
+
+  <!-- Comment Body -->
+  <div class="comment-body">
+    <p class="comment-content">{{ comment().content }}</p>
+  </div>
+
+  <!-- Comment Actions -->
+  <div class="comment-actions">
+    <button class="action-btn like-btn" [class.liked]="comment().isLiked" (click)="onLike()" 
+            matTooltip="Like comment" aria-label="Like this comment">
+      <mat-icon>{{ comment().isLiked ? 'favorite' : 'favorite_border' }}</mat-icon>
+      <span *ngIf="comment().likes > 0">{{ comment().likes }}</span>
+    </button>
+    <button class="action-btn" (click)="onReply()" matTooltip="Reply" 
+            *ngIf="level() < 2" aria-label="Reply to this comment">
+      <mat-icon>reply</mat-icon>
+      <span>Reply</span>
+    </button>
+  </div>
+
+  <!-- Nested Replies -->
+  <div class="comment-replies" *ngIf="(comment().replies?.length ?? 0) > 0">
+    <div *ngFor="let reply of comment().replies" class="reply-wrapper">
+      <app-comment 
+        [comment]="reply" 
+        [level]="level() + 1"
+        (liked)="liked.emit($event)"
+        (replied)="replied.emit($event)">
+      </app-comment>
+    </div>
+  </div>
+</div>
