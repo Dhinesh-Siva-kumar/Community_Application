@@ -1,6 +1,6 @@
 import { Component, OnInit, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Community } from '../../core/models';
 import { CommunityService } from '../../core/services/community.service';
 import { ButtonComponent } from '../../shared/components/button/button.component';
@@ -31,7 +31,7 @@ export class SidebarComponent implements OnInit {
 
   joinedCommunities = signal<Community[]>([]);
 
-  constructor(private communityService: CommunityService) {}
+  constructor(private communityService: CommunityService, private router: Router) {}
 
   ngOnInit(): void {
     this.communityService.getJoinedCommunities().subscribe({
@@ -43,6 +43,10 @@ export class SidebarComponent implements OnInit {
         this.joinedCommunities.set([]);
       }
     });
+  }
+
+  isActive(route: string): boolean {
+    return this.router.url === route;
   }
 
   onNavClick(): void {

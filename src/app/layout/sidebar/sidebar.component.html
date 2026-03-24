@@ -28,16 +28,18 @@
   <nav class="sidebar-nav" aria-label="Main navigation">
     <p class="section-label" *ngIf="isExpanded()">Main</p>
     <ng-container *ngFor="let item of getMenuItems()">
-      <a 
-        [routerLink]="item.route" 
-        routerLinkActive="active" 
-        class="nav-item" 
-        [title]="!isExpanded() ? item.label : ''"
-        (click)="onNavClick()">
-        <span class="nav-icon-wrap" aria-hidden="true">{{ item.icon }}</span>
-        <span *ngIf="isExpanded()" class="nav-label">{{ item.label }}</span>
+      <a [routerLink]="item.route" 
+      class="nav-item"
+      [class.active]="isActive(item.route)"
+        [title]="!isExpanded() ? item.label : ''" (click)="onNavClick()">
+        <span class="nav-icon-wrap" aria-hidden="true">
+          {{ item.icon }}
+        </span>
+        <span *ngIf="isExpanded()" class="nav-label">
+          {{ item.label }}
+        </span>
       </a>
-    </ng-container>
+      </ng-container>
   </nav>
 
   <div class="sidebar-divider"></div>
