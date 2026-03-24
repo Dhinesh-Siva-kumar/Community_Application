@@ -1,0 +1,31 @@
+<nav 
+  class="bottom-navigation" 
+  [ngClass]="customClass"
+  role="navigation"
+  aria-label="Mobile navigation">
+  
+  <button 
+    *ngFor="let item of items"
+    type="button"
+    class="nav-item"
+    [ngClass]="{'active': item.active, 'disabled': item.disabled}"
+    [disabled]="item.disabled"
+    [routerLink]="item.route"
+    [routerLinkActive]="'active'"
+    [routerLinkActiveOptions]="{exact: true}"
+    [attr.aria-label]="item.label"
+    [attr.aria-current]="item.active ? 'page' : null"
+    (click)="onItemClick(item)">
+    
+    <span class="nav-item-icon" aria-hidden="true">{{ item.icon }}</span>
+    
+    <span class="nav-item-label">{{ item.label }}</span>
+    
+    <span 
+      *ngIf="item.badge && item.badge > 0" 
+      class="nav-item-badge"
+      [attr.aria-label]="item.badge + ' ' + item.label">
+      {{ item.badge > 99 ? '99+' : item.badge }}
+    </span>
+  </button>
+</nav>

@@ -1,0 +1,10 @@
+<button
+  [class]="getButtonClasses()"
+  [disabled]="disabled || loading"
+  (click)="onClick()"
+  type="button"
+  [attr.aria-busy]="loading"
+  [attr.aria-disabled]="disabled"
+>
+  <ng-content></ng-content>
+</button>

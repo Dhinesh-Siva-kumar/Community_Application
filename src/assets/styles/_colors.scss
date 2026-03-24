@@ -1,0 +1,182 @@
+// ============================================================
+// COLOR PALETTE & SEMANTIC COLORS
+// ============================================================
+// 11-color design system with WCAG AA contrast verification
+// Reference: 01_MASTER_DESIGN_SYSTEM_REFERENCE.md
+
+// ============================================================
+// PRIMARY COLOR PALETTE (11 Colors)
+// ============================================================
+
+// 1. Primary Blue - Main brand color
+$color-primary:             #5865F2;
+$color-primary-rgb:         88, 101, 242;
+$color-primary-light:       #E8EAFF;
+$color-primary-dark:        #4752C4;
+$color-primary-darker:      #3A3FA1;
+
+// 2. Teal - Secondary accent
+$color-teal:                #4ECDC4;
+$color-teal-rgb:            78, 205, 196;
+$color-teal-light:          #D4F7F5;
+$color-teal-dark:           #3BA89F;
+
+// 3. Red - Error/Destructive actions
+$color-red:                 #FF6B6B;
+$color-red-rgb:             255, 107, 107;
+$color-red-light:           #FFE5E5;
+$color-red-dark:            #E63946;
+
+// 4. Green - Success/Positive
+$color-green:               #2ECC71;
+$color-green-rgb:           46, 204, 113;
+$color-green-light:         #D5F4E6;
+$color-green-dark:          #27AE60;
+
+// 5. Orange - Warning
+$color-orange:              #F39C12;
+$color-orange-rgb:          243, 156, 18;
+$color-orange-light:        #FEE4CB;
+$color-orange-dark:         #D68910;
+
+// 6. Purple - Accent
+$color-purple:              #9B59B6;
+$color-purple-rgb:          155, 89, 182;
+$color-purple-light:        #F0E6FA;
+$color-purple-dark:         #8E44AD;
+
+// ============================================================
+// NEUTRAL COLORS (5 Grays)
+// ============================================================
+
+// Pure White
+$color-white:               #FFFFFF;
+$color-white-rgb:           255, 255, 255;
+
+// Neutral 50 (Almost white - light backgrounds)
+$color-neutral-50:          #F9FAFB;
+$color-neutral-50-rgb:      249, 250, 251;
+
+// Neutral 100 (Light gray - subtle backgrounds)
+$color-neutral-100:         #F3F4F6;
+$color-neutral-100-rgb:     243, 244, 246;
+
+// Neutral 200 (Light border color)
+$color-neutral-200:         #E5E7EB;
+$color-neutral-200-rgb:     229, 231, 235;
+
+// Neutral 500 (Medium gray - secondary text)
+$color-neutral-500:         #6B7280;
+$color-neutral-500-rgb:     107, 114, 128;
+
+// Neutral 900 (Dark text/borders)
+$color-neutral-900:         #111827;
+$color-neutral-900-rgb:     17, 24, 39;
+
+// ============================================================
+// SEMANTIC COLOR ALIASES
+// ============================================================
+
+// Success (Green)
+$color-success:             $color-green;
+$color-success-light:       $color-green-light;
+$color-success-dark:        $color-green-dark;
+
+// Error (Red)
+$color-error:               $color-red;
+$color-error-light:         $color-red-light;
+$color-error-dark:          $color-red-dark;
+
+// Warning (Orange)
+$color-warning:             $color-orange;
+$color-warning-light:       $color-orange-light;
+$color-warning-dark:        $color-orange-dark;
+
+// Info (Primary Blue)
+$color-info:                $color-primary;
+$color-info-light:          $color-primary-light;
+$color-info-dark:           $color-primary-dark;
+
+// Secondary (Teal)
+$color-secondary:           $color-teal;
+$color-secondary-light:     $color-teal-light;
+$color-secondary-dark:      $color-teal-dark;
+
+// ============================================================
+// TEXT COLORS
+// ============================================================
+
+// Primary text (Dark text on light backgrounds)
+$color-text-primary:        $color-neutral-900;
+$color-text-secondary:      $color-neutral-500;
+$color-text-muted:          #9CA3AF;
+$color-text-disabled:       #D1D5DB;
+$color-text-inverse:        $color-white;
+
+// ============================================================
+// BACKGROUND COLORS
+// ============================================================
+
+// Page background
+$color-bg-page:             #F8F9FA;
+$color-bg-section:          $color-neutral-100;
+$color-bg-card:             $color-white;
+$color-bg-hover:            $color-neutral-50;
+$color-bg-active:           $color-primary-light;
+
+// Status backgrounds
+$color-bg-success:          $color-green-light;
+$color-bg-error:            $color-red-light;
+$color-bg-warning:          $color-orange-light;
+$color-bg-info:             $color-primary-light;
+
+// New convention background colors (primary, secondary, tertiary)
+$color-background-primary:  $color-white;
+$color-background-secondary: $color-neutral-50;
+$color-background-tertiary:  $color-neutral-100;
+$color-background-success:   $color-green-light;
+$color-background-error:     $color-red-light;
+$color-background-warning:   $color-orange-light;
+$color-background-info:      $color-primary-light;
+
+// ============================================================
+// BORDER COLORS
+// ============================================================
+
+$color-border-primary:      $color-neutral-200;
+$color-border-secondary:    #E0E0E0;
+$color-border-light:        #F0F0F0;
+$color-border-focus:        $color-primary;
+
+// Main border color alias
+$color-border:              $color-border-primary;
+
+// ============================================================
+// BACKDROP & OVERLAY
+// ============================================================
+
+$color-backdrop-dark:       rgba(0, 0, 0, 0.5);
+$color-backdrop-light:      rgba(0, 0, 0, 0.3);
+
+// ============================================================
+// LEGACY ALIASES (For backward compatibility)
+// ============================================================
+
+$primary:                   $color-primary;
+$secondary:                 $color-teal;
+$accent:                    $color-purple;
+$success:                   $color-green;
+$danger:                    $color-red;
+$error:                     $color-red;
+$error-bg:                  $color-red-light;
+$warning:                   $color-orange;
+$info:                      $color-primary;
+$dark:                      $color-neutral-900;
+$dark-secondary:            #1A1A2E;
+$text:                      $color-text-primary;
+$text-muted:                $color-text-secondary;
+$muted:                     $color-neutral-500;
+$border:                    $color-border-primary;
+$bg:                        $color-bg-page;
+$bg-light:                  $color-neutral-50;
+$white:                     $color-white;

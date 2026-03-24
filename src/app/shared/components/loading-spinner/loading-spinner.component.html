@@ -1,0 +1,4 @@
+<div class="spinner-container">
+  <div [class]="getSpinnerClasses()" [attr.role]="'status'" [attr.aria-label]="label || 'Loading'" aria-busy="true"></div>
+  <span *ngIf="label" class="spinner-label sr-only">{{ label }}</span>
+</div>

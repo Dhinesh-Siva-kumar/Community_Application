@@ -1,0 +1,21 @@
+<div 
+  class="location-badge" 
+  [ngClass]="['badge-' + size, 'badge-' + variant, {'clickable': clickable}, customClass]"
+  role="img"
+  [attr.aria-label]="'Location: ' + postcode + ', ' + area + (hasDistance() ? ', ' + getDisplayDistance() + ' away' : '')"
+  [attr.tabindex]="clickable ? 0 : -1"
+  (click)="onClick()"
+  (keydown.enter)="onClick()"
+  (keydown.space)="onClick()">
+  
+  <span class="location-icon" aria-hidden="true">📍</span>
+  
+  <div class="location-info">
+    <span class="location-postcode">{{ postcode }}</span>
+    <span class="location-area">{{ area }}</span>
+  </div>
+
+  <span *ngIf="hasDistance()" class="location-distance" aria-label="Distance">
+    {{ getDisplayDistance() }}
+  </span>
+</div>

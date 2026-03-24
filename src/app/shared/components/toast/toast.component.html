@@ -1,0 +1,24 @@
+<div 
+  *ngIf="isVisible"
+  class="toast" 
+  [ngClass]="['toast-' + variant, 'position-' + position, customClass]"
+  role="alert"
+  [attr.aria-live]="variant === 'error' ? 'assertive' : 'polite'"
+  [attr.aria-atomic]="true"
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()">
+  
+  <div class="toast-content">
+    <span class="toast-icon" aria-hidden="true">{{ getIcon() }}</span>
+    <span class="toast-message">{{ message }}</span>
+  </div>
+
+  <button 
+    *ngIf="showCloseButton"
+    type="button"
+    class="toast-close-btn"
+    aria-label="Close notification"
+    (click)="onClose()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>

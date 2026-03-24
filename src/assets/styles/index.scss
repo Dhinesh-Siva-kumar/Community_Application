@@ -1,9 +1,35 @@
 // ============================================================
 // ASSETS STYLES - MAIN ENTRY POINT
 // ============================================================
-// This file imports all global styles and design tokens
-// It should be imported once in the global styles.scss
+// Complete design system with tokens, utilities, and components
+// Import order is critical - dependencies first, utilities last
 
-@import 'variables.scss';
-@import 'breakpoints.scss';
-@import 'common.scss';
+// ============================================================
+// 1. DESIGN TOKENS (Variables - no CSS output)
+// ============================================================
+
+@import 'colors.scss';                 // 11-color palette + semantic aliases
+@import 'typography.scss';             // Font families, sizes, weights, mixins
+@import 'breakpoints.scss';            // 6 responsive breakpoints + media mixins
+@import 'spacing.scss';                // 8-point grid scale
+@import 'shadows.scss';                // 6-level elevation system
+@import 'animations.scss';             // Transitions, keyframes, animations
+
+// Legacy variables for backward compatibility
+@import 'variables.scss';              // Existing variables (deprecated but kept for compatibility)
+
+// ============================================================
+// 2. COMPONENT STYLES & UTILITIES
+// ============================================================
+
+@import 'buttons.scss';                // Button variants (primary, secondary, outline, FAB)
+@import 'cards.scss';                  // Card components
+@import 'inputs.scss';                 // Form inputs, textareas, checkboxes, radios
+@import 'utilities.scss';              // Layout, flex, grid, text utilities
+
+// ============================================================
+// 3. ACCESSIBILITY & GLOBAL STYLES
+// ============================================================
+
+@import 'accessibility.scss';          // Focus, screen readers, WCAG compliance
+@import 'common.scss';                 // Global reset, scrollbar, HTML defaults

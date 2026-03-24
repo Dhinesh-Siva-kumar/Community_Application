@@ -1,0 +1,355 @@
+// ============================================================
+// UTILITY CLASSES
+// ============================================================
+// Common layout and display utilities
+
+// ============================================================
+// DISPLAY UTILITIES
+// ============================================================
+
+.d-none { display: none; }
+.d-block { display: block; }
+.d-inline { display: inline; }
+.d-inline-block { display: inline-block; }
+.d-flex { display: flex; }
+.d-grid { display: grid; }
+.d-contents { display: contents; }
+
+// Display responsive utilities
+@media (max-width: $breakpoint-md) {
+  .d-md-none { display: none; }
+  .d-md-block { display: block; }
+  .d-md-flex { display: flex; }
+  .d-md-grid { display: grid; }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .d-sm-none { display: none; }
+  .d-sm-block { display: block; }
+  .d-sm-flex { display: flex; }
+  .d-sm-grid { display: grid; }
+}
+
+// ============================================================
+// VISIBILITY UTILITIES
+// ============================================================
+
+.invisible { visibility: hidden; }
+.visible { visibility: visible; }
+.overflow-hidden { overflow: hidden; }
+.overflow-visible { overflow: visible; }
+.overflow-auto { overflow: auto; }
+.overflow-x-auto { overflow-x: auto; }
+.overflow-y-auto { overflow-y: auto; }
+
+// ============================================================
+// OPACITY UTILITIES
+// ============================================================
+
+.opacity-0 { opacity: 0; }
+.opacity-25 { opacity: 0.25; }
+.opacity-50 { opacity: 0.5; }
+.opacity-75 { opacity: 0.75; }
+.opacity-100 { opacity: 1; }
+
+// ============================================================
+// FLEXBOX UTILITIES
+// ============================================================
+
+// Flex direction
+.flex-row { flex-direction: row; }
+.flex-column { flex-direction: column; }
+.flex-row-reverse { flex-direction: row-reverse; }
+.flex-column-reverse { flex-direction: column-reverse; }
+
+// Flex wrap
+.flex-wrap { flex-wrap: wrap; }
+.flex-nowrap { flex-wrap: nowrap; }
+.flex-wrap-reverse { flex-wrap: wrap-reverse; }
+
+// Justify content (main axis)
+.justify-start { justify-content: flex-start; }
+.justify-end { justify-content: flex-end; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-around { justify-content: space-around; }
+.justify-evenly { justify-content: space-evenly; }
+
+// Align items (cross axis)
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.items-center { align-items: center; }
+.items-baseline { align-items: baseline; }
+.items-stretch { align-items: stretch; }
+
+// Align content (multiline flex)
+.content-start { align-content: flex-start; }
+.content-end { align-content: flex-end; }
+.content-center { align-content: center; }
+.content-between { align-content: space-between; }
+.content-around { align-content: space-around; }
+
+// Flex grow/shrink
+.flex-1 { flex: 1 1 0%; }
+.flex-auto { flex: auto; }
+.flex-none { flex: none; }
+
+.flex-grow { flex-grow: 1; }
+.flex-grow-0 { flex-grow: 0; }
+
+.flex-shrink { flex-shrink: 1; }
+.flex-shrink-0 { flex-shrink: 0; }
+
+// ============================================================
+// GRID UTILITIES
+// ============================================================
+
+// Grid columns
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+// Grid rows
+.grid-rows-1 { grid-template-rows: repeat(1, minmax(0, 1fr)); }
+.grid-rows-2 { grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.grid-rows-3 { grid-template-rows: repeat(3, minmax(0, 1fr)); }
+
+// Auto grid (responsive)
+.grid-auto { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+
+// Grid responsive
+@media (max-width: $breakpoint-md) {
+  .grid-cols-md-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-cols-md-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .grid-cols-sm-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+}
+
+// ============================================================
+// POSITIONING UTILITIES
+// ============================================================
+
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+.static { position: static; }
+
+.top-0 { top: 0; }
+.right-0 { right: 0; }
+.bottom-0 { bottom: 0; }
+.left-0 { left: 0; }
+.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+
+// ============================================================
+// SIZE UTILITIES
+// ============================================================
+
+// Width utilities
+.w-full { width: 100%; }
+.w-auto { width: auto; }
+.w-screen { width: 100vw; }
+.w-1\/2 { width: 50%; }
+.w-1\/3 { width: 33.333%; }
+.w-2\/3 { width: 66.667%; }
+.w-1\/4 { width: 25%; }
+.w-3\/4 { width: 75%; }
+
+// Height utilities
+.h-full { height: 100%; }
+.h-auto { height: auto; }
+.h-screen { height: 100vh; }
+
+// Min/Max width
+.min-w-full { min-width: 100%; }
+.min-w-0 { min-width: 0; }
+.max-w-full { max-width: 100%; }
+.max-w-xl { max-width: 576px; }
+.max-w-2xl { max-width: 768px; }
+
+// ============================================================
+// TEXT UTILITIES
+// ============================================================
+
+// Text alignment
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-justify { text-align: justify; }
+
+// Text transform
+.text-uppercase { text-transform: uppercase; }
+.text-lowercase { text-transform: lowercase; }
+.text-capitalize { text-transform: capitalize; }
+.text-normal-case { text-transform: none; }
+
+// Font weight
+.font-light { font-weight: $font-weight-light; }
+.font-normal { font-weight: $font-weight-normal; }
+.font-medium { font-weight: $font-weight-medium; }
+.font-semibold { font-weight: $font-weight-semibold; }
+.font-bold { font-weight: $font-weight-bold; }
+
+// Font style
+.italic { font-style: italic; }
+.not-italic { font-style: normal; }
+
+// Text decoration
+.underline { text-decoration: underline; }
+.no-underline { text-decoration: none; }
+.line-through { text-decoration: line-through; }
+
+// White space
+.whitespace-normal { white-space: normal; }
+.whitespace-nowrap { white-space: nowrap; }
+.whitespace-pre { white-space: pre; }
+.whitespace-pre-wrap { white-space: pre-wrap; }
+
+// Text truncate
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.truncate-lines-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.truncate-lines-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ============================================================
+// BACKGROUND & BORDER UTILITIES
+// ============================================================
+
+// Background colors
+.bg-white { background-color: $color-white; }
+.bg-primary { background-color: $color-primary; }
+.bg-primary-light { background-color: $color-primary-light; }
+.bg-secondary { background-color: $color-teal; }
+.bg-success { background-color: $color-green; }
+.bg-warning { background-color: $color-orange; }
+.bg-danger { background-color: $color-red; }
+.bg-error { background-color: $color-red; }
+.bg-neutral-50 { background-color: $color-neutral-50; }
+.bg-neutral-100 { background-color: $color-neutral-100; }
+
+// Text colors
+.text-white { color: $color-white; }
+.text-primary { color: $color-primary; }
+.text-secondary { color: $color-text-secondary; }
+.text-success { color: $color-green; }
+.text-warning { color: $color-orange; }
+.text-danger { color: $color-red; }
+.text-error { color: $color-red; }
+.text-muted { color: $color-text-secondary; }
+
+// Border utilities
+.border { border: 1px solid $color-border-primary; }
+.border-t { border-top: 1px solid $color-border-primary; }
+.border-r { border-right: 1px solid $color-border-primary; }
+.border-b { border-bottom: 1px solid $color-border-primary; }
+.border-l { border-left: 1px solid $color-border-primary; }
+.border-none { border: none; }
+
+// Border radius
+.rounded { border-radius: $radius-sm; }
+.rounded-md { border-radius: $radius-md; }
+.rounded-lg { border-radius: $radius-lg; }
+.rounded-full { border-radius: $radius-full; }
+.rounded-none { border-radius: 0; }
+
+// ============================================================
+// CURSOR UTILITIES
+// ============================================================
+
+.cursor-auto { cursor: auto; }
+.cursor-default { cursor: default; }
+.cursor-pointer { cursor: pointer; }
+.cursor-wait { cursor: wait; }
+.cursor-text { cursor: text; }
+.cursor-move { cursor: move; }
+.cursor-not-allowed { cursor: not-allowed; }
+
+// ============================================================
+// USER SELECT UTILITIES
+// ============================================================
+
+.select-none { user-select: none; }
+.select-text { user-select: text; }
+.select-all { user-select: all; }
+.select-auto { user-select: auto; }
+
+// ============================================================
+// Z-INDEX UTILITIES
+// ============================================================
+
+.z-0 { z-index: 0; }
+.z-10 { z-index: 10; }
+.z-20 { z-index: 20; }
+.z-30 { z-index: 30; }
+.z-40 { z-index: 40; }
+.z-50 { z-index: 50; }
+.z-auto { z-index: auto; }
+
+// Semantic z-index utilities
+.z-dropdown { z-index: 1000; }
+.z-sticky { z-index: 1000; }
+.z-fixed { z-index: 1020; }
+.z-modal-backdrop { z-index: 1040; }
+.z-modal { z-index: 1050; }
+.z-popover { z-index: 1060; }
+.z-tooltip { z-index: 1070; }
+
+// ============================================================
+// CONTAINER QUERIES (Modern CSS)
+// ============================================================
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $spacing-lg;
+  padding-right: $spacing-lg;
+  width: 100%;
+}
+
+@media (max-width: 1280px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 720px;
+    padding-left: $spacing-md;
+    padding-right: $spacing-md;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    max-width: 100%;
+    padding-left: $spacing-md;
+    padding-right: $spacing-md;
+  }
+}

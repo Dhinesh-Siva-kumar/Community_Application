@@ -1,0 +1,412 @@
+// ============================================================
+// INPUT FIELD STYLES
+// ============================================================
+// Text inputs, textareas, and other form field styling
+
+// ============================================================
+// INPUT SIZING & TOKENS
+// ============================================================
+
+$input-height-sm:           36px;
+$input-height-md:           40px;
+$input-height-lg:           48px;
+
+$input-padding-x:           $spacing-md;
+$input-padding-y:           $spacing-sm;
+
+$input-border-radius:       8px;
+$input-border-width:        1px;
+$input-border-color:        $color-border-primary;
+$input-border-color-focus:  $color-primary;
+
+$input-font-size:           $font-size-sm;
+$input-font-family:         $font-family-body;
+
+$input-bg-disabled:         $color-neutral-100;
+$input-text-disabled:       $color-text-disabled;
+
+// ============================================================
+// BASE INPUT MIXIN
+// ============================================================
+
+@mixin input-base($height: md) {
+  display: block;
+  width: 100%;
+  font-family: $input-font-family;
+  font-size: $input-font-size;
+  line-height: 1.5;
+  color: $color-text-primary;
+  background-color: $color-white;
+  border: $input-border-width solid $input-border-color;
+  border-radius: $input-border-radius;
+  padding: $input-padding-y $input-padding-x;
+  transition: border-color $duration-short $easing-standard, box-shadow $duration-short $easing-standard, background-color $duration-short $easing-standard;
+
+  @if $height == sm {
+    height: $input-height-sm;
+  } @else if $height == lg {
+    height: $input-height-lg;
+  } @else {
+    height: $input-height-md;
+  }
+
+  // Focus state
+  &:focus {
+    outline: none;
+    border-color: $input-border-color-focus;
+    box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
+  }
+
+  // Hover state
+  &:hover:not(:disabled):not([readonly]) {
+    border-color: darken($input-border-color, 10%);
+  }
+
+  // Disabled state
+  &:disabled,
+  &[readonly] {
+    background-color: $input-bg-disabled;
+    color: $input-text-disabled;
+    cursor: not-allowed;
+  }
+
+  // Placeholder
+  &::placeholder {
+    color: $color-text-secondary;
+  }
+
+  // Selection
+  &::selection {
+    background-color: $color-primary-light;
+    color: $color-primary-dark;
+  }
+}
+
+// ============================================================
+// INPUT ERROR MIXIN
+// ============================================================
+
+@mixin input-error {
+  border-color: $color-red;
+
+  &:focus {
+    border-color: $color-red;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+  }
+
+  &:hover:not(:disabled) {
+    border-color: $color-red-dark;
+  }
+}
+
+// ============================================================
+// TEXT INPUT UTILITY CLASSES
+// ============================================================
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="url"],
+input[type="number"],
+input[type="tel"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  @include input-base(md);
+
+  &.input-sm {
+    @include input-base(sm);
+  }
+
+  &.input-lg {
+    @include input-base(lg);
+  }
+
+  &.input-error {
+    @include input-error;
+  }
+
+  &.input-success {
+    border-color: $color-green;
+
+    &:focus {
+      border-color: $color-green;
+      box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+    }
+  }
+}
+
+// Textarea
+textarea {
+  @include input-base(md);
+  min-height: 120px;
+  padding: $input-padding-y $input-padding-x;
+  resize: vertical;
+  font-family: $input-font-family;
+
+  &.textarea-sm {
+    min-height: 80px;
+  }
+
+  &.textarea-lg {
+    min-height: 160px;
+  }
+
+  &.textarea-no-resize {
+    resize: none;
+  }
+
+  &.input-error {
+    @include input-error;
+  }
+}
+
+// ============================================================
+// INPUT WRAPPER & LABEL
+// ============================================================
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-lg;
+
+  &.form-group-horizontal {
+    flex-direction: row;
+    align-items: center;
+    gap: $spacing-md;
+  }
+}
+
+// Form label
+.form-label {
+  @include body-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+
+  &.required::after {
+    content: ' *';
+    color: $color-red;
+    margin-left: 2px;
+  }
+}
+
+// Helper text (description below input)
+.form-helper-text {
+  @include body-xs;
+  color: $color-text-secondary;
+  margin-top: 4px;
+  display: block;
+}
+
+// Error message
+.form-error-message {
+  @include body-xs;
+  color: $color-red;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &::before {
+    content: '⚠';
+    flex-shrink: 0;
+  }
+}
+
+// Success message
+.form-success-message {
+  @include body-xs;
+  color: $color-green;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &::before {
+    content: '✓';
+    flex-shrink: 0;
+  }
+}
+
+// ============================================================
+// INPUT WITH ICONS
+// ============================================================
+
+// Input wrapper for icon support
+.input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  // Icon on the left
+  &.input-icon-left {
+    input {
+      padding-left: 40px;
+    }
+
+    .input-icon {
+      left: $input-padding-x;
+    }
+  }
+
+  // Icon on the right
+  &.input-icon-right {
+    input {
+      padding-right: 40px;
+    }
+
+    .input-icon {
+      right: $input-padding-x;
+    }
+  }
+}
+
+// Input icon positioning
+.input-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $color-text-secondary;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+// ============================================================
+// CHECKBOX & RADIO STYLES
+// ============================================================
+
+// Checkbox
+input[type="checkbox"],
+input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: $color-primary;
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+// Checkbox/Radio label wrapper
+.checkbox-wrapper,
+.radio-wrapper {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  cursor: pointer;
+
+  input {
+    cursor: pointer;
+  }
+
+  label {
+    cursor: pointer;
+    @include body-sm;
+    margin: 0;
+  }
+
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+
+    input {
+      cursor: not-allowed;
+    }
+
+    label {
+      cursor: not-allowed;
+    }
+  }
+}
+
+// ============================================================
+// SELECT/DROPDOWN STYLES
+// ============================================================
+
+select {
+  @include input-base(md);
+  appearance: none;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+
+  &::-ms-expand {
+    display: none;
+  }
+
+  &.select-sm {
+    @include input-base(sm);
+  }
+
+  &.select-lg {
+    @include input-base(lg);
+  }
+}
+
+// ============================================================
+// INPUT STATE UTILITIES
+// ============================================================
+
+// Full width input
+.input-full-width {
+  width: 100%;
+}
+
+// Inline inputs
+.input-inline {
+  display: inline-block;
+  width: auto;
+}
+
+// Input group (multiple inputs together)
+.input-group {
+  display: flex;
+  gap: $spacing-sm;
+
+  input,
+  select,
+  textarea {
+    flex: 1;
+  }
+
+  .input-addon {
+    display: flex;
+    align-items: center;
+    padding: 0 $input-padding-x;
+    background-color: $color-bg-section;
+    border: $input-border-width solid $input-border-color;
+    border-radius: $input-border-radius;
+    @include body-sm;
+    color: $color-text-secondary;
+    white-space: nowrap;
+  }
+
+  &.input-group-vertical {
+    flex-direction: column;
+
+    input,
+    select,
+    textarea,
+    .input-addon {
+      width: 100%;
+    }
+  }
+}

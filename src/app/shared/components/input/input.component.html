@@ -1,0 +1,50 @@
+<div [class]="getWrapperClasses()">
+  <!-- Label -->
+  <label *ngIf="label" [class.required-indicator]="required">
+    {{ label }}
+  </label>
+
+  <!-- Input wrapper with icon support -->
+  <div class="input-wrapper" [ngClass]="{ 'input-icon-left': iconLeft, 'input-icon-right': iconRight }">
+    <!-- Left icon -->
+    <span *ngIf="iconLeft" class="input-icon input-icon-left">
+      {{ iconLeft }}
+    </span>
+
+    <!-- Input field -->
+    <input
+      [type]="type"
+      [class]="getInputClasses()"
+      [placeholder]="placeholder"
+      [value]="value"
+      [disabled]="disabled"
+      [required]="required"
+      (change)="onInputChange($event)"
+      (input)="onInputChange($event)"
+      (focus)="onInputFocus()"
+      (blur)="onInputBlur()"
+      [attr.aria-label]="label"
+      [attr.aria-describedby]="errorMessage ? 'error-message' : (helperText ? 'helper-text' : undefined)"
+    />
+
+    <!-- Right icon -->
+    <span *ngIf="iconRight" class="input-icon input-icon-right">
+      {{ iconRight }}
+    </span>
+  </div>
+
+  <!-- Helper text -->
+  <small *ngIf="helperText && !errorMessage && !successMessage" id="helper-text" class="form-helper-text">
+    {{ helperText }}
+  </small>
+
+  <!-- Error message -->
+  <div *ngIf="errorMessage" id="error-message" class="form-error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Success message -->
+  <div *ngIf="successMessage && !errorMessage" class="form-success-message">
+    {{ successMessage }}
+  </div>
+</div>

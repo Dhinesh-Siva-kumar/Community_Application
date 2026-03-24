@@ -1,42 +1,127 @@
-@import '../../../assets/styles/_variables.scss';
-@import '../../../assets/styles/_breakpoints.scss';
+@import '../../../assets/styles/index.scss';
 
 // ============================================================
 // SIDEBAR BASE
 // ============================================================
 .sidebar {
-  width: $sidebar-width;
+  width: 260px;
   height: calc(100vh - 64px);
   position: fixed;
   top: 64px;
   left: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  background: #ffffff;
-  border-right: 1px solid $border;
-  padding: 20px 0 0;
+  background: $color-white;
+  border-right: 1px solid $color-border;
+  padding: $spacing-lg 0 0;
   display: flex;
   flex-direction: column;
-  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.28s ease;
+  transition: all $transition-base;
   z-index: 1000;
 
-  // Hide scrollbar but keep scrolling
+  // Custom scrollbar
   scrollbar-width: thin;
-  scrollbar-color: #e5e7eb transparent;
-  &::-webkit-scrollbar { width: 4px; }
-  &::-webkit-scrollbar-track { background: transparent; }
-  &::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
+  scrollbar-color: $color-border transparent;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $color-border;
+    border-radius: $border-radius-sm;
 
-  @media (max-width: $breakpoint-sidebar) {
+    &:hover {
+      background: $color-text-secondary;
+    }
+  }
+
+  @media (max-width: $breakpoint-md) {
     transform: translateX(-100%);
     box-shadow: none;
     z-index: 1000;
+    width: 75vw;
+    max-width: 300px;
 
     &.sidebar-open {
       transform: translateX(0);
-      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+      @include box-shadow-lg;
     }
+  }
+
+  // Collapsed state (desktop only)
+  &.sidebar-collapsed {
+    width: 80px;
+
+    .sidebar-toggle-btn-wrap {
+      justify-content: center;
+    }
+
+    .section-label,
+    .nav-label,
+    .community-name,
+    .member-badge,
+    .coming-soon-badge {
+      display: none;
+    }
+
+    .nav-item {
+      justify-content: center;
+      padding: $spacing-md;
+    }
+
+    .community-item {
+      justify-content: center;
+      padding: $spacing-md;
+    }
+
+    .nav-icon-wrap {
+      margin: 0;
+    }
+
+    .community-icon-wrap {
+      margin: 0;
+    }
+
+    .sidebar-footer {
+      display: none;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      width: 75vw;
+      max-width: 300px;
+
+      .section-label,
+      .nav-label,
+      .community-name,
+      .member-badge,
+      .coming-soon-badge {
+        display: block;
+      }
+
+      .nav-item {
+        justify-content: flex-start;
+        padding: $spacing-md $spacing-lg;
+      }
+
+      .community-item {
+        justify-content: flex-start;
+        padding: $spacing-md $spacing-lg;
+      }
+
+      .nav-icon-wrap {
+        margin-right: $spacing-md;
+      }
+
+      .community-icon-wrap {
+        margin-right: $spacing-md;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 }
 
@@ -47,224 +132,310 @@
   display: none;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px 16px;
-  border-bottom: 1px solid $border;
-  margin-bottom: 8px;
+  padding: 0 $spacing-lg $spacing-lg;
+  border-bottom: 1px solid $color-border;
 
-  @media (max-width: $breakpoint-sidebar) {
+  @media (max-width: $breakpoint-md) {
     display: flex;
   }
-
-  .sidebar-mobile-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: $text-dark;
-  }
-
-  .sidebar-close-btn {
-    color: $text-muted;
-    &:hover { color: $text-dark; }
-  }
 }
 
-// ============================================================
-// SECTION LABELS
-// ============================================================
-.section-label {
-  font-size: 10.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.7px;
-  color: $text-muted;
-  margin: 0 0 6px 28px;
+.sidebar-mobile-title {
+  @include font-size-base;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.sidebar-close-btn {
+  display: none;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: $border-radius-md;
+  color: $color-text-secondary;
+  transition: all $transition-base;
   padding: 0;
+  font-size: $font-size-lg;
+
+  &:hover {
+    background: $color-background-secondary;
+    color: $color-text-primary;
+  }
+
+  &:active {
+    background: $color-background-tertiary;
+  }
+
+  &:focus {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
 // ============================================================
-// NAV ITEMS
+// TOGGLE BUTTON (desktop expand/collapse)
+// ============================================================
+.sidebar-toggle-btn-wrap {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 $spacing-sm;
+  margin-bottom: $spacing-md;
+
+  @media (max-width: $breakpoint-md) {
+    display: none;
+  }
+}
+
+.sidebar-toggle-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid $color-border;
+  background: $color-white;
+  border-radius: $border-radius-md;
+  cursor: pointer;
+  color: $color-text-secondary;
+  transition: all $transition-base;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-lg;
+  padding: 0;
+
+  &:hover {
+    background: $color-background-secondary;
+    color: $color-text-primary;
+    border-color: $color-primary;
+  }
+
+  &:active {
+    background: $color-background-tertiary;
+  }
+
+  &:focus {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// ============================================================
+// NAVIGATION
 // ============================================================
 .sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  padding: 0 12px 12px;
+  flex-shrink: 0;
+  padding: $spacing-md $spacing-sm;
+}
+
+.section-label {
+  @include font-size-xs;
+  font-weight: $font-weight-bold;
+  color: $color-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: $spacing-sm $spacing-md;
+  margin: $spacing-md $spacing-sm $spacing-sm;
+  line-height: 1;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  border-radius: 10px;
+  gap: $spacing-md;
+  padding: $spacing-md $spacing-lg;
+  color: $color-text-primary;
   text-decoration: none;
-  color: #4b5563;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background 0.15s ease, color 0.15s ease;
-  cursor: pointer;
+  border-radius: $border-radius-md;
+  transition: all $transition-base;
   position: relative;
-
-  .nav-icon-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: transparent;
-    transition: background 0.15s ease;
-    flex-shrink: 0;
-
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
-      color: #6b7280;
-      transition: color 0.15s ease;
-    }
-  }
+  font-size: $font-size-sm;
 
   &:hover {
-    background: $hover-bg;
-    color: $text-dark;
+    background: $color-background-secondary;
+    color: $color-primary;
+  }
 
-    .nav-icon-wrap {
-      background: rgba(99, 102, 241, 0.08);
-      mat-icon { color: $primary; }
-    }
+  &:active {
+    background: $color-background-tertiary;
+  }
+
+  &:focus {
+    outline: 2px solid $color-primary;
+    outline-offset: -2px;
   }
 
   &.active {
-    background: $primary-light;
-    color: $primary;
-    font-weight: 600;
+    background: rgba($color-primary, 0.1);
+    color: $color-primary;
+    font-weight: $font-weight-bold;
 
     .nav-icon-wrap {
-      background: rgba(99, 102, 241, 0.15);
-      mat-icon { color: $primary; }
-    }
-
-    &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 3px;
-      height: 60%;
-      border-radius: 0 3px 3px 0;
-      background: $primary;
+      background: rgba($color-primary, 0.1);
+      color: $color-primary;
     }
   }
 
   &.nav-item-muted {
-    color: #9ca3af;
-    cursor: default;
+    opacity: 0.6;
+    cursor: not-allowed;
 
     &:hover {
       background: transparent;
-      color: #9ca3af;
-
-      .nav-icon-wrap {
-        background: transparent;
-        mat-icon { color: #9ca3af; }
-      }
+      color: $color-text-secondary;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.nav-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: $font-size-lg;
+  flex-shrink: 0;
+}
+
+.nav-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 // ============================================================
 // DIVIDER
 // ============================================================
 .sidebar-divider {
-  margin: 8px 16px !important;
-  border-color: $border !important;
+  height: 1px;
+  background: $color-border;
+  margin: $spacing-md $spacing-lg;
+  flex-shrink: 0;
 }
 
 // ============================================================
-// COMMUNITY ITEMS
+// SECTIONS
 // ============================================================
 .sidebar-section {
-  padding: 12px 12px;
+  flex-shrink: 0;
+  padding: 0 $spacing-sm;
+  margin-bottom: $spacing-lg;
 }
 
 .community-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 14px;
-  border-radius: 10px;
+  gap: $spacing-md;
+  padding: $spacing-md $spacing-lg;
+  color: $color-text-primary;
   text-decoration: none;
-  color: #4b5563;
-  font-size: 13px;
-  font-weight: 500;
-  transition: background 0.15s ease, color 0.15s ease;
-  cursor: pointer;
-
-  .community-icon-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 7px;
-    background: rgba(99, 102, 241, 0.08);
-    flex-shrink: 0;
-
-    mat-icon {
-      font-size: 16px;
-      width: 16px;
-      height: 16px;
-      color: $primary;
-    }
-  }
-
-  .community-name {
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .member-badge {
-    font-size: 11px;
-    color: $text-muted;
-    font-weight: 400;
-    background: $hover-bg;
-    padding: 2px 7px;
-    border-radius: 20px;
-    flex-shrink: 0;
-  }
+  border-radius: $border-radius-md;
+  transition: all $transition-base;
+  position: relative;
+  font-size: $font-size-sm;
 
   &:hover {
-    background: $hover-bg;
-    color: $text-dark;
+    background: $color-background-secondary;
+    color: $color-primary;
+  }
+
+  &:active {
+    background: $color-background-tertiary;
+  }
+
+  &:focus {
+    outline: 2px solid $color-primary;
+    outline-offset: -2px;
   }
 
   &.active {
-    background: $primary-light;
-    color: $primary;
+    background: rgba($color-primary, 0.1);
+    color: $color-primary;
+    font-weight: $font-weight-bold;
+
+    .community-icon-wrap {
+      background: rgba($color-primary, 0.1);
+      color: $color-primary;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 }
 
-.empty-hint {
-  font-size: 12px;
-  color: $text-muted;
-  padding: 6px 14px;
-  margin: 0;
+.community-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: $border-radius-md;
+  background: $color-background-secondary;
+  @include font-size-sm;
+  font-weight: $font-weight-bold;
+  color: $color-text-secondary;
+  flex-shrink: 0;
 }
 
-// ============================================================
-// COMING SOON BADGE
-// ============================================================
+.community-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.member-badge {
+  @include font-size-xs;
+  color: $color-text-secondary;
+  background: $color-background-tertiary;
+  padding: 2px 6px;
+  border-radius: $border-radius-full;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
 .coming-soon-badge {
-  font-size: 10px;
-  font-weight: 600;
-  color: #9ca3af;
-  background: #f3f4f6;
-  padding: 2px 7px;
-  border-radius: 20px;
-  margin-left: auto;
-  letter-spacing: 0.02em;
+  @include font-size-xs;
+  font-weight: $font-weight-bold;
+  color: $color-warning;
+  background: rgba($color-warning, 0.1);
+  padding: 2px 6px;
+  border-radius: $border-radius-sm;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.empty-hint {
+  @include font-size-sm;
+  color: $color-text-secondary;
+  padding: $spacing-lg $spacing-lg;
+  text-align: center;
+  margin: 0;
 }
 
 // ============================================================
@@ -272,26 +443,37 @@
 // ============================================================
 .sidebar-footer {
   margin-top: auto;
-  padding: 16px 28px 20px;
+  padding: $spacing-lg;
+  border-top: 1px solid $color-border;
+  flex-shrink: 0;
+}
 
-  .footer-copy {
-    font-size: 11px;
-    color: #d1d5db;
-    margin: 0 0 6px;
-  }
+.footer-copy {
+  @include font-size-xs;
+  color: $color-text-secondary;
+  margin: 0 0 $spacing-md;
+  text-align: center;
+}
 
-  .footer-links {
-    display: flex;
-    gap: 12px;
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-lg;
+  flex-wrap: wrap;
 
-    a {
-      font-size: 11px;
-      color: #d1d5db;
-      text-decoration: none;
-      transition: color 0.15s ease;
+  a {
+    @include font-size-xs;
+    color: $color-text-secondary;
+    text-decoration: none;
+    transition: color $transition-base;
 
-      &:hover { color: $primary; }
+    &:hover {
+      color: $color-primary;
+      text-decoration: underline;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
     }
   }
 }
-

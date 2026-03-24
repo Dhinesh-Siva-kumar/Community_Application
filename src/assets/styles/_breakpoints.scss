@@ -1,69 +1,205 @@
 // ============================================================
 // BREAKPOINTS & MEDIA QUERIES
 // ============================================================
-// Centralized responsive design breakpoints for consistent
-// responsive behavior across the entire application
+// 6 responsive breakpoints for consistent responsive behavior
+// Reference: 01_MASTER_DESIGN_SYSTEM_REFERENCE.md
 
 // ============================================================
-// BREAKPOINT VARIABLES
+// BREAKPOINT VARIABLES (6 breakpoints)
 // ============================================================
 
-// Extra Small Devices (phones)
+// xs: 480px - Extra Small (small phones)
 $breakpoint-xs: 480px;
 
-// Small Devices (tablets, small phones in landscape)
+// sm: 600px - Small (portrait tablets, landscape phones)
 $breakpoint-sm: 600px;
 
-// Medium Devices (tablets, small laptops)
+// md: 768px - Medium (portrait tablets, small laptops)
 $breakpoint-md: 768px;
 
-// Large Devices (laptops, desktops)
+// lg: 1024px - Large (laptops, small desktops)
 $breakpoint-lg: 1024px;
 
-// Extra Large Devices (large desktops)
-$breakpoint-xl: 1200px;
+// xl: 1280px - Extra Large (desktops)
+$breakpoint-xl: 1280px;
 
-// Custom breakpoint for sidebar behavior
-$breakpoint-sidebar: 992px;
+// 2xl: 1536px - 2x Extra Large (large desktops, ultra-wide displays)
+$breakpoint-2xl: 1536px;
+
+// Legacy: Custom breakpoint for sidebar behavior (points to lg)
+$breakpoint-sidebar: $breakpoint-lg;
 
 // ============================================================
-// MEDIA QUERY MIXINS (Optional - for convenience)
+// BREAKPOINT MAP (for iteration and programmatic use)
 // ============================================================
-// These are optional helpers for cleaner media query syntax
-// Usage: @include media-sm { ... }
+
+$breakpoints: (
+  'xs': $breakpoint-xs,
+  'sm': $breakpoint-sm,
+  'md': $breakpoint-md,
+  'lg': $breakpoint-lg,
+  'xl': $breakpoint-xl,
+  '2xl': $breakpoint-2xl,
+);
+
+// ============================================================
+// MEDIA QUERY MIXINS - MOBILE FIRST (min-width)
+// ============================================================
+// Usage: @include media-up(md) { ... }
+
+@mixin media-up($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    $value: map-get($breakpoints, $breakpoint);
+    @media (min-width: $value) {
+      @content;
+    }
+  } @else {
+    @media (min-width: $breakpoint) {
+      @content;
+    }
+  }
+}
+
+@mixin media-up-xs {
+  @media (min-width: $breakpoint-xs) {
+    @content;
+  }
+}
+
+@mixin media-up-sm {
+  @media (min-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin media-up-md {
+  @media (min-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin media-up-lg {
+  @media (min-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+@mixin media-up-xl {
+  @media (min-width: $breakpoint-xl) {
+    @content;
+  }
+}
+
+@mixin media-up-2xl {
+  @media (min-width: $breakpoint-2xl) {
+    @content;
+  }
+}
+
+// ============================================================
+// MEDIA QUERY MIXINS - DESKTOP FIRST (max-width)
+// ============================================================
+// Usage: @include media-down(md) { ... }
+
+@mixin media-down($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    $value: map-get($breakpoints, $breakpoint);
+    @media (max-width: ($value - 1px)) {
+      @content;
+    }
+  } @else {
+    @media (max-width: ($breakpoint - 1px)) {
+      @content;
+    }
+  }
+}
+
+@mixin media-down-xs {
+  @media (max-width: ($breakpoint-xs - 1px)) {
+    @content;
+  }
+}
+
+@mixin media-down-sm {
+  @media (max-width: ($breakpoint-sm - 1px)) {
+    @content;
+  }
+}
+
+@mixin media-down-md {
+  @media (max-width: ($breakpoint-md - 1px)) {
+    @content;
+  }
+}
+
+@mixin media-down-lg {
+  @media (max-width: ($breakpoint-lg - 1px)) {
+    @content;
+  }
+}
+
+@mixin media-down-xl {
+  @media (max-width: ($breakpoint-xl - 1px)) {
+    @content;
+  }
+}
+
+@mixin media-down-2xl {
+  @media (max-width: ($breakpoint-2xl - 1px)) {
+    @content;
+  }
+}
+
+// ============================================================
+// MEDIA QUERY MIXINS - RANGE (between breakpoints)
+// ============================================================
+// Usage: @include media-between(sm, lg) { ... }
+
+@mixin media-between($lower, $upper) {
+  $lower-val: if(map-has-key($breakpoints, $lower), map-get($breakpoints, $lower), $lower);
+  $upper-val: if(map-has-key($breakpoints, $upper), map-get($breakpoints, $upper), $upper);
+
+  @media (min-width: $lower-val) and (max-width: ($upper-val - 1px)) {
+    @content;
+  }
+}
+
+// ============================================================
+// LEGACY ALIASES (For backward compatibility)
+// ============================================================
 
 @mixin media-xs {
-  @media (max-width: $breakpoint-xs) {
+  @include media-down-sm {
     @content;
   }
 }
 
 @mixin media-sm {
-  @media (max-width: $breakpoint-sm) {
+  @include media-down-md {
     @content;
   }
 }
 
 @mixin media-md {
-  @media (max-width: $breakpoint-md) {
+  @include media-down-lg {
     @content;
   }
 }
 
 @mixin media-lg {
-  @media (max-width: $breakpoint-lg) {
+  @include media-down-xl {
     @content;
   }
 }
 
 @mixin media-xl {
-  @media (max-width: $breakpoint-xl) {
+  @include media-down-2xl {
     @content;
   }
 }
 
 @mixin media-sidebar {
-  @media (max-width: $breakpoint-sidebar) {
+  @include media-down-lg {
     @content;
   }
 }

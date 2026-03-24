@@ -1,16 +1,115 @@
-@use '@angular/material' as mat;
+// ============================================================
+// GLOBAL APPLICATION STYLES
+// ============================================================
+// Main entry point for all application styles
+// Imports custom design system (replaces Angular Material)
 
-// Import common styles and design tokens from assets
+// ============================================================
+// IMPORT DESIGN SYSTEM
+// ============================================================
+
+// Import all design tokens and utilities
 @import 'assets/styles/index';
 
-// Include Angular Material theme
+// ============================================================
+// GLOBAL HTML & BODY STYLES
+// ============================================================
+
 html {
-  @include mat.theme((
-    color: (
-      primary: mat.$violet-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+  // Smooth scrolling for supported browsers
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $font-family-body;
+  font-size: $font-size-md;
+  font-weight: $font-weight-normal;
+  line-height: 1.5;
+  color: $color-text-primary;
+  background-color: $color-bg-page;
+}
+
+// ============================================================
+// ANGULAR COMPONENT STYLES
+// ============================================================
+
+// Angular Material components will be removed during Phase 2
+// Below are any critical global overrides for existing components
+
+// Dialog/Modal containers
+.cdk-overlay-pane {
+  z-index: $z-modal;
+}
+
+.cdk-overlay-backdrop {
+  background-color: $color-backdrop-dark;
+}
+
+// ============================================================
+// LEGACY COMPATIBILITY
+// ============================================================
+
+// Ensure any remaining Bootstrap classes work with new design system
+.container-fluid {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $spacing-lg;
+  padding-right: $spacing-lg;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -($spacing-md / 2);
+  margin-right: -($spacing-md / 2);
+}
+
+.col {
+  flex: 1 0 0%;
+  padding-left: $spacing-md / 2;
+  padding-right: $spacing-md / 2;
+}
+
+// ============================================================
+// UTILITY - NO-MARGIN
+// ============================================================
+
+.no-margin {
+  margin: 0 !important;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+// ============================================================
+// SCROLLBAR CUSTOMIZATION (Already in _common.scss)
+// ============================================================
+// Defined in _common.scss for consistency
+
+// ============================================================
+// PRINT STYLES
+// ============================================================
+
+@media print {
+  body {
+    background-color: $color-white;
+    color: $color-neutral-900;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  // Hide interactive elements in print
+  nav,
+  [role="navigation"],
+  .no-print {
+    display: none;
+  }
 }

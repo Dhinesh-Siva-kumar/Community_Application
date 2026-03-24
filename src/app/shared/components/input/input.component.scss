@@ -1,0 +1,55 @@
+// ============================================================
+// INPUT COMPONENT STYLES
+// ============================================================
+
+@import '../../../../assets/styles/index.scss';
+
+// Component-specific styles
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+
+  &.has-error,
+  &.has-success {
+    margin-bottom: $spacing-lg;
+  }
+}
+
+// Label styling
+label {
+  @include body-sm;
+  font-weight: 600;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 4px;
+
+  &.required-indicator::after {
+    content: ' *';
+    color: $color-red;
+  }
+}
+
+// Icon styling
+.input-icon {
+  color: $color-text-secondary;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+// Ensure input inherits form styles
+input {
+  @include input-base(md);
+
+  &.input-sm {
+    @include input-base(sm);
+  }
+
+  &.input-lg {
+    @include input-base(lg);
+  }
+
+  &.input-error {
+    @include input-error;
+  }
+}

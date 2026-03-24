@@ -1,0 +1,49 @@
+// ============================================================
+// AVATAR COMPONENT STYLES
+// ============================================================
+
+@import '../../../../assets/styles/index.scss';
+
+// Avatar base styles
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  font-weight: 600;
+  @include transition-short(all);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+// Avatar sizes
+.avatar-sm { width: 36px; height: 36px; font-size: 14px; }
+.avatar-md { width: 40px; height: 40px; font-size: 16px; }
+.avatar-lg { width: 52px; height: 52px; font-size: 18px; }
+.avatar-xl { width: 96px; height: 96px; font-size: 32px; }
+
+// Avatar background colors
+.avatar-bg-primary { background-color: $color-primary; color: $color-white; }
+.avatar-bg-success { background-color: $color-green; color: $color-white; }
+.avatar-bg-warning { background-color: $color-orange; color: $color-white; }
+.avatar-bg-error { background-color: $color-red; color: $color-white; }
+.avatar-bg-info { background-color: $color-primary; color: $color-white; }
+
+// Avatar initials text
+.avatar-initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-family-body;
+}

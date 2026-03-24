@@ -1,0 +1,51 @@
+// ============================================================
+// BUTTON COMPONENT STYLES
+// ============================================================
+
+@import '../../../../assets/styles/index.scss';
+
+// Component-specific styles (override base if needed)
+button {
+  font-family: $font-family-body;
+  font-weight: $btn-font-weight;
+  border-radius: $btn-border-radius;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  white-space: nowrap;
+
+  // Ensure proper alignment of icons
+  svg, i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  // Remove default button styling
+  &::-moz-focus-inner {
+    border: none;
+    padding: 0;
+  }
+
+  // Hover effect - lift button slightly
+  &:not(:disabled):not(.loading):hover {
+    transform: translateY(-2px);
+  }
+
+  // Active state - press button
+  &:not(:disabled):not(.loading):active {
+    transform: translateY(0);
+  }
+
+  // Focus state (keyboard navigation)
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+}
+
+// Variant and size classes imported from SCSS design system above
+// See assets/styles/_buttons.scss for full implementation

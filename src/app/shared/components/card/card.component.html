@@ -1,0 +1,8 @@
+<div
+  [class]="getCardClasses()"
+  (click)="onClick()"
+  [attr.role]="variant === 'interactive' ? 'button' : undefined"
+  [attr.tabindex]="variant === 'interactive' ? '0' : undefined"
+>
+  <ng-content></ng-content>
+</div>

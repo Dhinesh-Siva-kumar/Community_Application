@@ -1,0 +1,17 @@
+<div *ngIf="!isDismissed" class="error-display" role="alert" [class]="customClass">
+  <div class="error-header">
+    <span class="error-icon">⚠</span>
+    <h4 class="error-title">{{ title }}</h4>
+    <button *ngIf="dismissible" class="error-close" (click)="dismiss()" aria-label="Dismiss error">×</button>
+  </div>
+
+  <div *ngIf="message" class="error-message">{{ message }}</div>
+
+  <ul *ngIf="details && details.length > 0" class="error-details">
+    <li *ngFor="let detail of details">{{ detail }}</li>
+  </ul>
+
+  <div *ngIf="!message && !details.length" class="error-content">
+    <ng-content></ng-content>
+  </div>
+</div>

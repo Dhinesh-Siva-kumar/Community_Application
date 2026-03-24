@@ -1,0 +1,385 @@
+// ============================================================
+// BUTTON STYLES & MIXINS
+// ============================================================
+// Base button styles and mixins for different button variants
+// Primary, Secondary, Outline, FAB (Floating Action Button)
+
+// ============================================================
+// BUTTON SIZING TOKENS
+// ============================================================
+
+$btn-height-sm:             36px;
+$btn-height-md:             40px;
+$btn-height-lg:             48px;
+
+$btn-padding-x-sm:          12px;
+$btn-padding-x-md:          16px;
+$btn-padding-x-lg:          24px;
+
+$btn-border-radius:         8px;
+$btn-border-radius-lg:      12px;
+
+$btn-font-weight:           600;
+
+// ============================================================
+// PRIMARY BUTTON MIXIN
+// ============================================================
+
+@mixin btn-primary($size: md) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-family-body;
+  font-weight: $btn-font-weight;
+  border-radius: $btn-border-radius;
+  border: none;
+  cursor: pointer;
+  background-color: $color-primary;
+  color: $color-white;
+  transition: background-color $duration-short $easing-standard, box-shadow $duration-short $easing-standard, transform $duration-short $easing-standard;
+
+  @if $size == sm {
+    height: $btn-height-sm;
+    padding: 0 $btn-padding-x-sm;
+    font-size: $font-size-sm;
+  } @else if $size == lg {
+    height: $btn-height-lg;
+    padding: 0 $btn-padding-x-lg;
+    font-size: $font-size-md;
+  } @else {
+    height: $btn-height-md;
+    padding: 0 $btn-padding-x-md;
+    font-size: $font-size-sm;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: $color-primary-dark;
+    box-shadow: $shadow-button-hover;
+    transform: translateY(-2px);
+  }
+
+  &:active:not(:disabled) {
+    background-color: $color-primary-darker;
+    box-shadow: $shadow-button-active;
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: $shadow-button-focus;
+  }
+
+  &:disabled {
+    background-color: $color-neutral-200;
+    color: $color-text-disabled;
+    cursor: not-allowed;
+  }
+
+  &.loading {
+    position: relative;
+    color: transparent;
+    pointer-events: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: $color-white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
+// ============================================================
+// SECONDARY BUTTON MIXIN
+// ============================================================
+
+@mixin btn-secondary($size: md) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-family-body;
+  font-weight: $btn-font-weight;
+  border-radius: $btn-border-radius;
+  border: none;
+  cursor: pointer;
+  background-color: $color-primary-light;
+  color: $color-primary;
+  transition: background-color $duration-short $easing-standard, box-shadow $duration-short $easing-standard, transform $duration-short $easing-standard;
+
+  @if $size == sm {
+    height: $btn-height-sm;
+    padding: 0 $btn-padding-x-sm;
+    font-size: $font-size-sm;
+  } @else if $size == lg {
+    height: $btn-height-lg;
+    padding: 0 $btn-padding-x-lg;
+    font-size: $font-size-md;
+  } @else {
+    height: $btn-height-md;
+    padding: 0 $btn-padding-x-md;
+    font-size: $font-size-sm;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: darken($color-primary-light, 5%);
+    box-shadow: $shadow-button-hover;
+    transform: translateY(-2px);
+  }
+
+  &:active:not(:disabled) {
+    background-color: darken($color-primary-light, 10%);
+    box-shadow: $shadow-button-active;
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: $shadow-button-focus;
+  }
+
+  &:disabled {
+    background-color: $color-neutral-100;
+    color: $color-text-disabled;
+    cursor: not-allowed;
+  }
+}
+
+// ============================================================
+// OUTLINE BUTTON MIXIN
+// ============================================================
+
+@mixin btn-outline($size: md) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-family-body;
+  font-weight: $btn-font-weight;
+  border-radius: $btn-border-radius;
+  border: 2px solid $color-border-primary;
+  cursor: pointer;
+  background-color: transparent;
+  color: $color-text-primary;
+  transition: background-color $duration-short $easing-standard, border-color $duration-short $easing-standard, box-shadow $duration-short $easing-standard, transform $duration-short $easing-standard;
+
+  @if $size == sm {
+    height: $btn-height-sm;
+    padding: 0 calc($btn-padding-x-sm - 2px);
+    font-size: $font-size-sm;
+  } @else if $size == lg {
+    height: $btn-height-lg;
+    padding: 0 calc($btn-padding-x-lg - 2px);
+    font-size: $font-size-md;
+  } @else {
+    height: $btn-height-md;
+    padding: 0 calc($btn-padding-x-md - 2px);
+    font-size: $font-size-sm;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: $color-bg-hover;
+    border-color: $color-primary;
+    color: $color-primary;
+    box-shadow: $shadow-button-hover;
+    transform: translateY(-2px);
+  }
+
+  &:active:not(:disabled) {
+    background-color: darken($color-bg-hover, 3%);
+    border-color: $color-primary-dark;
+    color: $color-primary-dark;
+    box-shadow: $shadow-button-active;
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: $shadow-button-focus;
+  }
+
+  &:disabled {
+    border-color: $color-neutral-200;
+    color: $color-text-disabled;
+    cursor: not-allowed;
+  }
+}
+
+// ============================================================
+// FLOATING ACTION BUTTON (FAB) MIXIN
+// ============================================================
+
+@mixin btn-fab($size: md) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  background-color: $color-primary;
+  color: $color-white;
+  border-radius: 50%;
+  transition: background-color $duration-short $easing-standard, box-shadow $duration-short $easing-standard, transform $duration-short $easing-standard;
+  box-shadow: $shadow-5;
+
+  @if $size == sm {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  } @else if $size == lg {
+    width: 64px;
+    height: 64px;
+    font-size: 28px;
+  } @else {
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: $color-primary-dark;
+    box-shadow: $shadow-6;
+    transform: scale(1.08);
+  }
+
+  &:active:not(:disabled) {
+    background-color: $color-primary-darker;
+    box-shadow: $shadow-5;
+    transform: scale(1.05);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: $shadow-button-focus;
+  }
+
+  &:disabled {
+    background-color: $color-neutral-200;
+    color: $color-text-disabled;
+    cursor: not-allowed;
+  }
+}
+
+// ============================================================
+// BUTTON UTILITY CLASSES
+// ============================================================
+
+// Primary buttons
+.btn-primary {
+  @include btn-primary(md);
+
+  &.btn-sm {
+    @include btn-primary(sm);
+  }
+
+  &.btn-lg {
+    @include btn-primary(lg);
+  }
+
+  &.btn-full-width {
+    width: 100%;
+  }
+}
+
+// Secondary buttons
+.btn-secondary {
+  @include btn-secondary(md);
+
+  &.btn-sm {
+    @include btn-secondary(sm);
+  }
+
+  &.btn-lg {
+    @include btn-secondary(lg);
+  }
+
+  &.btn-full-width {
+    width: 100%;
+  }
+}
+
+// Outline buttons
+.btn-outline {
+  @include btn-outline(md);
+
+  &.btn-sm {
+    @include btn-outline(sm);
+  }
+
+  &.btn-lg {
+    @include btn-outline(lg);
+  }
+
+  &.btn-full-width {
+    width: 100%;
+  }
+}
+
+// FAB buttons
+.btn-fab {
+  @include btn-fab(md);
+
+  &.btn-fab-sm {
+    @include btn-fab(sm);
+  }
+
+  &.btn-fab-lg {
+    @include btn-fab(lg);
+  }
+}
+
+// ============================================================
+// BUTTON ICON SPACING
+// ============================================================
+
+.btn-icon-left {
+  svg, i {
+    margin-right: 8px;
+  }
+}
+
+.btn-icon-right {
+  svg, i {
+    margin-left: 8px;
+  }
+}
+
+.btn-icon-only {
+  padding: 0 !important;
+  width: $btn-height-md;
+  
+  &.btn-sm {
+    width: $btn-height-sm;
+  }
+
+  &.btn-lg {
+    width: $btn-height-lg;
+  }
+}
+
+// ============================================================
+// BUTTON GROUPS
+// ============================================================
+
+.btn-group {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+
+  &.btn-group-vertical {
+    flex-direction: column;
+  }
+
+  &.btn-group-full-width {
+    width: 100%;
+
+    .btn-primary, .btn-secondary, .btn-outline {
+      flex: 1;
+    }
+  }
+}

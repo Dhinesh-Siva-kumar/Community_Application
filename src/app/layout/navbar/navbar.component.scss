@@ -1,5 +1,4 @@
-@import '../../../assets/styles/_variables.scss';
-@import '../../../assets/styles/_breakpoints.scss';
+@import '../../../assets/styles/index.scss';
 
 // =============================================
 // NAVBAR COMPONENT STYLES
@@ -7,55 +6,65 @@
 
 .navbar {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
   height: 64px;
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba($color-white, 0.98);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1.5px solid #e8eaff;
-  box-shadow: 0 4px 24px rgba(88, 101, 242, 0.06);
+  border-bottom: 1px solid $color-border;
+  @include box-shadow-sm;
   overflow: visible;
 }
 
 // Gradient accent divider line spanning full width
 .nav-divider {
   position: absolute;
-  bottom: -1.5px;
-  left: 0; right: 0;
+  bottom: -1px;
+  left: 0;
+  right: 0;
   height: 2px;
-  background: linear-gradient(90deg,
+  background: linear-gradient(
+    90deg,
     transparent 0%,
-    #5865f2 20%,
-    #7c3aed 50%,
-    #eb459e 80%,
+    $color-primary 20%,
+    $color-secondary 50%,
+    $color-info 80%,
     transparent 100%
   );
-  opacity: 0.6;
+  opacity: 0.4;
 }
 
 .nav-container {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
-  padding: 0 24px;
+  padding: 0 $spacing-lg;
   height: 100%;
-  gap: 16px;
+  gap: $spacing-lg;
+
+  @media (max-width: $breakpoint-md) {
+    padding: 0 $spacing-md;
+    gap: $spacing-md;
+  }
 
   @media (max-width: $breakpoint-sm) {
-    grid-template-columns: auto auto;
-    padding: 0 12px;
+    padding: 0 $spacing-sm;
+    gap: $spacing-sm;
   }
 }
 
-// ---- LEFT ----
+// ---- LEFT: Hamburger + Brand ----
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: $spacing-sm;
   justify-self: start;
   min-width: 0;
+  flex-shrink: 0;
 }
 
 .nav-hamburger {
@@ -67,521 +76,344 @@
   cursor: pointer;
   width: 40px;
   height: 40px;
-  border-radius: 10px;
-  color: #374151;
-  transition: background 0.2s;
+  border-radius: $border-radius-md;
+  color: $color-text-secondary;
+  transition: all $transition-base;
+  padding: 0;
 
-  &:hover { background: #f3f4f6; }
+  &:hover {
+    background: $color-background-secondary;
+    color: $color-text-primary;
+  }
 
-  mat-icon { font-size: 22px; }
+  &:active {
+    background: $color-background-tertiary;
+  }
+
+  &:focus {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+
+  .hamburger-icon {
+    font-size: 20px;
+  }
 
   @media (max-width: $breakpoint-md) {
     display: flex;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 }
 
 .nav-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: $spacing-sm;
   text-decoration: none;
   flex-shrink: 0;
 
-  .brand-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
   .brand-name {
-    font-size: 18px;
-    font-weight: 700;
-    background: linear-gradient(135deg, #5865f2, #eb459e);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -0.3px;
-
-    @media (max-width: $breakpoint-xs) { display: none; }
-  }
-}
-
-// ---- CENTER ----
-.nav-search {
-  display: flex;
-  align-items: center;
-  justify-self: center;
-  width: 100%;
-  max-width: 520px;
-  gap: 8px;
-  background: #f4f5ff;
-  border: 1.5px solid #e8eaff;
-  border-radius: 12px;
-  padding: 0 14px;
-  height: 40px;
-  transition: all 0.2s;
-
-  &.active,
-  &:focus-within {
-    background: #fff;
-    border-color: #5865f2;
-    box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.12);
+    @include font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $color-primary;
+    line-height: 1;
   }
 
-  .nav-search-icon {
-    color: #9ca3af;
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
+  &:hover .brand-name {
+    color: darken($color-primary, 10%);
   }
 
-  .nav-search-input {
-    flex: 1;
-    border: none;
-    outline: none;
-    background: transparent;
-    font-size: 14px;
-    color: #374151;
-    min-width: 0;
-
-    &::placeholder { color: #9ca3af; }
-  }
-
-  .nav-search-kbd {
-    font-size: 11px;
-    color: #9ca3af;
-    background: #e5e7eb;
-    padding: 2px 6px;
-    border-radius: 5px;
-    font-family: monospace;
-    flex-shrink: 0;
-
-    @media (max-width: $breakpoint-lg) { display: none; }
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 4px;
+    border-radius: $border-radius-md;
   }
 
   @media (max-width: $breakpoint-sm) {
+    .brand-name {
+      display: none;
+    }
+  }
+}
+
+// ---- CENTER: Location Badge ----
+.nav-location {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  min-width: 0;
+
+  @media (max-width: $breakpoint-md) {
     display: none;
   }
 }
 
-// ---- RIGHT ----
+// ---- CENTER-RIGHT: Search ----
+.nav-search {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: 0 $spacing-md;
+  background: $color-background-secondary;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-md;
+  height: 40px;
+  flex: 0 1 400px;
+  transition: all $transition-base;
+
+  &.active {
+    border-color: $color-primary;
+    @include box-shadow-md;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.nav-search-icon {
+  font-size: $font-size-lg;
+  color: $color-text-secondary;
+  flex-shrink: 0;
+}
+
+.nav-search-input {
+  flex: 1;
+  border: none;
+  background: none;
+  @include font-size-sm;
+  color: $color-text-primary;
+  outline: none;
+
+  &::placeholder {
+    color: $color-text-secondary;
+  }
+
+  &:focus {
+    color: $color-text-primary;
+  }
+}
+
+.nav-search-kbd {
+  @include font-size-xs;
+  color: $color-text-secondary;
+  background: $color-background-tertiary;
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  display: none;
+
+  @media (min-width: $breakpoint-lg) {
+    display: inline-block;
+  }
+}
+
+// ---- RIGHT: Actions ----
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: $spacing-md;
   justify-self: end;
   flex-shrink: 0;
 }
 
-.nav-create-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: linear-gradient(135deg, #5865f2, #7c3aed);
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 0 16px;
-  height: 38px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
-  white-space: nowrap;
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(88, 101, 242, 0.4);
-  }
-
-  mat-icon { font-size: 18px; width: 18px; height: 18px; }
-
-  .nav-create-label {
-    @media (max-width: $breakpoint-md) { display: none; }
-  }
-
-  @media (max-width: $breakpoint-md) {
-    padding: 0 10px;
-    width: 38px;
-    justify-content: center;
-  }
-
-  @media (max-width: $breakpoint-xs) {
-    display: none;
-  }
-}
-
 .nav-icon-btn {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   width: 40px;
   height: 40px;
-  border-radius: 10px;
   background: none;
   border: none;
-  color: #374151;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  border-radius: $border-radius-md;
+  color: $color-text-secondary;
+  transition: all $transition-base;
+  font-size: $font-size-lg;
+  padding: 0;
 
   &:hover {
-    background: #f4f5ff;
-    color: #5865f2;
+    background: $color-background-secondary;
+    color: $color-text-primary;
   }
 
-  mat-icon { font-size: 22px; }
+  &:active {
+    background: $color-background-tertiary;
+  }
+
+  &:focus {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .nav-badge {
   position: absolute;
-  top: 4px; right: 4px;
-  min-width: 18px;
-  height: 18px;
-  border-radius: 9px;
-  background: #eb459e;
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
+  top: -4px;
+  right: -4px;
+  width: 20px;
+  height: 20px;
+  background: $color-error;
+  color: $color-white;
+  border-radius: $border-radius-full;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 4px;
-  border: 2px solid #fff;
+  @include font-size-xs;
+  font-weight: $font-weight-bold;
+  border: 2px solid $color-white;
+}
+
+// ---- User Menu ----
+.nav-user {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .nav-avatar-btn {
-  position: relative;
-  background: none;
-  border: none;
   cursor: pointer;
-  padding: 2px;
-  border-radius: 50%;
-  transition: box-shadow 0.2s;
+  border: none;
+  background: none;
+  padding: 0;
 
-  &:hover {
-    box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.2);
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+    border-radius: $border-radius-md;
   }
 }
 
-.nav-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #5865f2 0%, #eb459e 100%);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.nav-avatar-online {
+.nav-user-menu {
   position: absolute;
-  bottom: 2px; right: 2px;
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: #22c55e;
-  border: 2px solid #fff;
+  top: calc(100% + $spacing-sm);
+  right: 0;
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-lg;
+  @include box-shadow-lg;
+  min-width: 280px;
+  max-width: calc(100vw - $spacing-lg * 2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all $transition-base;
+  z-index: 1001;
+
+  .nav-user:hover & {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
-// =============================================
-// NOTIFICATION PANEL  (.nav-notif-panel)
-// =============================================
-::ng-deep .nav-notif-panel .mat-mdc-menu-panel {
-  width: 360px;
-  max-width: 95vw;
-  border-radius: 16px !important;
-  overflow: hidden;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15) !important;
-}
-::ng-deep .nav-notif-panel .mat-mdc-menu-content {
-  padding: 0 !important;
+.user-menu-header {
+  padding: $spacing-lg;
+  border-bottom: 1px solid $color-border;
+
+  strong {
+    display: block;
+    @include font-size-base;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    margin-bottom: 4px;
+  }
+
+  .user-email {
+    @include font-size-xs;
+    color: $color-text-secondary;
+  }
 }
 
-.np-header {
+.user-menu-section {
+  padding: $spacing-md 0;
+  border-bottom: 1px solid $color-border;
+}
+
+.user-menu-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px 12px;
-  border-bottom: 1px solid #f0f0ff;
+  padding: $spacing-md $spacing-lg;
+  @include font-size-sm;
+  color: $color-text-primary;
+  text-decoration: none;
+  transition: all $transition-base;
 
-  .np-header-left {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  &:hover {
+    background: $color-background-secondary;
   }
 
-  .np-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: #111827;
+  &:active {
+    background: $color-background-tertiary;
   }
 
-  .np-count-badge {
-    background: linear-gradient(135deg, #5865f2, #eb459e);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 10px;
-  }
-
-  .np-mark-all {
-    background: none;
-    border: none;
-    color: #5865f2;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 6px;
-    transition: background 0.2s;
-
-    &:hover { background: #f4f5ff; }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 }
 
-.np-list {
-  max-height: 340px;
-  overflow-y: auto;
-
-  &::-webkit-scrollbar { width: 4px; }
-  &::-webkit-scrollbar-track { background: transparent; }
-  &::-webkit-scrollbar-thumb { background: #e0e0ff; border-radius: 2px; }
+.unread-count {
+  @include font-size-xs;
+  font-weight: $font-weight-bold;
+  background: $color-error;
+  color: $color-white;
+  padding: 2px 6px;
+  border-radius: $border-radius-full;
 }
 
-.np-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 12px 20px;
+.user-menu-footer {
+  padding: $spacing-md;
+}
+
+.user-logout-btn {
+  width: 100%;
+  padding: $spacing-md;
+  background: $color-background-secondary;
+  border: none;
+  border-radius: $border-radius-md;
+  @include font-size-sm;
+  color: $color-text-primary;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: all $transition-base;
 
-  &:hover { background: #fafaff; }
-
-  &.np-unread { background: #f4f5ff; }
-
-  .np-avatar {
-    width: 36px; height: 36px; min-width: 36px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #5865f2, #7c3aed);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 700;
+  &:hover {
+    background: $color-background-tertiary;
   }
 
-  .np-body {
-    flex: 1;
-    min-width: 0;
-
-    p {
-      margin: 0 0 4px;
-      font-size: 13px;
-      color: #374151;
-      line-height: 1.4;
-    }
-
-    .np-time { font-size: 11px; color: #9ca3af; }
+  &:active {
+    background: #e0e0e0;
   }
 
-  .np-dot {
-    width: 8px; height: 8px; min-width: 8px;
-    border-radius: 50%;
-    background: #5865f2;
-    margin-top: 6px;
-  }
-}
-
-.np-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 40px 20px;
-  color: #9ca3af;
-
-  mat-icon { font-size: 40px; width: 40px; height: 40px; color: #d1d5db; }
-  p { margin: 0; font-size: 14px; }
-}
-
-.np-footer {
-  border-top: 1px solid #f0f0ff;
-  padding: 10px 16px;
-
-  .np-view-all {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    color: #5865f2;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    padding: 8px;
-    border-radius: 8px;
-    transition: background 0.2s;
-
-    &:hover { background: #f4f5ff; }
-
-    mat-icon { font-size: 16px; width: 16px; height: 16px; }
-  }
-}
-
-// =============================================
-// USER PROFILE PANEL  (.nav-user-panel)
-// =============================================
-::ng-deep .nav-user-panel .mat-mdc-menu-panel {
-  width: 300px;
-  border-radius: 16px !important;
-  overflow: hidden;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15) !important;
-}
-::ng-deep .nav-user-panel .mat-mdc-menu-content {
-  padding: 0 !important;
-}
-
-.up-header {
-  position: relative;
-  padding-bottom: 16px;
-
-  .up-banner {
-    height: 64px;
-    background: linear-gradient(135deg, #5865f2 0%, #eb459e 100%);
+  &:focus {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
   }
 
-  .up-avatar-wrap {
-    position: relative;
-    display: inline-block;
-    margin: -24px 0 0 16px;
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
-
-  .up-avatar {
-    width: 52px; height: 52px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #5865f2, #7c3aed);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: 700;
-    border: 3px solid #fff;
-    box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
-  }
-
-  .up-online {
-    position: absolute;
-    bottom: 2px; right: 2px;
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    background: #22c55e;
-    border: 2px solid #fff;
-  }
-
-  .up-info {
-    display: flex;
-    flex-direction: column;
-    padding: 8px 16px 0;
-
-    .up-name { font-size: 15px; font-weight: 700; color: #111827; }
-    .up-username { font-size: 12px; color: #5865f2; font-weight: 600; margin-top: 1px; }
-    .up-email { font-size: 11px; color: #9ca3af; margin-top: 2px; }
-  }
-}
-
-.up-stats {
-  display: flex;
-  align-items: center;
-  margin: 0 16px 4px;
-  padding: 12px;
-  background: #f4f5ff;
-  border-radius: 10px;
-  gap: 0;
-
-  .up-stat {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1px;
-
-    strong { font-size: 15px; font-weight: 700; color: #111827; }
-    span { font-size: 10px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; }
-  }
-
-  .up-stat-sep {
-    width: 1px;
-    height: 28px;
-    background: #e5e7eb;
-  }
-}
-
-.up-menu-section {
-  padding: 6px 8px;
-}
-
-.up-item {
-  display: flex !important;
-  align-items: center !important;
-  gap: 12px !important;
-  padding: 8px 12px !important;
-  border-radius: 10px !important;
-  height: auto !important;
-  min-height: 48px !important;
-
-  .up-item-icon {
-    width: 34px; height: 34px; min-width: 34px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    mat-icon { font-size: 18px; color: inherit; }
-  }
-
-  .up-icon-blue { background: #dbeafe; color: #3b82f6; }
-  .up-icon-purple { background: #ede9fe; color: #7c3aed; }
-  .up-icon-orange { background: #ffedd5; color: #f97316; }
-
-  .up-item-text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
-    span { font-size: 13px; font-weight: 600; color: #374151; }
-    small { font-size: 11px; color: #9ca3af; margin-top: 1px; }
-    .up-unread-hint { color: #5865f2; font-weight: 600; }
-  }
-}
-
-.up-footer {
-  border-top: 1px solid #f0f0f0;
-  padding: 6px 8px 8px;
-}
-
-.up-logout {
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  padding: 8px 12px !important;
-  border-radius: 10px !important;
-  color: #ef4444 !important;
-  width: 100% !important;
-  height: auto !important;
-
-  mat-icon { color: #ef4444; font-size: 20px; }
-
-  span { font-size: 13px; font-weight: 600; }
 }

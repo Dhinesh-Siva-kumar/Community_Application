@@ -1,81 +1,109 @@
-<aside class="sidebar" [class.sidebar-open]="isOpen()">
+<aside class="sidebar" [class.sidebar-open]="isOpen()" [class.sidebar-collapsed]="!isExpanded()">
 
   <!-- Mobile Header -->
   <div class="sidebar-mobile-header">
     <span class="sidebar-mobile-title">Menu</span>
-    <button mat-icon-button class="sidebar-close-btn" (click)="closeRequest.emit()" aria-label="Close menu">
-      <mat-icon>close</mat-icon>
+    <button 
+      type="button"
+      class="sidebar-close-btn" 
+      aria-label="Close menu"
+      (click)="closeRequest.emit()">
+      ✕
+    </button>
+  </div>
+
+  <!-- Desktop Toggle Button -->
+  <div class="sidebar-toggle-btn-wrap">
+    <button 
+      type="button"
+      class="sidebar-toggle-btn"
+      [title]="isExpanded() ? 'Collapse sidebar' : 'Expand sidebar'"
+      aria-label="Toggle sidebar"
+      (click)="onToggleExpanded()">
+      <span class="toggle-icon">{{ isExpanded() ? '‹' : '›' }}</span>
     </button>
   </div>
 
   <!-- Main Navigation -->
-  <nav class="sidebar-nav">
+  <nav class="sidebar-nav" aria-label="Main navigation">
     <p class="section-label">Main</p>
-    <a routerLink="/dashboard" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
-      <span class="nav-icon-wrap"><mat-icon>home</mat-icon></span>
-      <span>Home</span>
-    </a>
-    <a routerLink="/communities" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
-      <span class="nav-icon-wrap"><mat-icon>groups</mat-icon></span>
-      <span>Communities</span>
-    </a>
-    <a routerLink="/notifications" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
-      <span class="nav-icon-wrap"><mat-icon>notifications_none</mat-icon></span>
-      <span>Notifications</span>
-    </a>
-    <a routerLink="/profile" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
-      <span class="nav-icon-wrap"><mat-icon>person_outline</mat-icon></span>
-      <span>Profile</span>
-    </a>
+    <ng-container *ngFor="let item of getMenuItems()">
+      <a 
+        [routerLink]="item.route" 
+        routerLinkActive="active" 
+        class="nav-item" 
+        [title]="!isExpanded() ? item.label : ''"
+        (click)="onNavClick()">
+        <span class="nav-icon-wrap" aria-hidden="true">{{ item.icon }}</span>
+        <span *ngIf="isExpanded()" class="nav-label">{{ item.label }}</span>
+      </a>
+    </ng-container>
   </nav>
 
-  <mat-divider class="sidebar-divider"></mat-divider>
+  <div class="sidebar-divider"></div>
 
   <!-- Joined Communities -->
   <div class="sidebar-section">
-    <p class="section-label">Your Communities</p>
-    @for (community of joinedCommunities(); track community.id) {
-      <a [routerLink]="['/community', community.id]" routerLinkActive="active"
-         class="community-item" (click)="onNavClick()">
-        <span class="community-icon-wrap">
-          <mat-icon>{{ community.icon }}</mat-icon>
-        </span>
-        <span class="community-name">{{ community.name }}</span>
-        <span class="member-badge">{{ community.members | number }}</span>
-      </a>
-    } @empty {
-      <p class="empty-hint">No communities joined yet.</p>
-    }
+    <p class="section-label" *ngIf="isExpanded()">Your Communities</p>
+    <ng-container *ngIf="joinedCommunities().length > 0; else noCommunities">
+      <ng-container *ngFor="let community of joinedCommunities()">
+        <a 
+          [routerLink]="['/community', community.id]" 
+          routerLinkActive="active"
+          class="community-item" 
+          [title]="!isExpanded() ? community.name : ''"
+          (click)="onNavClick()">
+          <span class="community-icon-wrap" aria-hidden="true">
+            {{ community.name.charAt(0).toUpperCase() }}
+          </span>
+          <span *ngIf="isExpanded()" class="community-name">{{ community.name }}</span>
+          <span *ngIf="isExpanded()" class="member-badge">{{ community.members | number }}</span>
+        </a>
+      </ng-container>
+    </ng-container>
+    <ng-template #noCommunities>
+      <p class="empty-hint" *ngIf="isExpanded()">No communities joined yet.</p>
+    </ng-template>
   </div>
 
-  <mat-divider class="sidebar-divider"></mat-divider>
+  <div class="sidebar-divider"></div>
 
   <!-- Discover -->
   <div class="sidebar-section">
-    <p class="section-label">Discover</p>
-    <a routerLink="/communities" class="nav-item" (click)="onNavClick()">
-      <span class="nav-icon-wrap"><mat-icon>explore</mat-icon></span>
-      <span>Explore</span>
+    <p class="section-label" *ngIf="isExpanded()">Discover</p>
+    <a 
+      routerLink="/communities" 
+      class="nav-item" 
+      title="Explore communities"
+      (click)="onNavClick()">
+      <span class="nav-icon-wrap" aria-hidden="true">🔍</span>
+      <span *ngIf="isExpanded()" class="nav-label">Explore</span>
     </a>
-    <a class="nav-item nav-item-muted">
-      <span class="nav-icon-wrap"><mat-icon>trending_up</mat-icon></span>
-      <span>Trending</span>
-      <span class="coming-soon-badge">Soon</span>
+    <a 
+      class="nav-item nav-item-muted" 
+      title="Trending (coming soon)"
+      [attr.aria-disabled]="true">
+      <span class="nav-icon-wrap" aria-hidden="true">🔥</span>
+      <span *ngIf="isExpanded()" class="nav-label">Trending</span>
+      <span *ngIf="isExpanded()" class="coming-soon-badge">Soon</span>
     </a>
-    <a class="nav-item nav-item-muted">
-      <span class="nav-icon-wrap"><mat-icon>local_fire_department</mat-icon></span>
-      <span>Popular</span>
-      <span class="coming-soon-badge">Soon</span>
+    <a 
+      class="nav-item nav-item-muted" 
+      title="Popular (coming soon)"
+      [attr.aria-disabled]="true">
+      <span class="nav-icon-wrap" aria-hidden="true">⭐</span>
+      <span *ngIf="isExpanded()" class="nav-label">Popular</span>
+      <span *ngIf="isExpanded()" class="coming-soon-badge">Soon</span>
     </a>
   </div>
 
   <!-- Footer -->
-  <div class="sidebar-footer">
+  <div class="sidebar-footer" *ngIf="isExpanded()">
     <p class="footer-copy">© 2026 Community App</p>
     <div class="footer-links">
-      <a href="#">About</a>
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
+      <a href="#" aria-label="About">About</a>
+      <a href="#" aria-label="Privacy">Privacy</a>
+      <a href="#" aria-label="Terms">Terms</a>
     </div>
   </div>
 

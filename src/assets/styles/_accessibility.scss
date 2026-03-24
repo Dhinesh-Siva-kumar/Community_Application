@@ -1,0 +1,458 @@
+// ============================================================
+// ACCESSIBILITY STYLES
+// ============================================================
+// Focus indicators, screen reader support, and accessible utilities
+// WCAG AA compliance
+
+// ============================================================
+// FOCUS INDICATORS
+// ============================================================
+
+// Strong focus indicator for keyboard navigation (WCAG AA)
+:focus-visible {
+  outline: 2px solid $color-primary;
+  outline-offset: 2px;
+}
+
+// Remove default outline for mouse users (enhanced focus visible above)
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+// Button focus styles
+button:focus-visible {
+  outline: 2px solid $color-primary;
+  outline-offset: 2px;
+}
+
+// Link focus styles
+a:focus-visible {
+  outline: 2px solid $color-primary;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+// Form input focus
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid $color-primary;
+  outline-offset: 2px;
+}
+
+// ============================================================
+// SKIP LINK (Skip to main content)
+// ============================================================
+
+.skip-to-main {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: $color-primary;
+  color: $color-white;
+  padding: $spacing-sm $spacing-md;
+  text-decoration: none;
+  z-index: 100;
+  border-radius: 0 0 4px 0;
+
+  &:focus {
+    top: 0;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-white;
+    outline-offset: -4px;
+  }
+}
+
+// ============================================================
+// SCREEN READER ONLY TEXT
+// ============================================================
+
+// Visually hide but keep available to screen readers
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+// Visually hide but keep accessible
+.sr-only-focusable:active,
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+// Accessible label (alternative to sr-only in some contexts)
+.accessible-label {
+  @extend .sr-only;
+}
+
+// ============================================================
+// REDUCED MOTION SUPPORT
+// ============================================================
+
+@media (prefers-reduced-motion: reduce) {
+  // Disable all animations and transitions
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// Utility class to disable animation
+.no-motion {
+  animation: none !important;
+  transition: none !important;
+}
+
+// ============================================================
+// HIGH CONTRAST MODE SUPPORT
+// ============================================================
+
+@media (prefers-contrast: more) {
+  // Increase contrast for high contrast mode
+  body {
+    color: $color-neutral-900;
+  }
+
+  button,
+  a {
+    text-decoration: underline;
+  }
+
+  .card,
+  .card-elevated {
+    border-width: 2px;
+  }
+
+  input,
+  textarea,
+  select {
+    border-width: 2px;
+  }
+}
+
+// High contrast utility
+.high-contrast {
+  color: $color-neutral-900;
+  border-width: 2px;
+}
+
+// ============================================================
+// COLOR BLIND FRIENDLY UTILITIES
+// ============================================================
+
+// Don't rely solely on color to convey information
+.color-blind-safe {
+  // Use patterns, labels, or icons alongside colors
+
+  .status-success::before {
+    content: '✓ ';
+  }
+
+  .status-error::before {
+    content: '✗ ';
+  }
+
+  .status-warning::before {
+    content: '! ';
+  }
+
+  .status-info::before {
+    content: 'ⓘ ';
+  }
+}
+
+// ============================================================
+// ARIA LIVE REGION SUPPORT
+// ============================================================
+
+// For dynamic content updates
+.aria-live-polite {
+  @extend .sr-only;
+}
+
+.aria-live-assertive {
+  @extend .sr-only;
+}
+
+// ============================================================
+// SEMANTIC HTML ENHANCEMENTS
+// ============================================================
+
+// Ensure headings are properly styled and hierarchical
+h1 { @include h1; }
+h2 { @include h2; }
+h3 { @include h3; }
+h4 { @include h4; }
+h5 { @include body-lg; font-weight: $font-weight-semibold; }
+h6 { @include body-md; font-weight: $font-weight-semibold; }
+
+// Link styles for better visibility
+a {
+  color: $color-primary;
+  text-decoration: underline;
+  transition: color $duration-short $easing-standard, text-decoration-color $duration-short $easing-standard;
+
+  &:visited {
+    color: $color-purple;
+  }
+
+  &:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  &:active {
+    color: $color-primary-dark;
+  }
+
+  // Remove underline from nav links by default
+  nav & {
+    text-decoration: none;
+
+    &:focus-visible {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Lists should have proper styling
+ol, ul {
+  margin: $spacing-md 0;
+  padding-left: $spacing-lg;
+
+  li {
+    margin-bottom: $spacing-xs;
+  }
+
+  ol, ul {
+    margin-top: $spacing-xs;
+    margin-bottom: $spacing-xs;
+  }
+}
+
+// Code blocks
+code,
+pre {
+  font-family: $font-family-mono;
+  background-color: $color-neutral-100;
+  border-radius: $radius-sm;
+  padding: 2px 6px;
+}
+
+pre {
+  padding: $spacing-md;
+  overflow-x: auto;
+  line-height: 1.5;
+
+  code {
+    background: none;
+    padding: 0;
+  }
+}
+
+// ============================================================
+// TABLE ACCESSIBILITY
+// ============================================================
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: $spacing-lg 0;
+
+  th {
+    background-color: $color-primary-light;
+    color: $color-primary-dark;
+    font-weight: $font-weight-semibold;
+    padding: $spacing-md;
+    text-align: left;
+    border-bottom: 2px solid $color-primary;
+
+    &:focus-visible {
+      outline: 2px solid $color-primary;
+      outline-offset: -2px;
+    }
+  }
+
+  td {
+    padding: $spacing-md;
+    border-bottom: 1px solid $color-border-primary;
+  }
+
+  tr:focus-within {
+    background-color: $color-bg-hover;
+  }
+}
+
+// ============================================================
+// FORM ACCESSIBILITY
+// ============================================================
+
+// Required field indicator (visible alternative to color)
+.required-indicator {
+  color: $color-red;
+  font-weight: bold;
+
+  &::before {
+    content: '*';
+    margin-left: 2px;
+  }
+
+  // Also provide text for clarity
+  &::after {
+    content: ' (required)';
+    font-weight: normal;
+    font-size: 0.9em;
+    color: $color-text-secondary;
+  }
+}
+
+// Fieldset styling (for grouping related form fields)
+fieldset {
+  border: 1px solid $color-border-primary;
+  border-radius: $radius-md;
+  padding: $spacing-lg;
+  margin: $spacing-lg 0;
+
+  legend {
+    padding: 0 $spacing-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+  }
+}
+
+// ============================================================
+// TOOLTIP ACCESSIBILITY
+// ============================================================
+
+.tooltip {
+  position: relative;
+
+  &[aria-describedby] {
+    &:focus-visible::after {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+  }
+
+  &::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    background-color: $color-neutral-900;
+    color: $color-white;
+    padding: $spacing-sm $spacing-md;
+    border-radius: $radius-sm;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 200ms ease, visibility 200ms ease;
+    z-index: 1000;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-normal;
+  }
+}
+
+// ============================================================
+// ICON ACCESSIBILITY
+// ============================================================
+
+// Icon-only buttons should have aria-label
+.icon-button {
+  [aria-label] {
+    // Visual indication that label exists (for testing)
+    &::after {
+      content: '';
+    }
+  }
+
+  // If no aria-label, show warning in dev
+  &:not([aria-label]) {
+    &::after {
+      content: '⚠';
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: yellow;
+      color: black;
+      padding: 2px 4px;
+      font-size: 12px;
+      border-radius: 2px;
+      white-space: nowrap;
+      z-index: 9999;
+
+      @media (max-width: 768px) {
+        display: none;
+      }
+    }
+  }
+}
+
+// SVG icon accessible label
+svg {
+  &:not([aria-hidden="true"]):not([aria-label]) {
+    role: img;
+  }
+}
+
+// ============================================================
+// LOADING STATE ACCESSIBILITY
+// ============================================================
+
+.loading {
+  // Provide text alternative for loading indicator
+  &::before {
+    content: attr(data-loading-text, '');
+  }
+
+  [aria-busy="true"] {
+    @extend .sr-only;
+    content: 'Loading...';
+  }
+}
+
+// ============================================================
+// MOBILE ACCESSIBILITY
+// ============================================================
+
+// Ensure touch targets are large enough (min 44x44px WCAG guideline)
+button,
+a,
+input[type="checkbox"],
+input[type="radio"] {
+  min-height: 44px;
+  min-width: 44px;
+
+  @media (max-width: $breakpoint-sm) {
+    min-height: 48px;
+    min-width: 48px;
+  }
+}
+
+// Prevent zoom on input focus (mobile)
+input,
+select,
+textarea {
+  font-size: 16px; // Prevents auto-zoom on iOS
+
+  @media (max-width: $breakpoint-sm) {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,4 @@
+<div [class]="getAvatarClasses()" [attr.role]="'img'" [attr.aria-label]="alt">
+  <img *ngIf="showImage()" [src]="src" [alt]="alt" loading="lazy" />
+  <span *ngIf="showInitials()" class="avatar-initials">{{ getInitials() }}</span>
+</div>

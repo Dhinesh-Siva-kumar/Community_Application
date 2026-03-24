@@ -1,0 +1,373 @@
+// ============================================================
+// CARD STYLES & MIXINS
+// ============================================================
+// Base card styles and utility classes
+
+// ============================================================
+// CARD SIZING & TOKENS
+// ============================================================
+
+$card-border-radius:        12px;
+$card-padding:              $spacing-lg;
+$card-border-color:         $color-border-primary;
+$card-hover-transform:      translateY(-4px);
+
+// ============================================================
+// BASE CARD MIXIN
+// ============================================================
+
+@mixin card-base {
+  display: flex;
+  flex-direction: column;
+  background-color: $color-bg-card;
+  border-radius: $card-border-radius;
+  border: 1px solid $color-border-primary;
+  transition: box-shadow $duration-short $easing-standard, transform $duration-short $easing-standard;
+}
+
+// ============================================================
+// CARD VARIANTS
+// ============================================================
+
+// Default card (flat, no hover effect)
+@mixin card-default {
+  @include card-base;
+  box-shadow: $shadow-card-default;
+}
+
+// Elevated card (with hover effect)
+@mixin card-elevated {
+  @include card-base;
+  box-shadow: $shadow-card-default;
+
+  &:hover {
+    box-shadow: $shadow-card-hover;
+    transform: $card-hover-transform;
+  }
+}
+
+// Interactive card (clickable, with active state)
+@mixin card-interactive {
+  @include card-elevated;
+  cursor: pointer;
+
+  &:active {
+    box-shadow: $shadow-card-active;
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+}
+
+// Flat card (no shadow, border only)
+@mixin card-flat {
+  @include card-base;
+  box-shadow: none;
+
+  &:hover {
+    background-color: $color-bg-hover;
+  }
+}
+
+// ============================================================
+// CARD UTILITY CLASSES
+// ============================================================
+
+// Default card
+.card {
+  @include card-default;
+  padding: $card-padding;
+}
+
+// Elevated card
+.card-elevated {
+  @include card-elevated;
+  padding: $card-padding;
+}
+
+// Interactive card
+.card-interactive {
+  @include card-interactive;
+  padding: $card-padding;
+}
+
+// Flat card
+.card-flat {
+  @include card-flat;
+  padding: $card-padding;
+}
+
+// ============================================================
+// CARD STRUCTURE CLASSES
+// ============================================================
+
+// Card header
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: $spacing-md;
+  border-bottom: 1px solid $color-border-primary;
+  margin-bottom: $spacing-md;
+
+  &:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+}
+
+// Card title (inside header)
+.card-title {
+  @include h3;
+  margin: 0;
+  color: $color-text-primary;
+}
+
+// Card body (main content)
+.card-body {
+  flex: 1;
+  padding: $card-padding;
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+}
+
+// Card content (simpler alias for body)
+.card-content {
+  @extend .card-body;
+}
+
+// Card footer
+.card-footer {
+  padding-top: $spacing-md;
+  border-top: 1px solid $color-border-primary;
+  margin-top: $spacing-md;
+  display: flex;
+  gap: $spacing-md;
+  align-items: center;
+  justify-content: flex-end;
+
+  &:first-child {
+    border-top: none;
+    margin-top: 0;
+    padding-top: 0;
+  }
+}
+
+// Card actions/buttons area
+.card-actions {
+  display: flex;
+  gap: $spacing-sm;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+
+  &.align-start {
+    justify-content: flex-start;
+  }
+
+  &.align-center {
+    justify-content: center;
+  }
+
+  &.vertical {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+// Card divider (for separating content sections)
+.card-divider {
+  height: 1px;
+  background-color: $color-border-primary;
+  margin: $spacing-md 0;
+
+  &.no-margin {
+    margin: 0;
+  }
+}
+
+// ============================================================
+// CARD SIZE VARIANTS
+// ============================================================
+
+// Compact card (smaller padding)
+.card-compact {
+  padding: $spacing-md;
+
+  .card-header {
+    padding-bottom: $spacing-sm;
+    margin-bottom: $spacing-sm;
+  }
+
+  .card-body {
+    padding: $spacing-md;
+  }
+
+  .card-footer {
+    padding-top: $spacing-sm;
+    margin-top: $spacing-sm;
+  }
+}
+
+// Large card (larger padding)
+.card-lg {
+  padding: $spacing-xl;
+
+  .card-header {
+    padding-bottom: $spacing-lg;
+    margin-bottom: $spacing-lg;
+  }
+
+  .card-body {
+    padding: $spacing-xl;
+  }
+
+  .card-footer {
+    padding-top: $spacing-lg;
+    margin-top: $spacing-lg;
+  }
+}
+
+// ============================================================
+// CARD COLOR VARIANTS
+// ============================================================
+
+// Success card
+.card-success {
+  border-color: $color-green;
+
+  .card-header {
+    border-bottom-color: $color-green;
+  }
+
+  .card-footer {
+    border-top-color: $color-green;
+  }
+
+  .card-title {
+    color: $color-green-dark;
+  }
+}
+
+// Warning card
+.card-warning {
+  border-color: $color-orange;
+
+  .card-header {
+    border-bottom-color: $color-orange;
+  }
+
+  .card-footer {
+    border-top-color: $color-orange;
+  }
+
+  .card-title {
+    color: $color-orange-dark;
+  }
+}
+
+// Error/Danger card
+.card-error {
+  border-color: $color-red;
+  background-color: lighten($color-red, 48%);
+
+  .card-header {
+    border-bottom-color: $color-red;
+  }
+
+  .card-footer {
+    border-top-color: $color-red;
+  }
+
+  .card-title {
+    color: $color-red-dark;
+  }
+}
+
+// Info card
+.card-info {
+  border-color: $color-primary;
+
+  .card-header {
+    border-bottom-color: $color-primary;
+  }
+
+  .card-footer {
+    border-top-color: $color-primary;
+  }
+
+  .card-title {
+    color: $color-primary;
+  }
+}
+
+// ============================================================
+// CARD GRID/LAYOUT
+// ============================================================
+
+// Card grid container
+.card-grid {
+  display: grid;
+  gap: $spacing-lg;
+
+  // 2 column grid
+  &.grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // 3 column grid
+  &.grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  // 4 column grid
+  &.grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  // Auto-fit responsive grid
+  &.grid-auto {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
+// ============================================================
+// CARD SPECIAL STATES
+// ============================================================
+
+// Disabled card
+.card.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+// Loading card (with overlay)
+.card.loading {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: $card-border-radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+}
