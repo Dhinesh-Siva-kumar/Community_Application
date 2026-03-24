@@ -1,24 +1,45 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { User, Post } from '../../core/models';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { UserProfile, Post } from '../../core/models';
 import { AuthService } from '../../core/services/auth.service';
 import { PostService } from '../../core/services/post.service';
+import { UserService } from '../../core/services/user.service';
 import { PostCardComponent } from '../../shared/components/post-card/post-card.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ CommonModule, RouterModule, MatIconModule, PostCardComponent ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTabsModule,
+    MatProgressSpinnerModule,
+    PostCardComponent
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
-  user = signal<User | null>(null);
+  private route = inject(ActivatedRoute);
+  private authService = inject(AuthService);
+  private postService = inject(PostService);
+  private userService = inject(UserService);
+
+  user = signal<UserProfile | null>(null);
+  currentUser = signal<UserProfile | null>(null);
   userPosts = signal<Post[]>([]);
   loading = signal(true);
-  activeTab: 'posts' | 'comments' | 'saved' = 'posts';
+  activeTab = signal<'posts' | 'comments' | 'saved'>('posts');
+  isOwnProfile = signal(false);
+  isFollowing = signal(false);
+  followLoading = signal(false);
 
   tabs = [
     { id: 'posts',    label: 'Posts',    icon: 'article' },
@@ -26,18 +47,68 @@ export class ProfileComponent implements OnInit {
     { id: 'saved',    label: 'Saved',    icon: 'bookmark_border' }
   ];
 
-  constructor(private authService: AuthService, private postService: PostService) {}
-
   ngOnInit(): void {
-    const currentUser = this.authService.currentUser();
-    if (currentUser) {
-      this.user.set(currentUser);
-      this.postService.getPostsByUser(currentUser.id).subscribe(posts => {
-        this.userPosts.set(posts);
+    // Get current logged-in user
+    const current = this.authService.currentUser();
+    if (current) {
+      // Cast to UserProfile (current user is always the one we're looking at unless route has ID)
+      this.currentUser.set(current as unknown as UserProfile);
+    }
+
+    // Check if viewing specific user profile from route
+    this.route.params.subscribe(params => {
+      if (params['id']) {
+        // Viewing another user's profile
+        this.loadUserProfile(params['id']);
+      } else {
+        // Viewing own profile
+        if (current) {
+          this.user.set(current as unknown as UserProfile);
+          this.isOwnProfile.set(true);
+          this.loadUserPosts(current.id);
+        }
         this.loading.set(false);
+      }
+    });
+  }
+
+  private loadUserProfile(userId: string): void {
+    this.loading.set(true);
+    this.userService.getUserProfile(userId).subscribe(profile => {
+      if (profile) {
+        this.user.set(profile);
+        this.isFollowing.set(profile.isFollowing ?? false);
+        const currentId = this.currentUser()?.id;
+        this.isOwnProfile.set(currentId === userId);
+        this.loadUserPosts(userId);
+      }
+      this.loading.set(false);
+    });
+  }
+
+  private loadUserPosts(userId: string): void {
+    this.postService.getPostsByUser(userId).subscribe(posts => {
+      this.userPosts.set(posts);
+    });
+  }
+
+  onFollow(): void {
+    if (!this.user() || this.followLoading()) return;
+
+    this.followLoading.set(true);
+    
+    if (this.isFollowing()) {
+      this.userService.unfollowUser(this.user()!.id).subscribe(updated => {
+        this.user.set(updated);
+        this.isFollowing.set(false);
+        this.followLoading.set(false);
       });
     } else {
-      this.loading.set(false);
+      this.userService.followUser(this.user()!.id).subscribe(updated => {
+        this.user.set(updated);
+        this.isFollowing.set(true);
+        this.followLoading.set(false);
+      });
     }
   }
 
@@ -50,5 +121,10 @@ export class ProfileComponent implements OnInit {
   getInitials(name: string): string {
     return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
   }
+
+  changeTab(tabId: string): void {
+    this.activeTab.set(tabId as any);
+  }
 }
+
 

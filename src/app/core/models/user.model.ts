@@ -11,6 +11,12 @@ export interface User {
   communities: string[];
 }
 
+export interface UserProfile extends User {
+  isFollowing?: boolean;    // Whether current user follows this user
+  isFollowedBy?: boolean;   // Whether this user follows current user
+  isBlocked?: boolean;      // Whether current user has blocked this user
+}
+
 export interface AuthResponse {
   user: User;
   token: string;
