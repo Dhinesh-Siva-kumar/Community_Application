@@ -49,15 +49,28 @@ export class DashboardComponent implements OnInit {
 
   loadFeed(): void {
     this.loading.set(true);
-    this.postService.getFeed().subscribe(posts => {
-      this.posts.set(posts);
-      this.loading.set(false);
+    this.postService.getFeed().subscribe({
+      next: (posts) => {
+        this.posts.set(posts);
+        this.loading.set(false);
+      },
+      error: (error) => {
+        console.error('Error loading feed:', error);
+        this.loading.set(false);
+        this.posts.set([]);
+      }
     });
   }
 
   loadTrending(): void {
-    this.communityService.getCommunities().subscribe(communities => {
-      this.trendingCommunities.set(communities.slice(0, 4));
+    this.communityService.getCommunities().subscribe({
+      next: (communities) => {
+        this.trendingCommunities.set(communities.slice(0, 4));
+      },
+      error: (error) => {
+        console.error('Error loading trending communities:', error);
+        this.trendingCommunities.set([]);
+      }
     });
   }
 
@@ -67,8 +80,13 @@ export class DashboardComponent implements OnInit {
   }
 
   onLike(postId: string): void {
-    this.postService.likePost(postId).subscribe(updatedPost => {
-      this.posts.update(posts => posts.map(p => p.id === postId ? updatedPost : p));
+    this.postService.likePost(postId).subscribe({
+      next: (updatedPost) => {
+        this.posts.update(posts => posts.map(p => p.id === postId ? updatedPost : p));
+      },
+      error: (error) => {
+        console.error('Error liking post:', error);
+      }
     });
   }
 
@@ -82,14 +100,24 @@ export class DashboardComponent implements OnInit {
   }
 
   onDelete(postId: string): void {
-    this.postService.deletePost(postId).subscribe(() => {
-      this.posts.update(posts => posts.filter(p => p.id !== postId));
+    this.postService.deletePost(postId).subscribe({
+      next: () => {
+        this.posts.update(posts => posts.filter(p => p.id !== postId));
+      },
+      error: (error) => {
+        console.error('Error deleting post:', error);
+      }
     });
   }
 
   onPostCreated(request: CreatePostRequest): void {
-    this.postService.createPost(request).subscribe(newPost => {
-      this.posts.update(posts => [newPost, ...posts]);
+    this.postService.createPost(request).subscribe({
+      next: (newPost) => {
+        this.posts.update(posts => [newPost, ...posts]);
+      },
+      error: (error) => {
+        console.error('Error creating post:', error);
+      }
     });
   }
 }
